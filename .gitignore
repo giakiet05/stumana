@@ -1,0 +1,64 @@
+# Build outputs
+bin/
+obj/
+
+# Visual Studio files
+*.suo
+*.user
+*.vcxproj.user
+*.csproj.user
+
+# Rider files
+.idea/
+
+# Dotnet artifacts
+*.dll
+*.exe
+*.pdb
+*.app
+*.log
+*.cache
+
+# User-specific files
+*.vs/
+.vscode/
+
+# NuGet
+*.nupkg
+packages/
+
+# Environment files
+.env
+appsettings.json
+
+
+# Entity Framework migrations
+Migrations/
+
+# Secrets
+secrets.json
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+
+# Resharper files
+*.DotSettings.user
+
+# JetBrains Rider project settings
+.idea/
+
+# Coverage and testing
+coverage/
+*.coverage
+TestResults/
+
+# Docker
+docker-compose.override.yml
+
+# Logs
+*.log
+
+# OS-specific
+Thumbs

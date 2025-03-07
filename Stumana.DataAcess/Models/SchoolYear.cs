@@ -10,5 +10,9 @@ namespace Stumana.DataAcess.Models
     {
         public string Id { get; set; }
         public int StartYear { get; set; }
+        public string SchoolId { get; set; }
+
+        //Navigation Properties
+        public School School { get; set; }
     }
 }

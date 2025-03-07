@@ -16,6 +16,5 @@ namespace Stumana.DataAcess.Models
 
         // Navigation Properties
         public District District { get; set; }
-        public ICollection<User> Users { get; set; }
     }
 }

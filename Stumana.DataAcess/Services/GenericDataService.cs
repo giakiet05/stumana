@@ -8,7 +8,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace St.Services
+namespace Stumana.DataAccess.Services
 {
     public class GenericDataService<T> where T : class
     {

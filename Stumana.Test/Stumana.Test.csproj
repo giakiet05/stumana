@@ -7,4 +7,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Stumana.DataAcess\Stumana.DataAcess.csproj" />
+  </ItemGroup>
+
 </Project>

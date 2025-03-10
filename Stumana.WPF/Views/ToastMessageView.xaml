@@ -1,0 +1,39 @@
+﻿<UserControl x:Class="Stumana.WPF.Views.ToastMessageView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Stumana.WPF.Views"
+             mc:Ignorable="d" 
+             Width="auto" Height="auto" Margin="5">
+
+    <UserControl.RenderTransform>
+        <!-- Dùng TranslateTransform để tạo hiệu ứng trượt -->
+        <TranslateTransform x:Name="SlideTransform" />
+    </UserControl.RenderTransform>
+
+    <UserControl.Triggers>
+        <!-- Kích hoạt Storyboard khi UserControl được tải -->
+        <EventTrigger RoutedEvent="UserControl.Loaded">
+            <BeginStoryboard>
+                <Storyboard>
+                    <!-- Hiệu ứng trượt từ phải sang trái -->
+                    <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)"
+                                 From="300" To="0"
+                                 Duration="0:0:0.2" />
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>
+    </UserControl.Triggers>
+
+    <Border Background="{Binding BackgroundColor}" CornerRadius="5" Padding="10" HorizontalAlignment="Right">
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+            <TextBlock Text="{Binding Icon}" FontSize="20" Margin="0,0,10,0"/>
+            <StackPanel>
+                <TextBlock Text="{Binding Title}" FontWeight="Bold"/>
+                <TextBlock Text="{Binding Message}" FontSize="12" 
+                           TextWrapping="Wrap" MaxWidth="250"/>
+            </StackPanel>
+        </StackPanel>
+    </Border>
+</UserControl>

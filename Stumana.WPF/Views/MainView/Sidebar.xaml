@@ -46,8 +46,7 @@
                         </TextBlock>
                     </StackPanel>
                 </RadioButton>
-                <RadioButton 
-               
+                <RadioButton                   
                     GroupName="Options"
                     Height="40">
                     <StackPanel   Orientation="Horizontal" >
@@ -165,6 +164,7 @@ Height="40">
                                FontSize="40">
 
                     </TextBlock>
+                    
                 </StackPanel>
                 <Rectangle VerticalAlignment="Bottom" Fill="#808080"  Height="1" Margin="0,10,0,10" />
 

@@ -27,7 +27,21 @@
     <None Remove="Resource\Font\Poppins-SemiBoldItalic.ttf" />
     <None Remove="Resource\Font\Poppins-Thin.ttf" />
     <None Remove="Resource\Font\Poppins-ThinItalic.ttf" />
+    <None Remove="Resource\Image\480931660_3748711618608398_1256870262385844398_n.png" />
+    <None Remove="Resource\Image\a drawing of a girl with horns on her head.jpg" />
+    <None Remove="Resource\Image\Book-Search--Streamline-Ultimate.png" />
+    <None Remove="Resource\Image\Calendar-3--Streamline-Ultimate.png" />
+    <None Remove="Resource\Image\Calendar-Time--Streamline-Tabler.png" />
+    <None Remove="Resource\Image\List-Letters--Streamline-Tabler.png" />
     <None Remove="Resource\Image\LoginImage.png" />
+    <None Remove="Resource\Image\Percentage-80--Streamline-Tabler.png" />
+    <None Remove="Resource\Image\Presentation-Audience--Streamline-Ultimate.png" />
+    <None Remove="Resource\Image\SchoolLogo.png" />
+    <None Remove="Resource\Image\Spy--Streamline-Tabler.png" />
+    <None Remove="Resource\Image\Student-Fill--Streamline-Phosphor-Fill.png" />
+    <None Remove="Resource\Image\Transfer-Out--Streamline-Tabler.png" />
+    <None Remove="Resource\Image\UserIcon.png" />
+    <None Remove="Resource\Image\Vector.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -85,7 +99,46 @@
     <Content Include="Resource\Font\Poppins-ThinItalic.ttf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Resource\Image\480931660_3748711618608398_1256870262385844398_n.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resource\Image\a drawing of a girl with horns on her head.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resource\Image\Book-Search--Streamline-Ultimate.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resource\Image\Calendar-3--Streamline-Ultimate.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resource\Image\Calendar-Time--Streamline-Tabler.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resource\Image\List-Letters--Streamline-Tabler.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resource\Image\LoginImage.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resource\Image\Percentage-80--Streamline-Tabler.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resource\Image\Presentation-Audience--Streamline-Ultimate.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resource\Image\Spy--Streamline-Tabler.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resource\Image\Student-Fill--Streamline-Phosphor-Fill.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resource\Image\Transfer-Out--Streamline-Tabler.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resource\Image\UserIcon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resource\Image\Vector.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
@@ -105,6 +158,12 @@
 
   <ItemGroup>
     <Folder Include="Resource\Icon\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resource\Image\SchoolLogo.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

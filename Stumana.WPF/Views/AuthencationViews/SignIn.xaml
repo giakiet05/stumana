@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:Stumana.WPF.Views.AuthencationViews"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
-             d:DesignHeight="450" Width="1440">
+             d:DesignHeight="800" Width="1440">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*"/>
@@ -24,7 +24,7 @@
 
                 <StackPanel Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Width="431" Height="635.12" Orientation="Vertical">
                     <TextBlock Text="Sign in"
-                               FontFamily="pack://application:,,,/Font/#Poppins Medium"
+                               FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
                                FontSize="30"
                                Style="{StaticResource MaterialDesignHeadline1TextBlock}"
                                Foreground="{DynamicResource PrimaryHueMidBrush}"

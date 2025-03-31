@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace Stumana.DataAcess.Models
 {
-    public class ScoreType
+    public class Asset
     {
         public string Id { get; set; }
-        public string Name { get; set; }
-        public double Coefficient { get; set; }
+        public int MinAge { get; set; }
+        public int MaxAge { get; set; }
+        public double ScoreToPass {  get; set; }
         public string YearId { get; set; }
 
-        //Navigation Properties
-       public SchoolYear Year { get; set; }
+        public SchoolYear Year { get; set; }
     }
 }

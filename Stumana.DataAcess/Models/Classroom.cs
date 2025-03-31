@@ -12,8 +12,10 @@ namespace Stumana.DataAcess.Models
         public string Name { get; set; }
         public int Capacity { get; set; }
         public string GradeId { get; set; }
+        public string YearId { get; set; }
 
         // Navigation Props
         public Grade Grade { get; set; }
+        public SchoolYear Year { get; set; }
     }
 }

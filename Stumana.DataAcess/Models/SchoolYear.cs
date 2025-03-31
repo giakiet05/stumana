@@ -10,5 +10,6 @@ namespace Stumana.DataAcess.Models
     {
         public string Id { get; set; }
         public int StartYear { get; set; }
+        public int EndYear { get; set; }
     }
 }

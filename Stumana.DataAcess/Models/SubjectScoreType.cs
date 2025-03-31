@@ -10,10 +10,11 @@ namespace Stumana.DataAcess.Models
     {
         public string Id { get; set; }
         public string ScoreTypeId { get; set; }
-        public string SubjectOfferingId { get; set; }
+        public string SubjectId { get; set; }
+        public int Amount { get; set; }
 
         // Navigation Properties
         public ScoreType ScoreType { get; set; }
-        public SubjectOffering SubjectOffering { get; set; }
+        public Subject Subject { get; set; }
     }
 }

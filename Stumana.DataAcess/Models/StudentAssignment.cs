@@ -14,10 +14,10 @@ namespace Stumana.DataAcess.Models
         public int ExcusedAbsence { get; set; }
         public int UnexcusedAbsence { get; set; }
         public string StudentId { get; set; }
-        public string ClassroomOfferingId { get; set; }
+        public string ClassroomId { get; set; }
 
         // Navigation Properties
         public Student Student { get; set; }
-        public ClassroomOffering ClassroomOffering { get; set; }
+        public Classroom Classroom { get; set; }
     }
 }

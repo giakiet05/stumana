@@ -22,7 +22,7 @@ namespace Stumana.WPF.Views.MainView.ScoreOption
     {
         public ScoretInputView()
         {
-            InitializeComponent();
+            
         }
     }
 }

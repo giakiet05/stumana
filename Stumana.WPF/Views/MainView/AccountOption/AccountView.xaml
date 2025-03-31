@@ -84,7 +84,7 @@
                  BorderThickness="0"
                  IsReadOnly="True"
                  FontSize="18"
-                 Padding="5" TextChanged="TextBox_TextChanged" />
+                 Padding="5"  />
                 </Border>
             </StackPanel>
             <StackPanel Orientation="Vertical" Margin="10">

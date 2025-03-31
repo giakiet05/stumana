@@ -13,21 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Stumana.WPF.Views.MainView
+namespace Stumana.WPF.Views.MainView.ClassOption
 {
     /// <summary>
-    /// Interaction logic for AccountView.xaml
+    /// Interaction logic for ClassListView.xaml
     /// </summary>
-    public partial class AccountView : UserControl
+    public partial class ClassListView : UserControl
     {
-        public AccountView()
+        public ClassListView()
         {
             InitializeComponent();
-        }
-
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
         }
     }
 }

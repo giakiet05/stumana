@@ -113,7 +113,7 @@
                             </DataGrid.Columns>
                         </DataGrid>
                         <StackPanel Grid.ColumnSpan="3"   Grid.Row="2"  Orientation="Horizontal" FlowDirection="RightToLeft" Width="1034" Margin="71,0,71,0" >
-                            <Button x:Name="btClassExport"
+                            <Button x:Name="btClassesExport"
                              Margin="10"
                              VerticalAlignment="Center"
 

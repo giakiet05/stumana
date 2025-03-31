@@ -22,7 +22,7 @@ namespace Stumana.WPF.Views.MainView.ClassOption
     {
         public InsideClassView()
         {
-            InitializeComponent();
+           
         }
     }
 }

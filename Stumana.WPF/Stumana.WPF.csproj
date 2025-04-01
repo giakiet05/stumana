@@ -29,7 +29,6 @@
     <None Remove="Resource\Font\Poppins-ThinItalic.ttf" />
     <None Remove="Resource\Image\480931660_3748711618608398_1256870262385844398_n.png" />
     <None Remove="Resource\Image\a drawing of a girl with horns on her head.jpg" />
-    <None Remove="Resource\Image\Avatar.png" />
     <None Remove="Resource\Image\Book-Search--Streamline-Ultimate.png" />
     <None Remove="Resource\Image\Calendar-3--Streamline-Ultimate.png" />
     <None Remove="Resource\Image\Calendar-Time--Streamline-Tabler.png" />
@@ -106,9 +105,6 @@
     <Content Include="Resource\Image\a drawing of a girl with horns on her head.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resource\Image\Avatar.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Resource\Image\Book-Search--Streamline-Ultimate.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -150,6 +146,10 @@
   <ItemGroup>
     <PackageReference Include="MaterialDesignColors" Version="5.2.1" />
     <PackageReference Include="MaterialDesignThemes" Version="5.2.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>
@@ -157,6 +157,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="ResourceXAML\" />
     <Folder Include="Resource\Icon\" />
   </ItemGroup>
 

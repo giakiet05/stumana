@@ -56,7 +56,6 @@
         <Button Grid.Row="2"
                 Style="{StaticResource ConfirmButtonStyle}"
                 Content="Xác nhận"
-                FontFamily="/Resource/Font/Poppins-Medium.ttf#Poppins Medium"
                 Command="{Binding ApplyFiltersCommand}"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Bottom"/>

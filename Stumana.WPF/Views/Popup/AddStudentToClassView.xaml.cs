@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace Stumana.WPF.Views.Popup
 {
     /// <summary>
-    /// Interaction logic for AddStudentView.xaml
+    /// Interaction logic for AddStudentViewToClass.xaml
     /// </summary>
-    public partial class AddStudentView : UserControl
+    public partial class AddStudentViewToClass : UserControl
     {
-        public AddStudentView()
+        public AddStudentViewToClass()
         {
             InitializeComponent();
         }

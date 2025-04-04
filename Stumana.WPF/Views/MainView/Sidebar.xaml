@@ -15,7 +15,7 @@
         <Grid Grid.Column="0" Background="#152259" Width="241">
             <StackPanel   Height="148" VerticalAlignment="Top" Margin="0 20 0 0">
                 <Image  
-                    Source="/Resource/Image/SchoolLogo.png"
+                    Source="/Resource/Image/SchoolLogo.png/"
                     Width="65" Height="65">
                 </Image>
                 <TextBlock

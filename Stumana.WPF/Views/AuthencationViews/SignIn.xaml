@@ -15,7 +15,7 @@
 
         <Image Source="/Resource/Image/LoginImage.png" Stretch="UniformToFill" Grid.Column="0" />
 
-        <Border Grid.Column="1" Background="#FFFFFF" >
+        <Border Grid.Column="1" Background="#FFFFFF" Padding="30">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />

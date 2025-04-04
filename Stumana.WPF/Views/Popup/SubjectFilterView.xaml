@@ -1,0 +1,63 @@
+﻿<UserControl x:Class="Stumana.WPF.Views.Popup.SubjectFilterView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Stumana.WPF.Views.Popup"
+             mc:Ignorable="d" 
+             d:DesignHeight="368" d:DesignWidth="622"
+             Background="White">
+    
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Stumana.WPF;component/ResourceXAML/Styles/FilterStyles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    
+    <Grid Margin="40,40,40,20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- First Row -->
+        <StackPanel Grid.Row="0" 
+                    Orientation="Horizontal" 
+                    HorizontalAlignment="Center"
+                    Margin="0,40,0,20">
+            <ComboBox Style="{StaticResource FilterComboBoxStyle}"
+                    ItemsSource="{Binding GradesList}"
+                    SelectedItem="{Binding SelectedGrade}"
+                    DisplayMemberPath="Name"
+                    Tag="Khối"
+                    Margin="0,0,20,0">
+                <ComboBox.ItemContainerStyle>
+                    <Style TargetType="ComboBoxItem"
+                           BasedOn="{StaticResource FilterComboBoxItemStyle}"/>
+                </ComboBox.ItemContainerStyle>
+            </ComboBox>
+
+            <ComboBox Style="{StaticResource FilterComboBoxStyle}"
+                    ItemsSource="{Binding SemestersList}"
+                    SelectedItem="{Binding SelectedSemester}"
+                    DisplayMemberPath="Name"
+                    Tag="Học kỳ">
+                <ComboBox.ItemContainerStyle>
+                    <Style TargetType="ComboBoxItem"
+                           BasedOn="{StaticResource FilterComboBoxItemStyle}"/>
+                </ComboBox.ItemContainerStyle>
+            </ComboBox>
+        </StackPanel>
+
+        <!-- Confirm Button -->
+        <Button Grid.Row="2"
+                Style="{StaticResource ConfirmButtonStyle}"
+                Content="Xác nhận"
+                Command="{Binding ApplyFiltersCommand}"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"/>
+    </Grid>
+</UserControl>

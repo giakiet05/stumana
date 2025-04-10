@@ -99,16 +99,11 @@
          \hline
         8 & Tạo khối & BM8 & QĐ8\\
         \hline
-        9  & Tạo bộ môn & BM9 & QĐ9\\
+        9  & Tạo lớp học & BM10 & QĐ10\\
         \hline
-        10  & Tạo lớp học & BM10 & QĐ10\\
+        10 & Tạo môn học & BM11 & QĐ11\\
         \hline
-        11 & Tạo môn học & BM11 & QĐ11\\
-        \hline
-        12 & Cấp tài khoản giáo viên & BM12 & QĐ12\\
-        \hline 
-        13 & Phân công giảng dạy &  BM13 & QĐ13\\
-        \hline
+       
     \end{tabular}
 \end{table}
 
@@ -120,11 +115,8 @@
     	\begin{itemize}
         \item Thiết lập năm học
         \item Tạo khối
-        \item Tạo bộ môn
-         \item Tạo lớp học học
+         \item Tạo lớp học
           \item Tạo môn học
-          \item Cấp tài khoản giáo viên
-          \item Phân công giảng dạy
           \item Tiếp nhận học sinh
           \item Lập danh sách lớp
           \item Nhận bảng điểm môn
@@ -397,7 +389,7 @@
 \begin{table}[H]
     \centering
     \renewcommand{\arraystretch}{1.5}
-    \setlength{\tabcolsep}{15pt} % Adjust column spacing if needed
+    \setlength{\tabcolsep}{12pt} % Adjust column spacing if needed
     \begin{tabular}{|c|c|c|c|c|}
     \hline
     \multicolumn{5}{|c|}{\textbf{BM5.1: Báo Cáo Tổng Kết Môn}} \\  
@@ -417,7 +409,7 @@
 \begin{table}[H]
     \centering
     \renewcommand{\arraystretch}{1.5}
-    \setlength{\tabcolsep}{15pt} % Adjust column spacing if needed
+    \setlength{\tabcolsep}{12pt} % Adjust column spacing if needed
     \begin{tabular}{|c|c|c|c|c|}
     \hline
     \multicolumn{5}{|c|}{\textbf{BM5.2: Báo Cáo Tổng Kết Học Kỳ}} \\  
@@ -467,26 +459,7 @@
 \end{itemize}
 
 \end{enumerate}	
-			
 
-
-			\subsubsection{Thay đổi quy định}
-			\begin{enumerate}[label=\alph*.]
-\item Biểu mẫu và quy định
-
-QĐ6: Người dùng có thể thay đổi các qui định như sau: 
-\begin{itemize}
- \item QĐ1: Thay đổi tuổi tối thiểu, tuổi tối đa.
-      \item QĐ2: Thay đổi sĩ số tối đa của các lớp, thay đổi số lượng và tên các lớp trong trường.
-      \item QĐ4: Thay đổi số lượng và tên các môn học.
-      \item QĐ5: Thay đổi điểm đạt môn/đạt
-\end{itemize}
-
-
-\item Sơ đồ luồng dữ liệu
-\item Mô tả các luồng dữ liệu
-\item Thuật toán
-\end{enumerate}	
 		
 		\subsubsection{Thiết lập năm học}	
 \begin{enumerate}
@@ -495,16 +468,12 @@ QĐ6: Người dùng có thể thay đổi các qui định như sau:
 \begin{table}[H]
 \centering
 \renewcommand{\arraystretch}{1.5}
-\setlength{\tabcolsep}{15pt}
+\setlength{\tabcolsep}{12pt}
 \begin{tabular}{|c|c|c|c|}
 \hline
 \multicolumn{4}{|c|}{\textbf{BM7: Thiết lập năm học}} \\
 \hline
 \multicolumn{2}{|p{5cm}|}{Năm bắt đầu: \dotfill}  & \multicolumn{2}{|p{5cm}|}{Năm kết thúc: \dotfill}  \\
-\hline
-\multicolumn{2}{|p{5cm}|}{Tuổi tối thiểu: \dotfill}  & \multicolumn{2}{|p{5cm}|}{Tuổi tối đa: \dotfill}  \\
-\hline
-\multicolumn{4}{|l|}{Điểm đạt: \dotfill} \\
 \hline
 \multicolumn{4}{|c|}{Các loại điểm} \\
 \hline
@@ -569,7 +538,7 @@ QĐ7: Năm bắt đầu phải nhỏ hơn năm kết thúc. 1 <= Điểm đạt 
 \begin{table}[H]
 \centering
 \renewcommand{\arraystretch}{1.5}
-\setlength{\tabcolsep}{15pt}
+\setlength{\tabcolsep}{12pt}
 \begin{tabular}{|p{5cm}|p{5cm}|}
 \hline
 \multicolumn{2}{|c|}{\textbf{BM8: Tạo khối}} \\
@@ -608,50 +577,7 @@ Tên khối: \dotfill & Thứ tự khối: \dotfill \\
 \item B9: Kết thúc
 \end{itemize}
 \end{enumerate}	
-				\subsubsection{Tạo bộ môn}	
-				\begin{enumerate}
-\item Biểu mẫu và quy định
-
-\begin{table}[H]
-\centering
-\renewcommand{\arraystretch}{1.5}
-\setlength{\tabcolsep}{15pt}
-\begin{tabular}{|p{10cm}|}
-\hline
-\multicolumn{1}{|c|}{\textbf{BM9: Tạo bộ môn}} \\  % Căn giữa tiêu đề
-\hline
-Tên bộ môn: \dotfill \\  
-\hline
-\end{tabular}
-\end{table}
-
-
-\item Sơ đồ luồng dữ liệu
-\begin{figure}[H] 
-    \centering
-    \includegraphics[width=1\textwidth]{dfd9} % Adjust width as needed
-    \caption{Sơ đồ luồng dữ liệu cho yêu cầu Tạo bộ môn}
-\end{figure}
-\item Mô tả các luồng dữ liệu
-\begin{itemize}
-\item D1: Tên bộ môn
-\item D2: Không có
-\item D3: Danh sách bộ môn
-\item D4: D1
-\item D5: D4
-\item D6: Không có
-\end{itemize}
-\item Thuật toán
-\begin{itemize}
-\item B1: Nhận D1 từ người dùng
-\item B2: Kết nối cơ sở dữ liệu
-\item B3: Đọc D3 từ bộ nhớ phụ
-\item B4: Lưu D4 xuống bộ nhớ phụ
-\item B5: Xuất D5 ra máy in
-\item B6: Đóng kết nối cơ sở dữ liệu
-\item B7: Kết thúc
-\end{itemize}
-\end{enumerate}	
+			
 					\subsubsection{Tạo lớp học}	
 					\begin{enumerate}
 \item Biểu mẫu và quy định
@@ -659,7 +585,7 @@ Tên bộ môn: \dotfill \\
 \begin{table}[H]
 \centering
 \renewcommand{\arraystretch}{1.5}
-\setlength{\tabcolsep}{15pt}
+\setlength{\tabcolsep}{12pt}
 \begin{tabular}{|p{5cm}|p{5cm}|}
 \hline
 \multicolumn{2}{|c|}{\textbf{BM10: Tạo lớp học}} \\  
@@ -711,7 +637,7 @@ QĐ10: Sĩ số > 0
 \begin{table}[H]
 \centering
 \renewcommand{\arraystretch}{1.5}
-\setlength{\tabcolsep}{15pt}
+\setlength{\tabcolsep}{12pt}
 \begin{tabular}{|p{5cm}|p{5cm}|}
 \hline
 \multicolumn{2}{|c|}{\textbf{BM11: Tạo môn học}} \\  
@@ -719,8 +645,6 @@ QĐ10: Sĩ số > 0
 Tên môn: \dotfill  & Điểm qua môn: \dotfill \\
 \hline
 Năm học: \dotfill & Khối: \dotfill \\
-\hline
-Bộ môn: \dotfill & \\
 \hline
 \multicolumn{2}{|c|}{Số lượng các loại điểm của môn} \\
 \hline
@@ -769,127 +693,458 @@ QĐ10: 0 <= Điểm qua môn <= 10
 \item B13: Kết thúc
 \end{itemize}
 \end{enumerate}	
-							\subsubsection{Cấp tài khoản giáo viên}	
-							\begin{enumerate}
-\item Biểu mẫu và quy định
-
-\begin{table}[H]
-\centering
-\renewcommand{\arraystretch}{1.5}
-\setlength{\tabcolsep}{15pt}
-\begin{tabular}{|p{5cm}|p{5cm}|}
-\hline
-\multicolumn{2}{|c|}{\textbf{BM12: Cấp tài khoản giáo viên}} \\  
-\hline
-Họ và tên: \dotfill  & Tên tài khoản: \dotfill \\
-\hline
-Email: \dotfill & Mật khẩu: \dotfill \\
-\hline
-Bộ môn: \dotfill & \\
-\hline
-\end{tabular}
-\end{table}
-
-
-\item Sơ đồ luồng dữ liệu
-\begin{figure}[H] 
-    \centering
-    \includegraphics[width=1\textwidth]{dfd12} % Adjust width as needed
-    \caption{Sơ đồ luồng dữ liệu cho yêu cầu Cấp tài khoản giáo viên}
-\end{figure}
-\item Mô tả các luồng dữ liệu
-\begin{itemize}
-\item D1: Họ và tên, tên tài khoản, email, mật khẩu, bộ môn
-\item D2: Không có
-\item D3: Danh sách các tài khoản, bộ môn
-\item D4: D1
-\item D5: D4
-\item D6: Không có
-\end{itemize}
-\item Thuật toán
-\begin{itemize}
-\item B1: Nhận D1 từ người dùng
-\item B2: Kết nối cơ sở dữ liệu
-\item B3: Đọc D3 từ bộ nhớ phụ
-\item B4: Kiểm tra xem tên tài khoản có bị trùng không
-\item B5: Kiểm tra bộ môn có nằm trong danh sách bộ môn không
-\item B6: Nếu không thỏa 1 trong các điều kiện => B9
-\item B7: Lưu D4 xuống bộ nhớ phụ
-\item B8: Xuất D5 ra máy in
-\item B9: Đóng kết nối cơ sở dữ liệu
-\item B10: Kết thúc
-\end{itemize}
-\end{enumerate}	
-								\subsubsection{Phân công giảng dạy}	
-								\begin{enumerate}
-\item Biểu mẫu và quy định
-
-\begin{table}[H]
-	\centering
-	 \renewcommand{\arraystretch}{1.5}
-	   \setlength{\tabcolsep}{15pt}
-	 \begin{tabular}{|c|c|c|c|c|c|}
-	 \hline
-	 \multicolumn{6}{|c|}{\textbf{BM13: Phân công giảng dạy}} \\
-	 \hline
-	 \multicolumn{2}{|c|}{Năm học: } & \multicolumn{2}{|c|}{Khối: } & \multicolumn{2}{|c|}{Bộ môn: } \\
-	 \hline
-	 \textbf{STT} & \textbf{Giáo viên} & \textbf{Lớp} & \textbf{Môn} & \textbf{Thứ} & \textbf{Tiết} \\
-	 \hline
-	 1 & & & & & \\
-	 \hline
-	 2 & & & & &\\
-	 \hline
-	 \end{tabular}
-	\end{table}
-
-QĐ13: Giáo viên dạy môn nào thì phải cùng thuộc bộ môn với môn đó
-
-\item Sơ đồ luồng dữ liệu
-\begin{figure}[H] 
-    \centering
-    \includegraphics[width=1\textwidth]{dfd13} % Adjust width as needed
-    \caption{Sơ đồ luồng dữ liệu cho yêu cầu Phân công giảng dạy}
-\end{figure}
-\item Mô tả các luồng dữ liệu
-\begin{itemize}
-\item D1: Năm học, khối, bộ môn, họ tên giáo viên, lớp, môn, thứ, tiết
-\item D2: Không có
-\item D3: Danh sách năm học, khối, bộ môn, lớp, môn, giáo viên
-\item D4: D1
-\item D5: D4
-\item D6: Không có 
-\end{itemize}
-\item Thuật toán
-\begin{itemize}
-\item B1: Nhận D1 từ người dùng
-\item B2: Kết nối cơ sở dữ liệu
-\item B3: Đọc D3 từ bộ nhớ phụ
-\item B4: Kiểm tra năm có thuộc danh sách các năm không
-\item B5: Kiểm tra khối có thuộc danh sách các khối không
-\item B6: Kiểm tra bộ môn có thuộc danh sách các bộ môn không
-\item B7: Kiểm tra lớp có thuộc danh sách các lớp không
-\item B8: Kiểm tra môn có thuộc danh sách các môn không
-\item B9: Nếu không thỏa một trong các điều kiện => B12
-\item B10: Lưu D4 xuống bộ nhớ phụ
-\item B11: Xuất D5 ra máy in
-\item B12: Đóng kết nối cơ sở dữ liệu
-\item B13: Kết thúc
-\end{itemize}
-\end{enumerate}	
+							
 								
 							
 		
 
 \section{THIẾT KẾ HỆ THỐNG}
 	\subsection{Kiến trúc hệ thống}
+	Mô hình MVVM:
+	
+	MVVM là một mô hình kiến trúc giúp tách biệt giao diện người dùng (UI) và logic xử lý, thường được sử dụng trong các ứng dụng có UI phức tạp. 
+	
+	Mô hình này chia ứng dụng thành 3 thành phần chính: Model, View và ViewModel
+	
+	\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{mvvm} % Adjust width as needed
+    \caption{Mô hình MVVM}
+\end{figure}
+
+
 	\subsection{Mô tả các thành phần trong hệ thống}
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.5}
+\setlength{\tabcolsep}{12pt}
+\begin{tabular}{|c|c|p{10cm}|}
+\hline
+\textbf{STT} & \textbf{Thành phần} & \multicolumn{1}{|c|}{\textbf{Diễn giải}} \\
+\hline
+1 & Model & Chịu trách nhiệm quản lý dữ liệu và giao tiếp với cơ sở dữ liệu. Model thực hiện các truy vấn, đọc/ghi dữ liệu từ database và trả kết quả về ViewModel. \\
+
+\hline
+2 & ViewModel & Là cầu nối giữa View và Model. Khi người dùng thực hiện thao tác trên UI, ViewModel sẽ xử lý logic, kiểm tra dữ liệu hợp lệ, rồi cập nhật vào Model. ViewModel cũng nhận dữ liệu từ Model và cập nhật lại UI thông qua data binding.\\
+\hline
+3 & View & Cung cấp giao diện để người dùng nhập, sửa, xóa và xem dữ liệu. View chỉ hiển thị dữ liệu và gửi yêu cầu, không xử lý logic trực tiếp. \\
+\hline
+\end{tabular}
+\end{table}
 
 \section{THIẾT KẾ DỮ LIỆU}
 	\subsection{Thuật toán thiết kế dữ liệu}
+	\subsubsection{Xét yêu cầu Thiết lập năm học}
+\begin{enumerate}
+\item Thiết kế cơ sở dữ liệu với tính đúng đắn
+\begin{itemize}
+\item Các thuộc tính mới: NamBD, NamKT, TenLD, HeSo, TenHL, DiemTT, DiemTD
+\item Bố trí vào bảng: 
+\begin{itemize}
+\item NamHoc(\underline{MaNH}, NamBD, NamKT)
+\item LoaiDiem(\underline{MaLD}, TenLD, HeSo, \textit{MaNH})
+\item LoaiHocLuc(\underline{MaLHL}, TenLHL, DiemTT, DiemTD, \textit{MaNH})
+\end{itemize}
+\end{itemize}
+
+ 
+\item Thiết kế cơ sở dữ liệu với tính tiến hóa
+
+Các thuộc tính mới: Không có
+
+
+\end{enumerate}
+
+\subsubsection{Xét yêu cầu Tạo khối}
+\begin{enumerate}
+\item Thiết kế cơ sở dữ liệu với tính đúng đắn
+\begin{itemize}
+\item Các thuộc tính mới: TenKH, ThuTuKH
+\item Bố trí vào bảng: Khoi(\underline{MaKH}, TenKH, ThuTuKH)
+\end{itemize}
+\item Thiết kế cơ sở dữ liệu với tính tiến hóa
+
+Các thuộc tính mới: Không có
+
+\end{enumerate}
+
+\subsubsection{Xét yêu cầu Tạo lớp học}
+\begin{enumerate}
+\item Thiết kế cơ sở dữ liệu với tính đúng đắn
+\begin{itemize}
+\item Các thuộc tính mới: TenLH, SiSo
+\item Bố trí vào bảng: Lop(\underline{MaLH}, TenLH, \textit{MaKH, MaNH})
+\end{itemize}
+\item Thiết kế cơ sở dữ liệu với tính tiến hóa
+
+Các thuộc tính mới: Không có
+
+\end{enumerate}
+
+\subsubsection{Xét yêu cầu Tạo môn học}
+\begin{enumerate}
+\item Thiết kế cơ sở dữ liệu với tính đúng đắn
+\begin{itemize}
+\item Các thuộc tính mới: TenMH, DiemQuaMon, SoLuongLD
+\item Bố trí vào bảng:
+\begin{itemize}
+\item MonHoc(\underline{MaMH}, TenMH, DiemQuaMon, \textit{MaKH, MaNH})
+\item LoaiDiemMon(\underline{MaLDM}, SoLuongLD, \textit{MaLD, MaMH})
+\end{itemize} 
+\end{itemize}
+\item Thiết kế cơ sở dữ liệu với tính tiến hóa
+
+Các thuộc tính mới: Không có
+
+\end{enumerate}
+	\subsubsection{Yêu cầu Tiếp nhận học sinh}
+\begin{enumerate}
+\item Thiết kế cơ sở dữ liệu với tính đúng đắn
+\begin{itemize}
+\item Các thuộc tính mới: HoTen, GioiTinh, NgaySinh, DiaChi, Email, SDT
+\item Bố trí vào bảng: HocSinh(\underline{MaHS}, HoTen, GioiTinh, NgaySinh, DiaChi, Email, SDT)
+\end{itemize}
+\item Thiết kế cơ sở dữ liệu với tính tiến hóa
+\begin{itemize}
+\item Các thuộc tính mới: TuoiTT, TuoiTD
+\item Bố trí vào bảng: ThamSo(TuoiTT, TuoiTD)
+\end{itemize}
+\end{enumerate}
+	
+	\subsubsection{Xét yêu cầu Lập danh sách lớp}
+\begin{enumerate}
+\item Thiết kế cơ sở dữ liệu với tính đúng đắn
+\begin{itemize}
+\item Các thuộc tính mới: Không có
+\item Bố trí vào bảng: PhanLop(\underline{MaPL}, \textit{MaHS, MaLop})
+\end{itemize}
+\item Thiết kế cơ sở dữ liệu với tính tiến hóa
+\begin{itemize}
+\item Các thuộc tính mới: SiSoTD
+\item Bố trí vào bảng: ThamSo(TuoiTT, TuoiTD, SiSoTD)
+\end{itemize}
+\end{enumerate}
+	
+	\subsubsection{Xét yêu cầu Tra cứu học sinh}
+\begin{enumerate}
+\item Thiết kế cơ sở dữ liệu với tính đúng đắn
+\begin{itemize}
+\item Các thuộc tính mới: HocKy
+\item Bố trí vào bảng: PhanLop(\underline{MaPL}, HocKy \textit{MaHS, MaLop})
+\end{itemize}
+\item Thiết kế cơ sở dữ liệu với tính tiến hóa
+
+Các thuộc tính mới: Không có
+\end{enumerate}
+
+
+\subsubsection{Xét yêu cầu Nhận bảng điểm môn}
+\begin{enumerate}
+\item Thiết kế cơ sở dữ liệu với tính đúng đắn
+\begin{itemize}
+\item Các thuộc tính mới: GiaTri
+\item Bố trí vào bảng: Diem(\underline{MaDiem}, GiaTri, \textit{MaLDM, MaPL})
+\end{itemize}
+\item Thiết kế cơ sở dữ liệu với tính tiến hóa
+
+Các thuộc tính mới: Không có
+\end{enumerate}
+
+\subsubsection{Xét yêu cầu Lập báo cáo tổng kết}
+\begin{enumerate}
+\item Thiết kế cơ sở dữ liệu với tính đúng đắn
+
+Các thuộc tính mới: Không có
+\item Thiết kế cơ sở dữ liệu với tính tiến hóa
+\begin{itemize}
+\item Các thuộc tính mới: DiemDat
+\item Bố trí vào bảng: ThamSo(TuoiTT, TuoiTD, SiSoTD, DiemDat)
+\end{itemize}
+\end{enumerate}
+
+
 	\subsection{Sơ đồ logic hoàn chỉnh}
+	\begin{figure}[H] 
+    \centering
+    \includegraphics[width=1\textwidth]{logic} % Adjust width as needed
+    \caption{Sơ đồ logic hoàn chỉnh}
+    \label{fig:example} % Label for referencing the figure
+\end{figure}
+
+
 	\subsection{Danh sách các bảng dữ liệu trong sơ đồ}
+	\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.5}
+\setlength{\tabcolsep}{12pt}
+\begin{tabular}{|c|l|p{10cm}|}
+\hline
+\textbf{STT} & \multicolumn{1}{|c|}{\textbf{Tên bảng dữ liệu}} & \multicolumn{1}{|c|}{\textbf{Diễn giải}} \\
+\hline
+1 & NAMHOC & Lưu trữ thông tin năm học\\
+\hline
+2 & KHOI & Lưu trữ thông tin các khối\\
+\hline
+3 & LOPHOC & Lưu trữ thông tin các lớp học\\
+\hline
+4 & MONHOC & Lưu trữ thông tin các môn học\\
+\hline
+5 & HOCSINH & Lưu trữ thông tin học sinh\\
+\hline
+6 & LOAIDIEM & Lưu trữ thông tin về các loại điểm của từng năm học\\
+\hline
+7 & LOAIHOCLUC & Lưu trữ thông tin các loại học lực (điểm tối thiểu, tối đa)\\
+\hline
+8 & PHANLOP & Lưu trữ thông tin phân lớp của học sinh\\
+\hline
+9 & LOAIDIEMMON & Lưu trữ số lượng các loại điểm của từng môn\\
+\hline
+10 & DIEM & Lưu trữ thông tin điểm số của học sinh\\
+\hline
+11 & THAMSO & Lưu các tham số\\
+\hline
+
+\end{tabular}
+\end{table}
 	\subsection{Mô tả từng bảng dữ liệu}
+\subsubsection{Bảng NAMHOC}
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.5}
+\setlength{\tabcolsep}{12pt}
+\begin{tabular}{|c|l|l|l|p{5cm}|}
+\hline
+\textbf{STT} & \textbf{Thuộc tính} & \textbf{Kiểu dữ liệu} & \textbf{Ràng buộc} & \multicolumn{1}{|c|}{\textbf{Diễn giải}} \\
+\hline
+1 & MaNH & varchar(10) & Khóa chính & Mỗi năm học có một mã để phân biệt \\
+\hline
+2 & NamBD & int & & Năm bắt đầu \\
+\hline
+3 & NamKT & int & & Năm kết thúc \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsubsection{Bảng KHOI}
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.5}
+\setlength{\tabcolsep}{12pt}
+\begin{tabular}{|c|l|l|l|p{5cm}|}
+\hline
+\textbf{STT} & \textbf{Thuộc tính} & \textbf{Kiểu dữ liệu} & \textbf{Ràng buộc} & \multicolumn{1}{|c|}{\textbf{Diễn giải}} \\
+\hline
+1 & MaKH & varchar(10) & Khóa chính & Mỗi khối có một mã để phân biệt \\
+\hline
+2 & TenKH & varchar(20) & & Tên khối \\
+\hline
+3 & ThuTu & int & & Thứ tự khối trong trường \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsubsection{Bảng LOPHOC}
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.5}
+\setlength{\tabcolsep}{12pt}
+\begin{tabular}{|c|l|l|l|p{5cm}|}
+\hline
+\textbf{STT} & \textbf{Thuộc tính} & \textbf{Kiểu dữ liệu} & \textbf{Ràng buộc} & \multicolumn{1}{|c|}{\textbf{Diễn giải}} \\
+\hline
+1 & MaLH & varchar(10) & Khóa chính & Mỗi lớp có một mã để phân biệt \\
+\hline
+2 & TenLH & varchar(20) & & Tên lớp học \\
+\hline
+3 & SiSo & int & & Sĩ số của lớp \\
+\hline
+4 & MaKH & varchar(10) & Khóa ngoại & Mã khối mà lớp đó thuộc \\
+\hline
+5 & MaNH & varchar(10) & Khóa ngoại & Mã năm học mà lớp đó thuộc \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsubsection{Bảng MONHOC}
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.5}
+\setlength{\tabcolsep}{12pt}
+\begin{tabular}{|c|l|l|l|p{5cm}|}
+\hline
+\textbf{STT} & \textbf{Thuộc tính} & \textbf{Kiểu dữ liệu} & \textbf{Ràng buộc} & \multicolumn{1}{|c|}{\textbf{Diễn giải}} \\
+\hline
+1 & MaMH & varchar(10) & Khóa chính & Mỗi môn học có một mã để phân biệt \\
+\hline
+2 & TenMH & varchar(20) & & Tên môn học \\
+\hline
+3 & DiemQuaMon & numeric(4, 2) & & Điểm cần để qua môn \\
+\hline
+4 & MaKH & varchar(10) & Khóa ngoại & Mã khối mà môn học đó thuộc \\
+\hline
+5 & MaNH & varchar(10) & Khóa ngoại & Mã năm học mà môn học đó thuộc \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsubsection{Bảng HOCSINH}
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.5}
+\setlength{\tabcolsep}{12pt}
+\begin{tabular}{|c|l|l|l|p{5cm}|}
+\hline
+\textbf{STT} & \textbf{Thuộc tính} & \textbf{Kiểu dữ liệu} & \textbf{Ràng buộc} & \multicolumn{1}{|c|}{\textbf{Diễn giải}} \\
+\hline
+1 & MaHS & varchar(10) & Khóa chính & Mỗi học sinh có một mã để phân biệt \\
+\hline
+2 & HoTen & varchar(50) & & Họ tên học sinh \\
+\hline
+3 & GioiTinh & varchar(10) & & Giới tính \\
+\hline
+4 & DiaChi & varchar(50) & & Địa chỉ \\
+\hline
+5 & NgaySinh & datetime & & Ngày sinh \\
+\hline
+6 & SDT & varchar(20) & & Số điện thoại \\
+\hline 
+7 & Email & varchar(50) & & Email của học sinh \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsubsection{Bảng LOAIDIEM}
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.5}
+\setlength{\tabcolsep}{12pt}
+\begin{tabular}{|c|l|l|l|p{5cm}|}
+\hline
+\textbf{STT} & \textbf{Thuộc tính} & \textbf{Kiểu dữ liệu} & \textbf{Ràng buộc} & \multicolumn{1}{|c|}{\textbf{Diễn giải}} \\
+\hline
+1 & MaLD & varchar(10) & Khóa chính & Mỗi loại điểm có một mã để xác định \\
+\hline
+2 & TenLD & varchar(20) & & Tên loại điểm \\
+\hline
+3 & HeSo & numeric(4, 2) & & Hệ số của loại điểm \\
+\hline
+4 & MaNH & varchar(10) & Khóa ngoại & Mã năm mà loại điểm này áp dụng \\
+\hline
+\end{tabular}
+\end{table}
+
+
+\subsubsection{Bảng LOAIHOCLUC}
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.5}
+\setlength{\tabcolsep}{12pt}
+\begin{tabular}{|c|l|l|l|p{5cm}|}
+\hline
+\textbf{STT} & \textbf{Thuộc tính} & \textbf{Kiểu dữ liệu} & \textbf{Ràng buộc} & \multicolumn{1}{|c|}{\textbf{Diễn giải}} \\
+\hline
+1 & MaLHL & varchar(10) & Khóa chính & Mỗi loại học lực có một mã để phân biệt \\
+\hline
+2 & TenLHL & varchar(20) & & Tên loại học lực \\
+\hline
+3 & DiemTT & numeric(4, 2) & & Điểm tối thiểu để đạt học lực này \\
+ \hline
+4 & DiemTD & numeric(4, 2) & & Điểm tối đa của học lực này trước khi lên học lực cao hơn \\
+\hline
+5 & MaNH & varchar(10) & Khóa ngoại & Mã năm mà loại học lực này áp dụng \\
+\hline
+\end{tabular}
+\end{table}
+
+
+\subsubsection{Bảng PHANLOP}
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.5}
+\setlength{\tabcolsep}{12pt}
+\begin{tabular}{|c|l|l|l|p{5cm}|}
+\hline
+\textbf{STT} & \textbf{Thuộc tính} & \textbf{Kiểu dữ liệu} & \textbf{Ràng buộc} & \multicolumn{1}{|c|}{\textbf{Diễn giải}} \\
+\hline
+1 & MaPL & varchar(10) & Khóa chính & Mỗi phân lớp có một mã để xác định \\
+\hline
+2 & HocKy & varchar(20) &  & Học kỳ mà học sinh đang học \\
+\hline 
+3 & HanhKiem & varchar(20) & & Hạnh kiểm của học sinh trong học kỳ \\
+\hline 
+4 & NghiCoPhep & int & & Số ngày nghỉ có phép của học sinh trong học kỳ \\
+\hline
+5 & NghiKhongPhep & int & & Số ngày nghỉ không phép của học sinh trong học kỳ \\ 
+\hline
+6 & MaLH & varchar(10) & Khóa ngoại & Mã lớp mà học sinh đó học trong học kỳ \\
+\hline
+7 & MaHS & varchar(10) & Khóa ngoại & Học sinh được phân lớp \\
+\hline
+
+\end{tabular}
+\end{table}
+
+
+\subsubsection{Bảng LOAIDIEMMON}
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.5}
+\setlength{\tabcolsep}{12pt}
+\begin{tabular}{|c|l|l|l|p{5cm}|}
+\hline
+\textbf{STT} & \textbf{Thuộc tính} & \textbf{Kiểu dữ liệu} & \textbf{Ràng buộc} & \multicolumn{1}{|c|}{\textbf{Diễn giải}} \\
+\hline
+1 & MaLDM & varchar(10) & Khóa chính & Mỗi loại điểm môn có một mã để phân biệt  \\
+\hline
+2 & SoLuongLD & int & & Số lượng loại điểm của từng môn \\
+\hline
+3 & MaLD & varchar(10) & Khóa ngoại & Mã loại điểm \\
+\hline
+4 & MaMH & varchar(10) & Khóa ngoại & Mã môn học \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsubsection{Bảng DIEM}
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.5}
+\setlength{\tabcolsep}{12pt}
+\begin{tabular}{|c|l|l|l|p{5cm}|}
+\hline
+\textbf{STT} & \textbf{Thuộc tính} & \textbf{Kiểu dữ liệu} & \textbf{Ràng buộc} & \multicolumn{1}{|c|}{\textbf{Diễn giải}} \\
+\hline
+1 & MaDiem & varchar(10) & Khóa chính & Mỗi điểm có một mã để phân biệt \\
+\hline
+2 & GiaTri & numeric(4, 2) & & Giá trị của điểm \\
+\hline 
+3 & MaLDM & varchar(10) & Khóa ngoại & Mã loại điểm môn \\
+\hline 
+4 & MaPL & varchar(10) & Khóa ngoại & Mã phân lớp \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsubsection{Bảng THAMSO}
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.5}
+\setlength{\tabcolsep}{12pt}
+\begin{tabular}{|c|l|l|l|p{5cm}|}
+\hline
+\textbf{STT} & \textbf{Thuộc tính} & \textbf{Kiểu dữ liệu} & \textbf{Ràng buộc} & \multicolumn{1}{|c|}{\textbf{Diễn giải}} \\
+\hline
+1 & TuoiTT & int &  & Tuổi tối thiểu của học sinh \\
+\hline
+2 & TuoiTD & int & & Tuổi tối đa của học sinh \\
+\hline 
+3 & DiemDat & numeric(4, 2) & & Điểm lên lớp \\
+\hline
+4 & SiSoTD & int & & Sĩ số tối đa của các lớp \\
+\hline
+\end{tabular}
+\end{table}
+
 
 \section{THIẾT KẾ GIAO DIỆN}
 	\subsection{Sơ đồ liên kết các màn hình}

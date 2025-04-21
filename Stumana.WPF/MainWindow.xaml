@@ -4,9 +4,28 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Stumana.WPF"
+        xmlns:viewModels="clr-namespace:Stumana.WPF.ViewModels"
+        xmlns:views="clr-namespace:Stumana.WPF.Views"
+        xmlns:authencationViewModels="clr-namespace:Stumana.WPF.ViewModels.AuthencationViewModels"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
+        <!--ControlBar-->
+        <!--<components:ControlBar/>
+        <custom:Modal Grid.RowSpan="2" Panel.ZIndex ="1" IsOpen="{Binding IsOpen}">
+            <ContentControl Content="{Binding CurrentModelViewModel}" />
+        </custom:Modal>-->
 
+        <ContentControl Grid.Row="1" Content="{Binding CurrentViewModel}"/>
+
+        <ItemsControl Grid.Row="1" Panel.ZIndex="1" ItemsSource="{Binding Toasts}" 
+                      VerticalAlignment="Bottom" HorizontalAlignment="Right" 
+                      Margin="0 0 0 10">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+        </ItemsControl>
     </Grid>
 </Window>

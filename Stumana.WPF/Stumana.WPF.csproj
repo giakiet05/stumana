@@ -159,6 +159,7 @@
   <ItemGroup>
     <Folder Include="ResourceXAML\" />
     <Folder Include="Resource\Icon\" />
+    <Folder Include="ViewModels\MainViewModels\" />
   </ItemGroup>
 
   <ItemGroup>

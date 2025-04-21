@@ -157,8 +157,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ResourceXAML\" />
     <Folder Include="Resource\Icon\" />
+    <Folder Include="ResourceXAML\" />
     <Folder Include="ViewModels\MainViewModels\" />
   </ItemGroup>
 
@@ -166,6 +166,10 @@
     <Content Include="Resource\Image\SchoolLogo.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="ViewModels\AuthencationViewModels\SignInViewModel.cs" />
   </ItemGroup>
 
 </Project>

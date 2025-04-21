@@ -1,7 +1,6 @@
 ﻿using Stumana.WPF.Stores;
 using System.Windows;
 using Stumana.WPF.ViewModels;
-using Stumana.WPF.ViewModels;
 using Stumana.WPF.ViewModels.AuthencationViewModels;
 
 namespace Stumana.WPF
@@ -13,7 +12,7 @@ namespace Stumana.WPF
     {
         protected override void OnStartup(StartupEventArgs e)
         {
-            NavigationStore.Instance.CurrentViewModel = new SignInViewModels();
+            NavigationStore.Instance.CurrentViewModel = new SignInViewModel();
             NavigationStore.Instance.CurrentLayoutModel = null;
             ModalNavigationStore.Instance.CurrentModalViewModel = null;
 

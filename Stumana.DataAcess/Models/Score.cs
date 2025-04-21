@@ -9,8 +9,7 @@ namespace Stumana.DataAcess.Models
     public class Score
     {
         public string Id { get; set; }
-        public double Value { get; set; }
-        public int RecordNo { get; set; } = 1;
+        public double Value { get; set; } // Giá trị điểm
         public string StudentAssignmentId { get; set; }
         public string SubjectScoreTypeId { get; set; }
 

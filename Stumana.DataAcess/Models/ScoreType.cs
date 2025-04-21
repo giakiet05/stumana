@@ -10,7 +10,7 @@ namespace Stumana.DataAcess.Models
     {
         public string Id { get; set; }
         public string Name { get; set; }
-        public double Coefficient { get; set; }
+        public double Coefficient { get; set; } //Hệ số
         public string YearId { get; set; }
 
         //Navigation Properties

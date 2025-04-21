@@ -11,7 +11,7 @@ namespace Stumana.DataAcess.Models
         public string Id { get; set; }
         public string ScoreTypeId { get; set; }
         public string SubjectId { get; set; }
-        public int Amount { get; set; }
+        public int Amount { get; set; } // Số lượng điểm loại này của môn
 
         // Navigation Properties
         public ScoreType ScoreType { get; set; }

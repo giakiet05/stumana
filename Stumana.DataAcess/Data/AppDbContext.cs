@@ -30,7 +30,6 @@ namespace Stumana.DataAcess.Data
       
         public DbSet<SubjectScoreType> SubjectScoreTypes { get; set; }
         public DbSet<Asset> Assets { get; set; }
-        public DbSet<PerformanceType> PerformanceTypes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

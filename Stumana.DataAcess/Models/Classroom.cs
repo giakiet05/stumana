@@ -10,7 +10,6 @@ namespace Stumana.DataAcess.Models
     {
         public string Id { get; set; }
         public string Name { get; set; }
-        public int Capacity { get; set; }
         public string GradeId { get; set; }
         public string YearId { get; set; }
 

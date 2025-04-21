@@ -10,9 +10,8 @@ namespace Stumana.DataAcess.Models
     {
         public string Id { get; set; }
         public int Semester { get; set; }
-        public string Conduct { get; set; }
-        public int ExcusedAbsence { get; set; }
-        public int UnexcusedAbsence { get; set; }
+        public string Conduct { get; set; } // Hạnh kiểm
+        public int Absence { get; set; } //Số ngày nghỉ
         public string StudentId { get; set; }
         public string ClassroomId { get; set; }
 

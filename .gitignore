@@ -35,7 +35,6 @@ appsettings.json
 
 
 # Entity Framework migrations
-Migrations/
 
 # Secrets
 secrets.json

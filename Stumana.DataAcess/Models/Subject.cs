@@ -10,7 +10,7 @@ namespace Stumana.DataAcess.Models
     {
         public string Id { get; set; }
         public string Name { get; set; }
-        public double ScoreToPass { get; set; }
+        public double ScoreToPass { get; set; } //Điểm qua môn
         public string YearId { get; set; }
         public string GradeId { get; set; }
 

@@ -22,6 +22,17 @@ public class SignUpViewModel : BaseViewModel
         }
     }
 
+    private string _erroremailtext;
+    public string ErrorEmailText
+    {
+        get => _erroremailtext;
+        set
+        {
+            _erroremailtext = value;
+            OnPropertyChanged();
+        }
+    }
+
     private string _username;
     public bool InvalidUsername { get; set; } = false;
     public string Username
@@ -30,6 +41,17 @@ public class SignUpViewModel : BaseViewModel
         set
         {
             _username = value;
+            OnPropertyChanged();
+        }
+    }
+
+    private string _errorusernametext;
+    public string ErrorUsernameText
+    {
+        get => _errorusernametext;
+        set
+        {
+            _errorusernametext = value;
             OnPropertyChanged();
         }
     }
@@ -80,7 +102,9 @@ public class SignUpViewModel : BaseViewModel
     {
         try
         {
-            CheckError();
+            if (await CheckError())
+                throw new Exception();
+
             User user = new User(Username, Password, Email);
             await GenericDataService<User>.Instance.CreateOneAsync(user);
             ToastMessageViewModel.ShowInfoToast("Tạo tài khoản thành công");
@@ -95,18 +119,43 @@ public class SignUpViewModel : BaseViewModel
         }
     }
 
-    private async void CheckError()
+    private async Task<bool> CheckError()
     {
         InvalidUsername = false;
         InvalidEmail = false;
         InvalidPassword = false;
         InvalidConfirmPassword = false;
+        ErrorUsernameText = "Username không hợp lệ";
+        ErrorEmailText = "Email không hợp lệ";
 
         if (string.IsNullOrWhiteSpace(Username))
             InvalidUsername = true;
+        else
+        {
+            User? userUN = await GenericDataService<User>.Instance.GetOneAsync(u => u.Username == Username);
+            if (userUN != null)
+            {
+                InvalidUsername = true;
+                ErrorUsernameText = "Username đã được sử dụng";
+            }
+        }
 
         if (string.IsNullOrWhiteSpace(Email))
             InvalidEmail = true;
+        else
+        {
+            string pattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
+            Regex regex = new Regex(pattern);
+            if (!regex.IsMatch(Email))
+                InvalidEmail = true;
+
+            User? userEm = await GenericDataService<User>.Instance.GetOneAsync(u => u.Email == Email);
+            if (userEm != null)
+            {
+                InvalidEmail = true;
+                ErrorUsernameText = "Email đã được sử dụng";
+            }
+        }
 
         if (string.IsNullOrWhiteSpace(Password))
             InvalidPassword = true;
@@ -117,12 +166,8 @@ public class SignUpViewModel : BaseViewModel
         if (Password != ConfirmPassword)
             InvalidConfirmPassword = true;
 
-        string pattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
-        Regex regex = new Regex(pattern);
-        if (!regex.IsMatch(Email))
-            InvalidEmail = true;
-
         if (InvalidUsername || InvalidEmail || InvalidPassword || InvalidConfirmPassword)
-            throw new Exception();
+            return true;
+        return false;
     }
 }

@@ -79,7 +79,7 @@
                     </StackPanel>
 
                     <TextBlock
-                        Margin="0, -5, 0, 10"
+                        Margin="0, 0, 0, 10"
                         Text="Email không hợp lệ"
                         FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
                         FontSize="15"
@@ -111,7 +111,7 @@
                     </StackPanel>
 
                     <TextBlock
-                        Margin="0, -5, 0, 10"
+                        Margin="0, 0, 0, 10"
                         Text="Username không hợp lệ"
                         FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
                         FontSize="15"
@@ -139,7 +139,7 @@
                                      helpers:PasswordBoxHelper.BoundPassword="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     </StackPanel>
 
-                    <TextBlock Margin="0, -5, 0, 10"
+                    <TextBlock Margin="0, 0, 0, 10"
                                Text="Mật khẩu không hợp lệ"
                                FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
                                FontSize="15"
@@ -170,7 +170,7 @@
                     </StackPanel>
                 </StackPanel>
 
-                <TextBlock Margin="0, -5, 0, 10"
+                <TextBlock Margin="0, 0, 0, 10"
                            Text="Mật khẩu không khớp"
                            FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
                            FontSize="15"

@@ -170,6 +170,11 @@ Height="40">
 
 
             </Grid>
+            <Grid Grid.Row="1">
+                <ContentControl Content="{Binding CurrentSidebarViewModel}">
+                    
+                </ContentControl>
+            </Grid>
         </Grid>
     </Grid>
 </UserControl>

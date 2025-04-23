@@ -11,6 +11,7 @@
 	xmlns:mainView="clr-namespace:Stumana.WPF.Views.MainView"
 	xmlns:studentOptionViews="clr-namespace:Stumana.WPF.Views.MainView.StudentOption"
 	xmlns:subjectOptionViews="clr-namespace:Stumana.WPF.Views.MainView.SubjectOption"
+    xmlns:popupViews="clr-namespace:Stumana.WPF.Views.Popup"
 	
 	xmlns:accountOptionViewModel="clr-namespace:Stumana.WPF.ViewModels.MainViewModels.AccountOption"
 	xmlns:classOptionViewModels="clr-namespace:Stumana.WPF.ViewModels.MainViewModels.ClassOption"
@@ -19,6 +20,7 @@
 	xmlns:settleOptionViewModels="clr-namespace:Stumana.WPF.ViewModels.MainViewModels.SettleOption"
 	xmlns:studentOptionViewModels="clr-namespace:Stumana.WPF.ViewModels.MainViewModels.StudentOption"
 	xmlns:subjectOptionViewModels="clr-namespace:Stumana.WPF.ViewModels.MainViewModels.SubjectOption"
+    xmlns:popupViewModels="clr-namespace:Stumana.WPF.ViewModels.PopupModels"
 	
 	xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
 	
@@ -38,14 +40,15 @@
 		<authencationViews:SignUp/>
 	</DataTemplate>
 	<!--#endregion-->
-	
-	
-	<DataTemplate DataType="{x:Type accountOptionViewModel:AccountOptionViewModel}">
+
+    <!--#region AccountOption -->
+    <DataTemplate DataType="{x:Type accountOptionViewModel:AccountOptionViewModel}">
 		<accountOptionView:AccountView/>
 	</DataTemplate>
-	
-	
-	<!--#region ClassOption -->
+    <!--#endregion-->
+
+
+    <!--#region ClassOption -->
 	<DataTemplate DataType="{x:Type classOptionViewModels:ClassListViewModel}">
 		<classOptionViews:ClassListView/>
 	</DataTemplate>
@@ -62,8 +65,89 @@
 		<reportOptionViews:ReportSummaryView/>
 	</DataTemplate>
 	<!--#endregion-->
-	
-	<!--#region admin-->
+    <!--#region ScoreOption-->
+    <DataTemplate DataType="{x:Type scoreOptionViewModels:EditScoreInputViewModel}">
+        <scoreOptionViews:EditScoreInputView/>
+    </DataTemplate>
+    
+    <DataTemplate DataType="{x:Type scoreOptionViewModels:ScoreInputViewModel}">
+        <scoreOptionViews:ScoreInputView/>
+    </DataTemplate>
+    
+    <DataTemplate DataType="{x:Type scoreOptionViewModels:ScoreSubjectViewModel}">
+        <scoreOptionViews:ScoreSubjectView/>
+    </DataTemplate>
+    <!--#endregion-->
+
+    <!--#region SettleOption-->
+    <DataTemplate DataType="{x:Type settleOptionViewModels:GradeViewModel}">
+        <settleOptionViews:GradeView/>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type settleOptionViewModels:MajoViewModel}">
+        <settleOptionViews:MajoView/>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type settleOptionViewModels:SemesterViewModel}">
+        <settleOptionViews:SemesterView/>
+    </DataTemplate>
+    <!--#endregion-->
+
+    <!--#region StudentOption-->
+    <DataTemplate DataType="{x:Type studentOptionViewModels:StudentInforViewModel}">
+        <studentOptionViews:StudentInforView/>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type studentOptionViewModels:StudentViewModel}">
+        <studentOptionViews:StudentView/>
+    </DataTemplate>
+    <!--#endregion-->
+
+    <!--#region SubjectOption-->
+    <DataTemplate DataType="{x:Type subjectOptionViewModels:AddSubjectView_2Model}">
+        <subjectOptionViews:AddSubjectView_2/>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type subjectOptionViewModels:ObjectViewModel}">
+        <subjectOptionViews:ObjectView/>
+    </DataTemplate>
+    <!--#endregion-->
+
+    <!--#region Popup-->
+    <DataTemplate DataType="{x:Type popupViewModels:AddStudentToClassViewModel}">
+        <popupViews:AddStudentViewToClass/>
+    </DataTemplate> 
+    
+    <DataTemplate DataType="{x:Type popupViewModels:AddStudentViewModel}">
+        <popupViews:AddStudentView/>
+    </DataTemplate>
+    
+    <DataTemplate DataType="{x:Type popupViewModels:AddSubjectViewModel}">
+        <popupViews:AddSubjectView/>
+    </DataTemplate>
+    
+    <DataTemplate DataType="{x:Type popupViewModels:EditPasswordViewModel}">
+        <popupViews:EditPasswordView/>
+    </DataTemplate>
+    
+    <DataTemplate DataType="{x:Type popupViewModels:StudentFilterViewModel}">
+        <popupViews:StudentFilterView/>
+    </DataTemplate>
+    
+    <DataTemplate DataType="{x:Type popupViewModels:StudentTransferViewModel}">
+        <popupViews:StudentTransferView/>
+    </DataTemplate>
+    
+    <DataTemplate DataType="{x:Type popupViewModels:SubjectFilterViewModel}">
+        <popupViews:SubjectFilterView/>
+    </DataTemplate>
+    
+    <DataTemplate DataType="{x:Type popupViewModels:SubjectScoreFilterView}">
+        <popupViews:SubjectScoreFilterView/>
+    </DataTemplate>
+
+    <!--#endregion-->
+    <!--#region admin-->
 
 	<!--#endregion-->
 </ResourceDictionary>

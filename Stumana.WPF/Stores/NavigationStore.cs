@@ -4,13 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Stumana.WPF.ViewModels;
-
+using Stumana.WPF.ViewModels.MainViewModels.AccountOption;
 namespace Stumana.WPF.Stores
 {
     public class NavigationStore
     {
         private static NavigationStore _instance;
-        NavigationStore() { _instance = this; }
+        NavigationStore() { 
+            _instance = this;
+            CurrentLayoutModel = new AccountOptionViewModel();
+        }
 
         public static NavigationStore Instance
         {

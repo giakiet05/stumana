@@ -4,6 +4,7 @@ using Stumana.WPF.ViewModels;
 using Stumana.WPF.ViewModels.AuthencationViewModels;
 using Stumana.DataAcess.Data;
 using Microsoft.EntityFrameworkCore;
+using Stumana.WPF.ViewModels.MainViewModels;
 
 namespace Stumana.WPF
 {
@@ -18,8 +19,8 @@ namespace Stumana.WPF
             using (var context = AppDbContextFactory.Instance.CreateDbContext())
             {
                 context.Database.Migrate();
-                NavigationStore.Instance.CurrentViewModel = new SignInViewModel();
-                NavigationStore.Instance.CurrentLayoutModel = null;
+                NavigationStore.Instance.CurrentViewModel = new SidebarViewModel();
+                
                 ModalNavigationStore.Instance.CurrentModalViewModel = null;
 
                 MainWindow = new MainWindow

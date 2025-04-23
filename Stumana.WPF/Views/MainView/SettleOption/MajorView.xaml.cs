@@ -18,9 +18,9 @@ namespace Stumana.WPF.Views.MainView.SettleOption
     /// <summary>
     /// Interaction logic for MajoView.xaml
     /// </summary>
-    public partial class MajoView : UserControl
+    public partial class MajorView : UserControl
     {
-        public MajoView()
+        public MajorView()
         {
             InitializeComponent();
         }

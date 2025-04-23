@@ -71,8 +71,7 @@
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Height="88.5">
                             <materialDesign:PackIcon Kind="Password" Width="50" Height="50" Foreground="#000842"
                                                      Margin="0,20,10,0" />
-                            <PasswordBox x:Name="pbPassword"
-                                         materialDesign:HintAssist.Hint="Enter your password"
+                            <PasswordBox materialDesign:HintAssist.Hint="Enter your password"
                                          Width="361"
                                          Foreground="#000842"
                                          FontSize="20"
@@ -82,7 +81,8 @@
                                          Style="{StaticResource MaterialDesignFloatingHintRevealPasswordBox}"
                                          materialDesign:TextFieldAssist.UnderlineBrush="Black"
                                          BorderThickness="0" 
-                                         helpers:PasswordBoxHelper.BoundPassword="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                         helpers:PasswordBoxHelper.BoundPassword="{Binding Password}"
+                                         helpers:PasswordBoxHelper.BindPassword="True"/>
                         </StackPanel>
                     </StackPanel>
 

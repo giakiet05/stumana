@@ -129,14 +129,16 @@
                                                  Width="50" Height="50"
                                                  Foreground="#000842"
                                                  Margin="0,20,10,0" />
-                        <PasswordBox x:Name="pbPasswordRegis" materialDesign:HintAssist.Hint="Enter your password"
+                        <PasswordBox x:Name="pbPasswordRegis" 
+                                     materialDesign:HintAssist.Hint="Enter your password"
                                      Width="361" Foreground="#000842" FontSize="20"
                                      FontFamily="pack://application:,,,/Resource/Font/#Poppins Regular"
                                      Background="{DynamicResource MaterialDesignPaper}" Padding="10"
                                      Style="{StaticResource MaterialDesignFloatingHintRevealPasswordBox}"
                                      materialDesign:TextFieldAssist.UnderlineBrush="Black"
                                      BorderThickness="0"
-                                     helpers:PasswordBoxHelper.BoundPassword="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                     helpers:PasswordBoxHelper.BoundPassword="{Binding Password}"
+                                     helpers:PasswordBoxHelper.BindPassword="True"/>
                     </StackPanel>
 
                     <TextBlock Margin="0, 0, 0, 10"

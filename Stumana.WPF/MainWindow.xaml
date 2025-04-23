@@ -14,7 +14,7 @@
         <!--<components:ControlBar/>
         <custom:Modal Grid.RowSpan="2" Panel.ZIndex ="1" IsOpen="{Binding IsOpen}">
             <ContentControl Content="{Binding CurrentModelViewModel}" />
-        </custom:Modal>-->
+        </custom:Modal>-->  
 
         <ContentControl Grid.Row="1" Content="{Binding CurrentViewModel}"/>
 

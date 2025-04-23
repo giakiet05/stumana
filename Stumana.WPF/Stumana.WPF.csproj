@@ -159,7 +159,9 @@
   <ItemGroup>
     <Folder Include="Resource\Icon\" />
     <Folder Include="ResourceXAML\" />
-    <Folder Include="ViewModels\MainViewModels\" />
+    <Folder Include="ViewModels\MainViewModels\SubjectOption\" />
+    <Folder Include="ViewModels\MainViewModels\SettleOption\" />
+    <Folder Include="ViewModels\MainViewModels\ScoreOption\" />
   </ItemGroup>
 
   <ItemGroup>

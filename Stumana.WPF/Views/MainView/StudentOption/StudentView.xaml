@@ -141,7 +141,9 @@ materialDesign:ButtonAssist.CornerRadius="20">
    Cursor="Hand"
    ToolTip="Nhấn để xóa học sinh" />
                 </Button>
+               
                 <Button x:Name="btAddStudent"
+                 Command="{Binding addCommand}"
 Margin="10"
 VerticalAlignment="Center"
 

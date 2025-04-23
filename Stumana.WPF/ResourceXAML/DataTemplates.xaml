@@ -3,6 +3,25 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:views="clr-namespace:Stumana.WPF.Views"
 	xmlns:authencationViews="clr-namespace:Stumana.WPF.Views.AuthencationViews"
+	xmlns:accountOptionView="clr-namespace:Stumana.WPF.Views.MainView.AccountOption"
+	xmlns:classOptionViews="clr-namespace:Stumana.WPF.Views.MainView.ClassOption"
+	xmlns:reportOptionViews="clr-namespace:Stumana.WPF.Views.MainView.ReportOptionView"
+	xmlns:scoreOptionViews="clr-namespace:Stumana.WPF.Views.MainView.ScoreOption"
+	xmlns:settleOptionViews="clr-namespace:Stumana.WPF.Views.MainView.SettleOption"
+	xmlns:mainView="clr-namespace:Stumana.WPF.Views.MainView"
+	xmlns:studentOptionViews="clr-namespace:Stumana.WPF.Views.MainView.StudentOption"
+	xmlns:subjectOptionViews="clr-namespace:Stumana.WPF.Views.MainView.SubjectOption"
+	
+	xmlns:accountOptionViewModel="clr-namespace:Stumana.WPF.ViewModels.MainViewModels.AccountOption"
+	xmlns:classOptionViewModels="clr-namespace:Stumana.WPF.ViewModels.MainViewModels.ClassOption"
+	xmlns:reportOptionViewModels="clr-namespace:Stumana.WPF.ViewModels.MainViewModels.ReportOption"
+	xmlns:scoreOptionViewModels="clr-namespace:Stumana.WPF.ViewModels.MainViewModels.ScoreOption"
+	xmlns:settleOptionViewModels="clr-namespace:Stumana.WPF.ViewModels.MainViewModels.SettleOption"
+	xmlns:studentOptionViewModels="clr-namespace:Stumana.WPF.ViewModels.MainViewModels.StudentOption"
+	xmlns:subjectOptionViewModels="clr-namespace:Stumana.WPF.ViewModels.MainViewModels.SubjectOption"
+	
+	xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+	
 	xmlns:authencationViewModels="clr-namespace:Stumana.WPF.ViewModels.AuthencationViewModels"
     xmlns:local="clr-namespace:Stumana.WPF"
     xmlns:vm="clr-namespace:Stumana.WPF.ViewModels">
@@ -18,16 +37,32 @@
 	<DataTemplate DataType="{x:Type authencationViewModels:SignUpViewModel}">
 		<authencationViews:SignUp/>
 	</DataTemplate>
+	<!--#endregion-->
 	
+	
+	<DataTemplate DataType="{x:Type accountOptionViewModel:AccountOptionViewModel}">
+		<accountOptionView:AccountView/>
+	</DataTemplate>
+	
+	
+	<!--#region ClassOption -->
+	<DataTemplate DataType="{x:Type classOptionViewModels:ClassListViewModel}">
+		<classOptionViews:ClassListView/>
+	</DataTemplate>
+	<DataTemplate DataType="{x:Type classOptionViewModels:InsideClassViewModel}">
+		<classOptionViews:InsideClassView/>
+	</DataTemplate>
 	<!--#endregion-->
 
-	<!--#region export -->
-
+	<!--#region ReportOption-->
+	<DataTemplate DataType="{x:Type reportOptionViewModels:ReportSubjectViewModel}">
+		<reportOptionViews:ReportSubjectView/>
+	</DataTemplate>
+	<DataTemplate DataType="{x:Type reportOptionViewModels:ReportSummaryViewModel}">
+		<reportOptionViews:ReportSummaryView/>
+	</DataTemplate>
 	<!--#endregion-->
-
-	<!--#region form-->
-
-	<!--#endregion-->
+	
 	<!--#region admin-->
 
 	<!--#endregion-->

@@ -21,7 +21,7 @@
 	xmlns:studentOptionViewModels="clr-namespace:Stumana.WPF.ViewModels.MainViewModels.StudentOption"
 	xmlns:subjectOptionViewModels="clr-namespace:Stumana.WPF.ViewModels.MainViewModels.SubjectOption"
     xmlns:popupViewModels="clr-namespace:Stumana.WPF.ViewModels.PopupModels"
-	
+	xmlns:mainViewModels="clr-namespace:Stumana.WPF.ViewModels.MainViewModels"
 	xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
 	
 	xmlns:authencationViewModels="clr-namespace:Stumana.WPF.ViewModels.AuthencationViewModels"
@@ -31,7 +31,10 @@
 	<DataTemplate DataType="{x:Type vm:ToastMessageViewModel}">
 		<views:ToastMessageView/>
 	</DataTemplate>
-	
+
+    <DataTemplate DataType="{x:Type mainViewModels:SidebarViewModel}">
+        <mainView:Sidebar/>
+    </DataTemplate>
 	<!--#region Login, Logout -->
 	<DataTemplate DataType="{x:Type authencationViewModels:SignInViewModel}">
 		<authencationViews:SignIn/>

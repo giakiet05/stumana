@@ -12,7 +12,6 @@
 	xmlns:studentOptionViews="clr-namespace:Stumana.WPF.Views.MainView.StudentOption"
 	xmlns:subjectOptionViews="clr-namespace:Stumana.WPF.Views.MainView.SubjectOption"
 	
-	xmlns:mainViewModels="clr-namespace:Stumana.WPF.ViewModels.MainViewModels"
 	xmlns:accountOptionViewModel="clr-namespace:Stumana.WPF.ViewModels.MainViewModels.AccountOption"
 	xmlns:classOptionViewModels="clr-namespace:Stumana.WPF.ViewModels.MainViewModels.ClassOption"
 	xmlns:reportOptionViewModels="clr-namespace:Stumana.WPF.ViewModels.MainViewModels.ReportOption"

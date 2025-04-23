@@ -56,7 +56,5 @@ namespace Stumana.WPF.ViewModels.MainViewModels.AccountOption
                 OnPropertyChanged(nameof(Password));
             }
         }
-
-       
     }
 }

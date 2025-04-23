@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Stumana.WPF.ViewModels.MainViewModels.StudentOption
 {
-    internal class StudentInforViewModel
+    public class StudentInforViewModel : BaseViewModel
     {
     }
 }

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Stumana.WPF.ViewModels.PopupModels
+namespace Stumana.WPF.ViewModels.MainViewModels.SubjectOption
 {
-    internal class SubjectScoreFilterView
+    public class AddSubjectViewModel_2 : BaseViewModel
     {
     }
 }

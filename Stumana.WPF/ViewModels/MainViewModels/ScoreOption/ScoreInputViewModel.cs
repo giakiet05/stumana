@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Stumana.WPF.ViewModels.MainViewModels.ScoreOption
 {
-    internal class ScoreInputViewModel
+    public class ScoreInputViewModel : BaseViewModel
     {
     }
 }

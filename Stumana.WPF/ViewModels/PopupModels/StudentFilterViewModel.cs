@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Stumana.WPF.ViewModels.PopupModels
 {
-    internal class StudentFilterViewModel
+    public class StudentFilterViewModel : BaseViewModel
     {
     }
 }

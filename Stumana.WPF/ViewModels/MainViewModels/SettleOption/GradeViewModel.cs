@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Stumana.WPF.ViewModels.MainViewModels.SettleOption
 {
-    internal class GradeViewModel
+    public class GradeViewModel : BaseViewModel
     {
     }
 }

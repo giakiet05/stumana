@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Stumana.WPF.ViewModels.MainViewModels.SubjectOption
+namespace Stumana.WPF.ViewModels.MainViewModels.SettleOption
 {
-    internal class AddSubjectView_2Model
+    public class MajorViewModel : BaseViewModel
     {
     }
 }

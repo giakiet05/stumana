@@ -1,12 +1,13 @@
 ﻿using System;
+using System.Buffers.Text;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Stumana.WPF.ViewModels.MainViewModels.SettleOption
+namespace Stumana.WPF.ViewModels.PopupModels
 {
-    internal class MajoViewModel
+    public class SubjectScoreFilterViewModel : BaseViewModel
     {
     }
 }

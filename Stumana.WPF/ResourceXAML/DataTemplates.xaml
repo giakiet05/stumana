@@ -84,8 +84,8 @@
         <settleOptionViews:GradeView/>
     </DataTemplate>
 
-    <DataTemplate DataType="{x:Type settleOptionViewModels:MajoViewModel}">
-        <settleOptionViews:MajoView/>
+    <DataTemplate DataType="{x:Type settleOptionViewModels:MajorViewModel}">
+        <settleOptionViews:MajorView/>
     </DataTemplate>
 
     <DataTemplate DataType="{x:Type settleOptionViewModels:SemesterViewModel}">
@@ -104,7 +104,7 @@
     <!--#endregion-->
 
     <!--#region SubjectOption-->
-    <DataTemplate DataType="{x:Type subjectOptionViewModels:AddSubjectView_2Model}">
+    <DataTemplate DataType="{x:Type subjectOptionViewModels:AddSubjectViewModel_2}">
         <subjectOptionViews:AddSubjectView_2/>
     </DataTemplate>
 
@@ -142,7 +142,7 @@
         <popupViews:SubjectFilterView/>
     </DataTemplate>
     
-    <DataTemplate DataType="{x:Type popupViewModels:SubjectScoreFilterView}">
+    <DataTemplate DataType="{x:Type popupViewModels:SubjectScoreFilterViewModel}">
         <popupViews:SubjectScoreFilterView/>
     </DataTemplate>
 

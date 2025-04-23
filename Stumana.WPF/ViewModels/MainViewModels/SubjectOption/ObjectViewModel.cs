@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Stumana.WPF.ViewModels.MainViewModels.SubjectOption
 {
-    internal class ObjectViewModel
+    public class ObjectViewModel : BaseViewModel
     {
     }
 }

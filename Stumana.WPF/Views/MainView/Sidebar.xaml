@@ -159,7 +159,7 @@ Height="40">
                             Height="80" Width="80">
 
                     </Image>
-                    <TextBlock Text="{Binding Text}" Padding="10"
+                    <TextBlock Text="ADMIN" Padding="10"
                                FontFamily="pack://application:,,,/Resource/Font/#Poppins SEMIBOLD"
                                FontSize="40">
 
@@ -170,8 +170,8 @@ Height="40">
 
 
             </Grid>
-           
-            <ContentControl Grid.Row="2" Content="{Binding CurrentSidebarViewModel}"/>
+
+            <ContentControl Grid.Row="2" Content="{Binding CurrentLayoutVM}"/>
 
 
             

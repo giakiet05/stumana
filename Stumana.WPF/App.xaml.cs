@@ -20,7 +20,7 @@ namespace Stumana.WPF
             {
                 context.Database.Migrate();
                 NavigationStore.Instance.CurrentViewModel = new SidebarViewModel();
-                NavigationStore.Instance.CurrentLayoutModel = null;
+                
                 ModalNavigationStore.Instance.CurrentModalViewModel = null;
 
                 MainWindow = new MainWindow

@@ -7,7 +7,7 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d"
             MinWidth="1000" MinHeight="700">
-    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+   
     <Grid Background="White">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"></ColumnDefinition>
@@ -175,11 +175,12 @@
 
 
             </Grid>
+            <ScrollViewer  Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
 
-            <ContentControl Grid.Row="1" Content="{Binding CurrentLayoutVM}" />
-
+                <ContentControl  Content="{Binding CurrentLayoutVM}" />
+            </ScrollViewer>
 
         </Grid>
     </Grid>
-    </ScrollViewer>
+
 </UserControl>

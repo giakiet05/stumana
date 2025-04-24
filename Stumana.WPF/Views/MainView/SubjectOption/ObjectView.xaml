@@ -27,19 +27,19 @@
             <Border CornerRadius="8" Height="53" Width="1000" Background="#FCFAFA" BorderThickness="1" BorderBrush="#C4C4C4">
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
 
-                    <Button  x:Name="btStudentFilter" Style="{StaticResource MaterialDesignIconButton}">
+                    <Button Command="{Binding searchSubjectCommand}" x:Name="btStudentFilter" Style="{StaticResource MaterialDesignIconButton}">
                         <materialDesign:PackIcon Kind="Magnify" Width="24" Height="24"  Foreground="#8A8A8A"/>
                     </Button>
 
                     <TextBox
-                
+                Text="{Binding SearchText}"
                  FontSize="14"
                  Foreground="#8A8A8A"
                  FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
                 Style="{StaticResource MaterialDesignOutlinedTextBox}" 
                 materialDesign:HintAssist.Hint="Tìm kiếm"
                 materialDesign:TextFieldAssist.HasClearButton="True" Width="899" />
-                    <Button Style="{StaticResource MaterialDesignIconButton}"  >
+                    <Button Command="{Binding filterSubjectCommand}" Style="{StaticResource MaterialDesignIconButton}"  >
                         <materialDesign:PackIcon Kind="TuneVariant" Width="30" Height="30"  Foreground="#C5CAE9"/>
                     </Button>
                 </StackPanel>
@@ -102,7 +102,7 @@
                 <Button x:Name="btEditSubject"
     Margin="10"
     VerticalAlignment="Center"
-
+Command="{Binding editSubjectCommand}"
     Width="99"
     Height="40"
     Background="#6C6C6C"
@@ -120,7 +120,7 @@
                 <Button x:Name="btDeleteSubject"
 Margin="10"
 VerticalAlignment="Center"
-
+Command="{Binding deleteSubjectCommand}"
 Width="99"
 Height="40"
 Background="#E17D7D"
@@ -136,6 +136,7 @@ materialDesign:ButtonAssist.CornerRadius="20">
    ToolTip="Nhấn để xóa môn học" />
                 </Button>
                 <Button x:Name="btAddSubject"
+                        Command="{Binding addSubjectCommand}"
                 Margin="10"
                 VerticalAlignment="Center"
 

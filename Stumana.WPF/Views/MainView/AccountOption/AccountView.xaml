@@ -50,7 +50,7 @@
                     Width="216"
                     Height="43"
                     HorizontalAlignment="Left">
-                    <TextBox Text="Admin123"
+                    <TextBox Text="{Binding Username}"
                            FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
                              Background="Transparent"
                              Foreground="#152259"
@@ -76,7 +76,7 @@
                 Width="400"
                 Height="43"
                 HorizontalAlignment="Left">
-                    <TextBox Text="235208871412475"
+                    <TextBox Text="{Binding ID}"
                FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
                  Background="Transparent"
                  Foreground="#152259"
@@ -102,7 +102,7 @@
                 Width="492"
                 Height="43"
                 HorizontalAlignment="Left">
-                    <TextBox Text="Admin123@gm.uit.edu.vn"
+                    <TextBox Text="{Binding Email}"
                FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
                  Background="Transparent"
                  Foreground="#152259"
@@ -128,7 +128,7 @@
                 Width="216"
                 Height="43"
                 HorizontalAlignment="Left">
-                    <TextBox Text="admin1113"
+                    <TextBox Text="{Binding Password}"
                FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
                  Background="Transparent"
                  Foreground="#152259"

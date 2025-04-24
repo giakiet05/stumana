@@ -79,14 +79,15 @@
             </DataGrid>
             <StackPanel   Grid.Row="3"  Orientation="Horizontal" FlowDirection="RightToLeft" Width="1034" >
                 <Button x:Name="btEditType"
-    Margin="10"
-    VerticalAlignment="Center"
+                 Command="{Binding editCommand}"       
+                Margin="10"
+                VerticalAlignment="Center"
 
-    Width="99"
-    Height="40"
-    Background="#6C6C6C"
-    Style="{StaticResource MaterialDesignRaisedButton}"
-    materialDesign:ButtonAssist.CornerRadius="20">
+                Width="99"
+                Height="40"
+                Background="#6C6C6C"
+                Style="{StaticResource MaterialDesignRaisedButton}"
+                materialDesign:ButtonAssist.CornerRadius="20">
                     <TextBlock HorizontalAlignment="Center"
        
         FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
@@ -97,24 +98,26 @@
        ToolTip="Nhấn để sửa thông tin" />
                 </Button>
                 <Button x:Name="btDeleteType"
-Margin="10"
-VerticalAlignment="Center"
+                        Command="{Binding deleteCommand}"
+                        Margin="10"
+                        VerticalAlignment="Center"
 
-Width="99"
-Height="40"
-Background="#E17D7D"
-Style="{StaticResource MaterialDesignRaisedButton}"
-materialDesign:ButtonAssist.CornerRadius="20">
+                        Width="99"
+                        Height="40"
+                        Background="#E17D7D"
+                        Style="{StaticResource MaterialDesignRaisedButton}"
+                        materialDesign:ButtonAssist.CornerRadius="20">      
                     <TextBlock HorizontalAlignment="Center"
    
-    FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
-   FontSize="16"
-   Text="Xóa"
-   Foreground="Snow"
-   Cursor="Hand"
-   ToolTip="Nhấn để xóa môn học" />
+                        FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
+                       FontSize="16"
+                       Text="Xóa"
+                       Foreground="Snow"
+                       Cursor="Hand"
+                       ToolTip="Nhấn để xóa môn học" />
                 </Button>
                 <Button x:Name="btAddType"
+                        Command="{Binding addCommand}"
                 Margin="10"
                 VerticalAlignment="Center"
 

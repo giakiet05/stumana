@@ -3,6 +3,7 @@ using Stumana.DataAccess.Services;
 using Stumana.DataAcess.Models;
 using Stumana.WPF.Commands;
 using Stumana.WPF.Stores;
+using Stumana.WPF.ViewModels.MainViewModels;
 
 namespace Stumana.WPF.ViewModels.AuthencationViewModels;
 
@@ -90,7 +91,7 @@ public class SignInViewModel : BaseViewModel
             else
             {
                 AccountStore.Instance.CurrentUser = user;
-                //NavigationStore.Instance.CurrentViewModel = new 
+                NavigationStore.Instance.CurrentViewModel = new SidebarViewModel();
                 ToastMessageViewModel.ShowSuccessToast("Đăng nhập thành công");
             }
         }

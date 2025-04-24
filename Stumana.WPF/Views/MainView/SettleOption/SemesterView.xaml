@@ -85,7 +85,7 @@
                         <materialDesign:PackIcon Kind="Magnify" Width="24" Height="24"  Foreground="#8A8A8A"/>
                     </Button>
 
-                    <TextBox 
+                    <TextBox Width="899"
                  HorizontalAlignment="Left"
                 
                  FontSize="14"

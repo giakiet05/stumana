@@ -87,7 +87,7 @@
 
                     <TextBox 
                  HorizontalAlignment="Left"
-                
+                Width="899"
                  FontSize="14"
                  Foreground="#8A8A8A"
                  FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"

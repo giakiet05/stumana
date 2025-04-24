@@ -33,18 +33,19 @@
                     BorderThickness="1" BorderBrush="#C4C4C4">
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
 
-                    <Button x:Name="btStudentFilter" Style="{StaticResource MaterialDesignIconButton}">
+                    <Button Style="{StaticResource MaterialDesignIconButton}">
                         <materialDesign:PackIcon Kind="Magnify" Width="24" Height="24" Foreground="#8A8A8A" />
                     </Button>
 
-                    <TextBox
+                    <TextBox FontSize="18"
+                             TextAlignment="Center"
+                             Foreground="#8A8A8A"
+                             FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
+                             Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                             materialDesign:HintAssist.Hint="Tìm kiếm"
+                             materialDesign:TextFieldAssist.HasClearButton="True" Width="900" 
+                             Text="{Binding SearchString}"/>
 
-                        FontSize="14"
-                        Foreground="#8A8A8A"
-                        FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
-                        Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                        materialDesign:HintAssist.Hint="Tìm kiếm"
-                        materialDesign:TextFieldAssist.HasClearButton="True" Width="899" />
                     <Button Style="{StaticResource MaterialDesignIconButton}">
                         <materialDesign:PackIcon Kind="TuneVariant" Width="30" Height="30" Foreground="#C5CAE9" />
                     </Button>
@@ -93,32 +94,49 @@
 
                         <!-- ComboBox -->
                         <StackPanel Grid.ColumnSpan="2" Orientation="Horizontal">
+                            <TextBlock Text="Năm Học:"
+                                       Margin="10,0,0,0"
+                                       TextAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       FontSize="20"/>
+
                             <ComboBox Background="#FFFFFF"
                                       Padding="10 0 10 0"
                                       Width="150"
                                       Height="30"
-                                      IsEditable="True"
+                                      IsEditable="False"
                                       Text="Năm học"
                                       Foreground="#C4C4C4"
                                       FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
-                                      Margin="20"
+                                      Margin="10,10,0,10"
                                       HorizontalAlignment="Left"
                                       BorderBrush="#64748B" BorderThickness="1"
                                       ItemsSource="{Binding SchoolYearCollection}"
                                       SelectedItem="{Binding SelectedSchoolYear}"/>
+
+                            <TextBlock Text="Khối:"
+                                       Margin="30,0,0,0"
+                                       TextAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       FontSize="20"/>
+
                             <ComboBox Background="#FFFFFF"
                                       Padding="10 0 10 0"
                                       Width="150"
                                       Height="30"
-                                      IsEditable="True"
+                                      IsEditable="False"
                                       Text="Khối"
                                       Foreground="#C4C4C4"
                                       FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
-                                      Margin="20"
+                                      Margin="10,10,0,10"
                                       HorizontalAlignment="Left"
                                       BorderBrush="#64748B" BorderThickness="1"
                                       ItemsSource="{Binding GradeCollection}"
                                       SelectedItem="{Binding SelectedGrade}"/>
+
+                            <Button Margin="20,0,0,0"
+                                    Width="Auto"
+                                    Content="Add classroom"/>
                         </StackPanel>
                         <!-- DataGrid -->
                         <DataGrid Margin="10 20 0 0" 

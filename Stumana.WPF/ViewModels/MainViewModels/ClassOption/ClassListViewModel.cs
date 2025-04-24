@@ -76,6 +76,17 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ClassOption
             }
         }
 
+
+        private string _searchString;
+        public string SearchString
+        {
+            get => _searchString;
+            set
+            {
+                _searchString = value;
+                OnPropertyChanged();
+            }
+        }
         #endregion Properties
        
 
@@ -85,11 +96,12 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ClassOption
             LoadGrade();
         }
 
+
         private async void SelectionChange()
         {
             if (string.IsNullOrEmpty(SelectedGrade) || string.IsNullOrEmpty(SelectedSchoolYear))
             {
-                ClassroomCollection.Clear();
+                ClassroomCollection = null;
                 return;
             }
 
@@ -114,6 +126,7 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ClassOption
 
         private async void LoadSchoolYear()
         {
+            SchoolYearCollection = new ObservableCollection<string>();
             var sy = await GenericDataService<SchoolYear>.Instance.GetAllAsync();
             foreach (SchoolYear schoolYear in sy)
             {
@@ -121,11 +134,12 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ClassOption
                 SchoolYearCollection.Add(schoolyearstr);
                 SchoolYearsDic.Add(schoolyearstr, schoolYear);
             }
-            GradeCollection.Add("Tất cả các năm");
+            SchoolYearCollection.Add("Tất cả các năm");
         }
 
         private async void LoadGrade()
         {
+            GradeCollection = new ObservableCollection<string>();
             var grades = await GenericDataService<Grade>.Instance.GetAllAsync();
             foreach (Grade grade in grades)
             {

@@ -6,14 +6,15 @@
              xmlns:local="clr-namespace:Stumana.WPF.Views.AuthencationViews"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d"
-            MinWidth="1000" MinHeight="700">
+            MinWidth="1440" MinHeight="789">
    
     <Grid Background="White">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <Grid   Grid.Column="0" Background="#152259" Width="241">
+        <ScrollViewer  Grid.Column="0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+        <Grid   Background="#152259" Width="241">
             <StackPanel Height="148" VerticalAlignment="Top" Margin="0 20 0 0">
                 <Image
                     Source="/Resource/Image/SchoolLogo.png/"
@@ -153,6 +154,7 @@
                 </RadioButton>
             </StackPanel>
         </Grid>
+            </ScrollViewer>
         <Grid Grid.Column="1" Margin="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="100" />

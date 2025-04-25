@@ -29,28 +29,6 @@
                        ToolTip="Thiết lập điểm cho học sinh" />
         </StackPanel>
         <StackPanel Grid.Row="2" Orientation="Vertical">
-            <Border Margin="0 0 0 10" CornerRadius="8" Height="53" Width="1000" Background="#FCFAFA"
-                    BorderThickness="1" BorderBrush="#C4C4C4">
-                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-
-                    <Button Style="{StaticResource MaterialDesignIconButton}">
-                        <materialDesign:PackIcon Kind="Magnify" Width="24" Height="24" Foreground="#8A8A8A" />
-                    </Button>
-
-                    <TextBox FontSize="18"
-                             TextAlignment="Center"
-                             Foreground="#8A8A8A"
-                             FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
-                             Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                             materialDesign:HintAssist.Hint="Tìm kiếm"
-                             materialDesign:TextFieldAssist.HasClearButton="True" Width="900" 
-                             Text="{Binding SearchString}"/>
-
-                    <Button Style="{StaticResource MaterialDesignIconButton}">
-                        <materialDesign:PackIcon Kind="TuneVariant" Width="30" Height="30" Foreground="#C5CAE9" />
-                    </Button>
-                </StackPanel>
-            </Border>
             <Border BorderThickness="1" CornerRadius="10" BorderBrush="#152259" Margin="10 0 10 0">
                 <GroupBox>
                     <GroupBox.Style>
@@ -98,7 +76,7 @@
                                        Margin="10,0,0,0"
                                        TextAlignment="Center"
                                        VerticalAlignment="Center"
-                                       FontSize="20"/>
+                                       FontSize="20" />
 
                             <ComboBox Background="#FFFFFF"
                                       Padding="10 0 10 0"
@@ -106,19 +84,30 @@
                                       Height="30"
                                       IsEditable="False"
                                       Text="Năm học"
-                                      Foreground="#C4C4C4"
+                                      Foreground="Black"
                                       FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
+                                      Style="{StaticResource MaterialDesignComboBox}"
                                       Margin="10,10,0,10"
                                       HorizontalAlignment="Left"
                                       BorderBrush="#64748B" BorderThickness="1"
                                       ItemsSource="{Binding SchoolYearCollection}"
-                                      SelectedItem="{Binding SelectedSchoolYear}"/>
+                                      SelectedItem="{Binding SelectedSchoolYear}">
+                                <ComboBox.ItemContainerStyle>
+                                    <Style TargetType="ComboBoxItem">
+                                        <Style.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Background" Value="Green" />
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </ComboBox.ItemContainerStyle>
+                            </ComboBox>
 
                             <TextBlock Text="Khối:"
                                        Margin="30,0,0,0"
                                        TextAlignment="Center"
                                        VerticalAlignment="Center"
-                                       FontSize="20"/>
+                                       FontSize="20" />
 
                             <ComboBox Background="#FFFFFF"
                                       Padding="10 0 10 0"
@@ -126,77 +115,92 @@
                                       Height="30"
                                       IsEditable="False"
                                       Text="Khối"
-                                      Foreground="#C4C4C4"
+                                      Foreground="Black"
                                       FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
+                                      Style="{StaticResource MaterialDesignComboBox}"
                                       Margin="10,10,0,10"
                                       HorizontalAlignment="Left"
                                       BorderBrush="#64748B" BorderThickness="1"
                                       ItemsSource="{Binding GradeCollection}"
-                                      SelectedItem="{Binding SelectedGrade}"/>
+                                      SelectedItem="{Binding SelectedGrade}">
+                                <ComboBox.ItemContainerStyle>
+                                    <Style TargetType="ComboBoxItem">
+                                        <Style.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Background" Value="Green" />
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </ComboBox.ItemContainerStyle>
+                            </ComboBox>
+
 
                             <Button Margin="20,0,0,0"
                                     Width="Auto"
-                                    Content="Add classroom"/>
+                                    Content="Add classroom" />
                         </StackPanel>
                         <!-- DataGrid -->
-                        <DataGrid Margin="10 20 0 0" 
-                                  AutoGenerateColumns="False" 
-                                  Height="400"
-                                  HorizontalAlignment="Stretch" 
-                                  CanUserAddRows="False" 
-                                  Grid.Row="1" Grid.ColumnSpan="2"
-                                  ItemsSource="{Binding ClassroomCollection}">
+                        <Border Grid.Row="1" Grid.ColumnSpan="2">
+                            <DataGrid Margin="10 20 0 0"
+                                      AutoGenerateColumns="False"
+                                      Height="400"
+                                      HorizontalAlignment="Stretch"
+                                      CanUserAddRows="False"
+                                      ItemsSource="{Binding ClassroomCollection}">
 
-                            <!-- Tạo Style cho Header với góc bo tròn -->
-                            <DataGrid.Resources>
-                                <Style TargetType="DataGridColumnHeader">
-                                    <Setter Property="Template">
-                                        <Setter.Value>
-                                            <ControlTemplate TargetType="DataGridColumnHeader">
-                                                <Border CornerRadius="10,10,0,0"
-                                                        Background="#152259"
-                                                        BorderBrush="Transparent"
-                                                        BorderThickness="0"
-                                                        Height="34">
-                                                    <ContentPresenter HorizontalAlignment="Center"
-                                                                      VerticalAlignment="Center" />
-                                                </Border>
-                                            </ControlTemplate>
-                                        </Setter.Value>
-                                    </Setter>
-                                    <Setter Property="Foreground" Value="White" />
-                                    <Setter Property="FontSize" Value="16" />
-                                    <Setter Property="FontFamily"
-                                            Value="pack://application:,,,/Resource/Font/#Poppins Medium" />
-                                    <Setter Property="HorizontalContentAlignment" Value="Center" />
-                                </Style>
-                            </DataGrid.Resources>
+                                <!-- Tạo Style cho Header với góc bo tròn -->
+                                <DataGrid.Resources>
+                                    <Style TargetType="DataGridColumnHeader">
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="DataGridColumnHeader">
+                                                    <Border CornerRadius="10,10,0,0"
+                                                            Background="#152259"
+                                                            BorderBrush="Transparent"
+                                                            BorderThickness="0"
+                                                            Height="34">
+                                                        <ContentPresenter HorizontalAlignment="Center"
+                                                                          VerticalAlignment="Center" />
+                                                    </Border>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="Foreground" Value="White" />
+                                        <Setter Property="FontSize" Value="16" />
+                                        <Setter Property="FontFamily"
+                                                Value="pack://application:,,,/Resource/Font/#Poppins Medium" />
+                                        <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                    </Style>
+                                </DataGrid.Resources>
 
-                            <DataGrid.Style>
-                                <Style TargetType="DataGrid">
-                                    <Setter Property="Background" Value="#F5F5F5" />
-                                    <!-- Đổi màu nền -->
-                                    <Setter Property="BorderBrush" Value="#152259" />
-                                    <!-- Đổi màu viền -->
-                                    <Setter Property="BorderThickness" Value="0" />
-                                    <!-- Độ dày viền -->
-                                </Style>
-                            </DataGrid.Style>
+                                <DataGrid.Style>
+                                    <Style TargetType="DataGrid">
+                                        <Setter Property="Background" Value="#F5F5F5" />
+                                        <!-- Đổi màu nền -->
+                                        <Setter Property="BorderBrush" Value="#152259" />
+                                        <!-- Đổi màu viền -->
+                                        <Setter Property="BorderThickness" Value="0" />
+                                        <!-- Độ dày viền -->
+                                    </Style>
+                                </DataGrid.Style>
 
-                            <DataGrid.CellStyle>
-                                <Style BasedOn="{StaticResource MaterialDesignDataGridCell}" TargetType="DataGridCell">
-                                    <Setter Property="BorderThickness" Value="0" />
-                                    <Setter Property="FocusVisualStyle" Value="{x:Null}" />
-                                </Style>
-                            </DataGrid.CellStyle>
+                                <DataGrid.CellStyle>
+                                    <Style BasedOn="{StaticResource MaterialDesignDataGridCell}"
+                                           TargetType="DataGridCell">
+                                        <Setter Property="BorderThickness" Value="0" />
+                                        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+                                    </Style>
+                                </DataGrid.CellStyle>
 
-                            <!-- Cột 1: Mã học sinh -->
-                            <DataGrid.Columns>
-                                <DataGridTextColumn Header="Mã lớp" Width="250" />
-                                <DataGridTextColumn Header="Lớp" Width="250" />
-                                <DataGridTextColumn Header="Sĩ số" Width="250" />
-                            </DataGrid.Columns>
-                        </DataGrid>
+                                <!-- Cột 1: Mã học sinh -->
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Mã lớp" Width="250" />
+                                    <DataGridTextColumn Header="Lớp" Width="250" />
+                                    <DataGridTextColumn Header="Sĩ số" Width="250" />
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Border>
+
                         <StackPanel Grid.ColumnSpan="2" Grid.Row="2" Orientation="Horizontal"
                                     FlowDirection="RightToLeft" Width="1034">
                             <Button x:Name="btClassExport"

@@ -134,7 +134,11 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ClassOption
                 SchoolYearCollection.Add(schoolyearstr);
                 SchoolYearsDic.Add(schoolyearstr, schoolYear);
             }
-            SchoolYearCollection.Add("Tất cả các năm");
+
+            for (int i = 0; i < 3; i++)
+            {
+                SchoolYearCollection.Add("Tất cả các năm");
+            }
         }
 
         private async void LoadGrade()

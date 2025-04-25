@@ -8,6 +8,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <!-- Material Design 3 chủ đề mặc định -->
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesign3.Defaults.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
                 <ResourceDictionary Source="/ResourceXAML/DataTemplates.xaml"/>
                 <!-- Màu sắc chính & phụ -->
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.DeepPurple.xaml"/>

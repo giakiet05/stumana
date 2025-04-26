@@ -17,7 +17,7 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
-    <Grid Margin="40,60,40,0">
+    <Grid Margin="80,60,40,0">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -36,6 +36,7 @@
                 <ColumnDefinition Width="2*"/>
                 <ColumnDefinition Width="20"/>
                 <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="2*"/>
             </Grid.ColumnDefinitions>
             <StackPanel Grid.Column="0">
                 <TextBlock Text="Mã học kỳ" Style="{StaticResource LabelStyle}"/>
@@ -53,9 +54,8 @@
         <!-- Row 2: Min/Max Age -->
         <Grid Grid.Row="2" Margin="0,0,0,10">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-
-                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <StackPanel Grid.Column="0">
                 <ComboBox Style="{StaticResource FilterComboBoxStyle}"
@@ -93,15 +93,14 @@
             </StackPanel>
         </Grid>
         <!-- Row 4: Level Table -->
-        <StackPanel Grid.Row="4" Margin="0,0,0,0">
-            <TextBlock Text="Mức điểm:" FontSize="20" Style="{StaticResource LabelStyle}"/>
+        <StackPanel Grid.Row="4">
+            <TextBlock Text="Mức điểm:" FontSize="20" Margin="0,10,0,10" Style="{StaticResource LabelStyle}"/>
             <DataGrid ItemsSource="{Binding Levels}"
                       AutoGenerateColumns="False"
                       CanUserAddRows="False"
                       HeadersVisibility="Column"
                       Height="120"
                       Width="600"
-                      Margin="10,10,0,0"
                       HorizontalAlignment="Left">
                 <DataGrid.Resources>
                     <Style TargetType="DataGridColumnHeader">
@@ -139,25 +138,26 @@
                     <DataGridTextColumn Header="Tối đa" Binding="{Binding Max}" Width="200"/>
                 </DataGrid.Columns>
             </DataGrid>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,5,0,10">
-                <Button x:Name="btEditLevel" Margin="10" VerticalAlignment="Center" Width="99" Height="40" Background="#6C6C6C" Style="{StaticResource MaterialDesignRaisedButton}" materialDesign:ButtonAssist.CornerRadius="20">
-                    <TextBlock HorizontalAlignment="Center" FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium" FontSize="16" Text="Sửa" Foreground="Snow" Cursor="Hand" ToolTip="Nhấn để sửa thông tin" />
-                </Button>
-                <Button x:Name="btDeleteLevel" Margin="10" VerticalAlignment="Center" Width="99" Height="40" Background="#E17D7D" Style="{StaticResource MaterialDesignRaisedButton}" materialDesign:ButtonAssist.CornerRadius="20">
-                    <TextBlock HorizontalAlignment="Center" FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium" FontSize="16" Text="Xóa" Foreground="Snow" Cursor="Hand" ToolTip="Nhấn để xóa thông tin" />
-                </Button>
-                <Button x:Name="btAddLevel" Margin="10" VerticalAlignment="Center" Width="99" Height="40" Background="#8DB575" Style="{StaticResource MaterialDesignRaisedButton}" materialDesign:ButtonAssist.CornerRadius="20">
-                    <TextBlock HorizontalAlignment="Center" FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium" FontSize="16" Text="Thêm" Foreground="Snow" Cursor="Hand" ToolTip="Nhấn để thêm thông tin" />
-                </Button>
-            </StackPanel>
-            <TextBlock Text="Loại điểm:" FontSize="20" Style="{StaticResource LabelStyle}"/>
+            <Border CornerRadius="0,0,10,10" Background="#D7D7D7" Width="600" HorizontalAlignment="Left">
+                <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft" Width="600" HorizontalAlignment="Left">
+                    <Button x:Name="btEditLevel" Margin="5" VerticalAlignment="Center" Width="99" Height="40" Background="#6C6C6C" Style="{StaticResource MaterialDesignRaisedButton}" materialDesign:ButtonAssist.CornerRadius="20" BorderBrush="{x:Null}">
+                        <TextBlock HorizontalAlignment="Center" FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium" FontSize="16" Text="Sửa" Foreground="Snow" Cursor="Hand" ToolTip="Nhấn để sửa thông tin" />
+                    </Button>
+                    <Button x:Name="btDeleteLevel" Margin="5" VerticalAlignment="Center" Width="99" Height="40" Background="#E17D7D" Style="{StaticResource MaterialDesignRaisedButton}" materialDesign:ButtonAssist.CornerRadius="20" BorderBrush="{x:Null}">
+                        <TextBlock HorizontalAlignment="Center" FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium" FontSize="16" Text="Xóa" Foreground="Snow" Cursor="Hand" ToolTip="Nhấn để xóa thông tin" />
+                    </Button>
+                    <Button x:Name="btAddLevel" Margin="5" VerticalAlignment="Center" Width="99" Height="40" Background="#8DB575" Style="{StaticResource MaterialDesignRaisedButton}" materialDesign:ButtonAssist.CornerRadius="20" BorderBrush="{x:Null}">
+                        <TextBlock HorizontalAlignment="Center" FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium" FontSize="16" Text="Thêm" Foreground="Snow" Cursor="Hand" ToolTip="Nhấn để thêm thông tin" />
+                    </Button>
+                </StackPanel>
+            </Border>
+            <TextBlock Text="Loại điểm:" FontSize="20" Margin="0,10,0,10" Style="{StaticResource LabelStyle}"/>
             <DataGrid ItemsSource="{Binding ScoreTypes}"
                       AutoGenerateColumns="False"
                       CanUserAddRows="False"
                       HeadersVisibility="Column"
                       Height="120"
                       Width="600"
-                      Margin="10,10,0,0"
                       HorizontalAlignment="Left">
                 <DataGrid.Resources>
                     <Style TargetType="DataGridColumnHeader">
@@ -194,19 +194,22 @@
                     <DataGridTextColumn Header="Hệ số" Binding="{Binding Coefficient}" Width="200"/>
                 </DataGrid.Columns>
             </DataGrid>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,5,0,10">
-                <Button x:Name="btEditScoreType" Margin="10" VerticalAlignment="Center" Width="99" Height="40" Background="#6C6C6C" Style="{StaticResource MaterialDesignRaisedButton}" materialDesign:ButtonAssist.CornerRadius="20">
-                    <TextBlock HorizontalAlignment="Center" FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium" FontSize="16" Text="Sửa" Foreground="Snow" Cursor="Hand" ToolTip="Nhấn để sửa thông tin" />
-                </Button>
-                <Button x:Name="btDeleteScoreType" Margin="10" VerticalAlignment="Center" Width="99" Height="40" Background="#E17D7D" Style="{StaticResource MaterialDesignRaisedButton}" materialDesign:ButtonAssist.CornerRadius="20">
-                    <TextBlock HorizontalAlignment="Center" FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium" FontSize="16" Text="Xóa" Foreground="Snow" Cursor="Hand" ToolTip="Nhấn để xóa thông tin" />
-                </Button>
-                <Button x:Name="btAddScoreType" Margin="10" VerticalAlignment="Center" Width="99" Height="40" Background="#8DB575" Style="{StaticResource MaterialDesignRaisedButton}" materialDesign:ButtonAssist.CornerRadius="20">
-                    <TextBlock HorizontalAlignment="Center" FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium" FontSize="16" Text="Thêm" Foreground="Snow" Cursor="Hand" ToolTip="Nhấn để thêm thông tin" />
-                </Button>
-            </StackPanel>
+            <Border CornerRadius="0,0,10,10" Background="#D7D7D7" Width="600" HorizontalAlignment="Left">
+                <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft" Width="600" HorizontalAlignment="Left">
+                    <Button x:Name="btEditScoreType" Margin="5" VerticalAlignment="Center" Width="99" Height="40" Background="#6C6C6C" Style="{StaticResource MaterialDesignRaisedButton}" materialDesign:ButtonAssist.CornerRadius="20" BorderBrush="{x:Null}">
+                        <TextBlock HorizontalAlignment="Center" FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium" FontSize="16" Text="Sửa" Foreground="Snow" Cursor="Hand" ToolTip="Nhấn để sửa thông tin" />
+                    </Button>
+                    <Button x:Name="btDeleteScoreType" Margin="5" VerticalAlignment="Center" Width="99" Height="40" Background="#E17D7D" Style="{StaticResource MaterialDesignRaisedButton}" materialDesign:ButtonAssist.CornerRadius="20" BorderBrush="{x:Null}">
+                        <TextBlock HorizontalAlignment="Center" FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium" FontSize="16" Text="Xóa" Foreground="Snow" Cursor="Hand" ToolTip="Nhấn để xóa thông tin" />
+                    </Button>
+                    <Button x:Name="btAddScoreType" Margin="5" VerticalAlignment="Center" Width="99" Height="40" Background="#8DB575" Style="{StaticResource MaterialDesignRaisedButton}" materialDesign:ButtonAssist.CornerRadius="20" BorderBrush="{x:Null}">
+                        <TextBlock HorizontalAlignment="Center" FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium" FontSize="16" Text="Thêm" Foreground="Snow" Cursor="Hand" ToolTip="Nhấn để thêm thông tin" />
+                    </Button>
+                </StackPanel>
+            </Border>
             <StackPanel Orientation="Horizontal">
-                <CheckBox Content="Sao chép học kỳ trước?" VerticalAlignment="Center" IsChecked="{Binding CopyLastSemester, Mode=TwoWay}"/>
+                <CheckBox Content="Sao chép học kỳ trước?" Margin="5" VerticalAlignment="Center" IsChecked="{Binding CopyLastSemester, Mode=TwoWay}"
+                          FontFamily="pack://application:,,,/Resource/Font/#Poppins Regular"/>
             </StackPanel>
         </StackPanel>
         <!-- Add Grade Button -->

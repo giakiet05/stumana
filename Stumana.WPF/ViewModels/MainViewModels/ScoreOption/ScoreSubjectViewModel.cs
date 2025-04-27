@@ -3,6 +3,7 @@ using System.Data;
 using System.Globalization;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using Microsoft.EntityFrameworkCore;
 using Stumana.DataAccess.Services;
@@ -17,6 +18,7 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ScoreOption
 
         //private Dictionary<string, int> ScoreTypeDic = new Dictionary<string, int>();
         public Dictionary<DataRow, Dictionary<string, Tuple<double, double?>>> ChangedData = new();
+        public Dictionary<string, SubjectScoreType> ScoreTypeDetailDic { get; set; } = new();
 
         public Subject? curSubject { get; set; } = null;
 
@@ -34,6 +36,7 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ScoreOption
         }
 
         private string _searchText;
+
         public string SearchText
         {
             get => _searchText;
@@ -47,6 +50,7 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ScoreOption
 
         public Dictionary<string, SchoolYear> SchoolYearDic { get; set; } = new();
         private ObservableCollection<string> _schoolyearCollection;
+
         public ObservableCollection<string> SchoolYearCollection
         {
             get => _schoolyearCollection;
@@ -58,6 +62,7 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ScoreOption
         }
 
         private string _selectedschoolyear;
+
         public string SelectedSchoolYear
         {
             get => _selectedschoolyear;
@@ -70,6 +75,7 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ScoreOption
 
         public Dictionary<string, Subject> SubjectDic { get; set; } = new();
         private ObservableCollection<string> _subjectCollection;
+
         public ObservableCollection<string> SubjectCollection
         {
             get => _subjectCollection;
@@ -81,6 +87,7 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ScoreOption
         }
 
         private string _selectedsubject;
+
         public string SelectedSubject
         {
             get => _selectedsubject;
@@ -93,6 +100,7 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ScoreOption
 
         public Dictionary<string, Grade> GradeDic { get; set; } = new();
         private ObservableCollection<string> _gradeCollection;
+
         public ObservableCollection<string> GradeCollection
         {
             get => _gradeCollection;
@@ -104,6 +112,7 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ScoreOption
         }
 
         private string _selectedgrade;
+
         public string SelectedGrade
         {
             get => _selectedgrade;
@@ -115,6 +124,7 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ScoreOption
         }
 
         private ObservableCollection<string> _semesterCollection;
+
         public ObservableCollection<string> SemesterCollection
         {
             get => _semesterCollection;
@@ -126,6 +136,7 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ScoreOption
         }
 
         private string _selectedSemester;
+
         public string SelectedSemester
         {
             get => _selectedSemester;
@@ -138,6 +149,7 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ScoreOption
 
         public Dictionary<string, Classroom> ClassroomDic { get; set; }
         private ObservableCollection<string> _classroomCollection;
+
         public ObservableCollection<string> ClassroomCollection
         {
             get => _classroomCollection;
@@ -149,6 +161,7 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ScoreOption
         }
 
         private string _selectedclassroom;
+
         public string SelectedClassroom
         {
             get => _selectedclassroom;
@@ -184,7 +197,7 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ScoreOption
             dataTable.Rows.Add("HS0033333333333331", "Nguyễn Văn An");
             dataTable.Rows.Add("HS0011111111111", "Nguyễn Văn Aaaaaaaaaaaaaa");
             dataTable.Rows.Add("HS0012222222222222222", "Nguyễn Văn Affffffffffff");
-            for (int i = 0; i < 20; i++)
+            for (int i = 1; i <= 20; i++)
             {
                 dataTable.Rows.Add("HS0012222222222222222", "Nguyễn Văn Affffffffffff");
             }
@@ -202,7 +215,7 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ScoreOption
             dataTable.Columns.Add("Mã học sinh", typeof(string));
             dataTable.Columns.Add("Tên học sinh", typeof(string));
             dataTable.Columns["Mã học sinh"].ReadOnly = true;
-            dataTable.Columns["Tên học sinh"].ReadOnly = false;
+            dataTable.Columns["Tên học sinh"].ReadOnly = true;
             TableView = dataTable.DefaultView;
 
             if (curSubject == null)
@@ -220,7 +233,8 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ScoreOption
                 for (int i = 1; i <= scoreTypeDetail.Amount; i++)
                 {
                     string columnName = $"{header} {i}";
-                    dataTable.Columns.Add(columnName, typeof(double));
+                    ScoreTypeDetailDic[columnName] = scoreTypeDetail;
+                    dataTable.Columns.Add(columnName, typeof(string));
                 }
             }
 
@@ -267,15 +281,46 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ScoreOption
             }
         }
 
-        public void OnColumnChanged(object sender, DataColumnChangeEventArgs e)
+        public async void OnColumnChanged(object sender, DataColumnChangeEventArgs e)
         {
             string columnName = e.Column.ColumnName;
 
-            object originalObj = e.Row[columnName, DataRowVersion.Original];
-            double originalValue = originalObj == DBNull.Value ? -1 : (double)originalObj;
+            //object originalObj = e.Row[columnName, DataRowVersion.Original];
+            //double originalValue = originalObj == DBNull.Value ? -1 : (double)originalObj;
 
-            object newObj = e.ProposedValue;
-            double? newValue = newObj == DBNull.Value ? null : (double)newObj;
+            double originalValue = 0;
+            if (ChangedData.TryGetValue(e.Row, out var dictionary))
+                originalValue = dictionary[columnName].Item1;
+            else
+                originalValue = (await GenericDataService<Score>.Instance.GetOneAsync(s => s.SubjectScoreTypeId == ScoreTypeDetailDic[columnName].Id &&
+                                                                                           s.StudentAssignment.StudentId == e.Row["Mã học sinh"].ToString(),
+                                                                                      query => query.Include(s => s.StudentAssignment))).Value;
+
+            object? newObj = e.ProposedValue;
+            double? newValue = null;
+
+            if (!string.IsNullOrEmpty(Convert.ToString(newObj)))
+            {
+                try
+                {
+                    double parsedValue = Convert.ToDouble(newObj);
+
+                    if (parsedValue < 0 || parsedValue > 10)
+                    {
+                        ToastMessageViewModel.ShowErrorToast("Điểm không hợp lệ");
+                        e.Row[columnName] = originalValue;
+                        return;
+                    }
+
+                    newValue = parsedValue;
+                }
+                catch
+                {
+                    ToastMessageViewModel.ShowErrorToast("Điểm không hợp lệ");
+                    e.Row[columnName] = originalValue;
+                    return;
+                }
+            }
 
             if ((originalValue < 0 && newValue == null) || Equals(originalValue, newValue))
             {
@@ -422,6 +467,7 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ScoreOption
                 GradeCollection.Add(gradeName);
                 GradeDic.Add(gradeName, grade);
             }
+
             GradeCollection.Add("Tất cả các khối");
         }
 
@@ -446,11 +492,13 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ScoreOption
                 SubjectCollection.Add(subjectName);
                 SubjectDic.Add(subjectName, subject);
             }
+
             SubjectCollection.Add("Tất cả các môn");
         }
 
         private async Task LoadSemester()
         {
+            SemesterCollection = new ObservableCollection<string>();
             SemesterCollection.Add("Kỳ 1");
             SemesterCollection.Add("Kỳ 2");
         }
@@ -472,13 +520,11 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ScoreOption
                 ClassroomCollection.Add(classroomName);
                 ClassroomDic.Add(classroomName, classroom);
             }
+
             ClassroomCollection.Add("Tất cả các lớp");
         }
 
-        public async void OnSelectionChanged()
-        {
-
-        }
+        public async void OnSelectionChanged() { }
 
         public void OnSearchTextChange()
         {

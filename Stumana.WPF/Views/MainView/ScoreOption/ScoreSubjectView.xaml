@@ -92,7 +92,23 @@
                               FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
                               Margin="20,0,20,0"
                               HorizontalAlignment="Left"
-                              BorderBrush="#64748B" BorderThickness="1" />
+                              BorderBrush="#64748B" BorderThickness="1"
+                              ItemsSource="{Binding SchoolYearCollection}"
+                              SelectedItem="{Binding SelectedSchoolYear, UpdateSourceTrigger=PropertyChanged}" />
+                    <ComboBox Background="#FFFFFF"
+                              Padding="10 0 10 0"
+                              Width="150"
+                              Height="30"
+                              IsEditable="True"
+                              Text="Khối*"
+                              Foreground="Black"
+                              Style="{StaticResource MaterialDesignComboBox}"
+                              FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
+                              Margin="20,0,20,0"
+                              HorizontalAlignment="Left"
+                              BorderBrush="#64748B" BorderThickness="1"
+                              ItemsSource="{Binding GradeCollection}"
+                              SelectedItem="{Binding SelectedGrade, UpdateSourceTrigger=PropertyChanged}" />
                     <ComboBox Background="#FFFFFF"
                               Padding="5 0 10 0"
                               Width="150" Height="30"
@@ -103,19 +119,9 @@
                               FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
                               Margin="20,0,20,0"
                               HorizontalAlignment="Left"
-                              BorderBrush="#64748B" BorderThickness="1" />
-                    <ComboBox Background="#FFFFFF"
-                              Padding="10 0 10 0"
-                              Width="150"
-                              Height="30"
-                              IsEditable="True"
-                              Text="Khối"
-                              Foreground="Black"
-                              Style="{StaticResource MaterialDesignComboBox}"
-                              FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
-                              Margin="20,0,20,0"
-                              HorizontalAlignment="Left"
-                              BorderBrush="#64748B" BorderThickness="1" />
+                              BorderBrush="#64748B" BorderThickness="1"
+                              ItemsSource="{Binding SubjectCollection}"
+                              SelectedItem="{Binding SelectedSubject, UpdateSourceTrigger=PropertyChanged}" />
                     <ComboBox Background="#FFFFFF"
                               Padding="10 0 10 0"
                               Width="150"
@@ -127,7 +133,9 @@
                               FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
                               Margin="20,0,20,0"
                               HorizontalAlignment="Left"
-                              BorderBrush="#64748B" BorderThickness="1" />
+                              BorderBrush="#64748B" BorderThickness="1"
+                              ItemsSource="{Binding SemesterCollection}"
+                              SelectedItem="{Binding SelectedSemester, UpdateSourceTrigger=PropertyChanged}" />
                     <ComboBox Background="#FFFFFF"
                               Padding="10 0 10 0"
                               Width="150" Height="30"
@@ -138,18 +146,20 @@
                               FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
                               Margin="20,0,20,0"
                               HorizontalAlignment="Left"
-                              BorderBrush="#64748B" BorderThickness="1" />
+                              BorderBrush="#64748B" BorderThickness="1"
+                              ItemsSource="{Binding ClassroomCollection}"
+                              SelectedItem="{Binding SelectedClassroom, UpdateSourceTrigger=PropertyChanged}" />
                 </StackPanel>
 
                 <StackPanel Grid.Row="1" Orientation="Vertical">
 
-                    <Border CornerRadius="8" 
+                    <Border CornerRadius="8"
                             Height="50" Width="950"
-                            Background="#FCFAFA" 
+                            Background="#FCFAFA"
                             BorderThickness="1"
                             BorderBrush="#C4C4C4">
-                        <StackPanel Orientation="Horizontal" 
-                                    VerticalAlignment="Center" 
+                        <StackPanel Orientation="Horizontal"
+                                    VerticalAlignment="Center"
                                     HorizontalAlignment="Stretch">
                             <Button Style="{StaticResource MaterialDesignIconButton}">
                                 <materialDesign:PackIcon Kind="Magnify" Width="25" Height="25" Foreground="#8A8A8A" />
@@ -169,7 +179,7 @@
 
                     <ScrollViewer HorizontalScrollBarVisibility="Auto"
                                   VerticalScrollBarVisibility="Auto">
-                        <DataGrid Margin="10 20 0 0"
+                        <DataGrid Margin="0 20 0 0"
                                   AutoGenerateColumns="True"
                                   Background="White"
                                   Height="471"
@@ -181,15 +191,6 @@
                             <!-- Tạo Style cho Header với góc bo tròn -->
                             <DataGrid.Resources>
 
-                                <Style TargetType="DataGridCell" x:Key="ModifiedCellStyle">
-                                    <Setter Property="Background" Value="LightYellow" />
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding Row.RowState}" Value="Modified">
-                                            <Setter Property="Background" Value="LightGreen" />
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-
                                 <Style TargetType="DataGridCell">
                                     <Setter Property="Background" Value="White"></Setter>
                                 </Style>
@@ -197,10 +198,9 @@
                                     <Setter Property="Template">
                                         <Setter.Value>
                                             <ControlTemplate TargetType="DataGridColumnHeader">
-                                                <Border CornerRadius="10,10,0,0"
-                                                        Background="#152259"
-                                                        BorderBrush="Transparent"
-                                                        BorderThickness="0"
+                                                <Border Background="#152259"
+                                                        BorderBrush="Black"
+                                                        BorderThickness="1"
                                                         Height="Auto" Padding="10">
                                                     <ContentPresenter HorizontalAlignment="Center"
                                                                       VerticalAlignment="Center" />
@@ -210,8 +210,7 @@
                                     </Setter>
                                     <Setter Property="Foreground" Value="White" />
                                     <Setter Property="FontSize" Value="16" />
-                                    <Setter Property="FontFamily"
-                                            Value="pack://application:,,,/Resource/Font/#Poppins Medium" />
+                                    <Setter Property="FontFamily" Value="pack://application:,,,/Resource/Font/#Poppins Medium" />
                                     <Setter Property="HorizontalContentAlignment" Value="Center" />
                                 </Style>
 
@@ -246,14 +245,13 @@
                     Background="#E17D7D"
                     Style="{StaticResource MaterialDesignRaisedButton}"
                     materialDesign:ButtonAssist.CornerRadius="20"
-                    Command="{Binding DeleteScoreCommand}">
+                    Command="{Binding DiscardChangeCommand}">
                 <TextBlock HorizontalAlignment="Center"
                            FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
                            FontSize="16"
                            Text="Hủy thay đổi"
                            Foreground="Snow"
-                           Cursor="Hand"
-                           ToolTip="Nhấn để xóa năm học" />
+                           Cursor="Hand"/>
             </Button>
             <Button Margin="10"
                     VerticalAlignment="Center"
@@ -262,14 +260,13 @@
                     Background="#8DB575"
                     Style="{StaticResource MaterialDesignRaisedButton}"
                     materialDesign:ButtonAssist.CornerRadius="20"
-                    Command="{Binding AddScoreCommand}">
+                    Command="{Binding SaveChangeCommand}">
                 <TextBlock HorizontalAlignment="Center"
                            FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
                            FontSize="16"
                            Text="Lưu thay đổi"
                            Foreground="Snow"
-                           Cursor="Hand"
-                           ToolTip="Nhấn để thêm năm học" />
+                           Cursor="Hand"/>
             </Button>
         </StackPanel>
     </Grid>

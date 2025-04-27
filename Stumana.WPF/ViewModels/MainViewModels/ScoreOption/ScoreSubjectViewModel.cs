@@ -1,14 +1,13 @@
 ﻿using System.Collections.ObjectModel;
 using System.Data;
 using System.Globalization;
+using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using Microsoft.EntityFrameworkCore;
 using Stumana.DataAccess.Services;
 using Stumana.DataAcess.Models;
 using Stumana.WPF.Commands;
-using static MaterialDesignThemes.Wpf.Theme;
 
 namespace Stumana.WPF.ViewModels.MainViewModels.ScoreOption
 {
@@ -19,7 +18,7 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ScoreOption
         //private Dictionary<string, int> ScoreTypeDic = new Dictionary<string, int>();
         public Dictionary<DataRow, Dictionary<string, Tuple<double, double?>>> ChangedData = new();
 
-        public Subject curSubject { get; set; }
+        public Subject? curSubject { get; set; } = null;
 
         private DataTable dataTable = new DataTable();
         private DataView _tableView;
@@ -35,7 +34,6 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ScoreOption
         }
 
         private string _searchText;
-
         public string SearchText
         {
             get => _searchText;
@@ -47,23 +45,142 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ScoreOption
             }
         }
 
+        public Dictionary<string, SchoolYear> SchoolYearDic { get; set; } = new();
+        private ObservableCollection<string> _schoolyearCollection;
+        public ObservableCollection<string> SchoolYearCollection
+        {
+            get => _schoolyearCollection;
+            set
+            {
+                _schoolyearCollection = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string _selectedschoolyear;
+        public string SelectedSchoolYear
+        {
+            get => _selectedschoolyear;
+            set
+            {
+                _selectedschoolyear = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Dictionary<string, Subject> SubjectDic { get; set; } = new();
+        private ObservableCollection<string> _subjectCollection;
+        public ObservableCollection<string> SubjectCollection
+        {
+            get => _subjectCollection;
+            set
+            {
+                _subjectCollection = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string _selectedsubject;
+        public string SelectedSubject
+        {
+            get => _selectedsubject;
+            set
+            {
+                _selectedsubject = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Dictionary<string, Grade> GradeDic { get; set; } = new();
+        private ObservableCollection<string> _gradeCollection;
+        public ObservableCollection<string> GradeCollection
+        {
+            get => _gradeCollection;
+            set
+            {
+                _gradeCollection = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string _selectedgrade;
+        public string SelectedGrade
+        {
+            get => _selectedgrade;
+            set
+            {
+                _selectedgrade = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private ObservableCollection<string> _semesterCollection;
+        public ObservableCollection<string> SemesterCollection
+        {
+            get => _semesterCollection;
+            set
+            {
+                _semesterCollection = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string _selectedSemester;
+        public string SelectedSemester
+        {
+            get => _selectedSemester;
+            set
+            {
+                _selectedSemester = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Dictionary<string, Classroom> ClassroomDic { get; set; }
+        private ObservableCollection<string> _classroomCollection;
+        public ObservableCollection<string> ClassroomCollection
+        {
+            get => _classroomCollection;
+            set
+            {
+                _classroomCollection = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string _selectedclassroom;
+        public string SelectedClassroom
+        {
+            get => _selectedclassroom;
+            set
+            {
+                _selectedclassroom = value;
+                OnPropertyChanged();
+            }
+        }
+
         #endregion Properties
 
         #region Commands
 
-        public ICommand AddScoreCommand { get; set; }
-        public ICommand DeleteScoreCommand { get; set; }
-        public ICommand EditScoreCommand { get; set; }
-        public ICommand FilterCommand { get; set; }
+        public ICommand SaveChangeCommand { get; set; }
+        public ICommand DiscardChangeCommand { get; set; }
 
         #endregion Commands
 
         public ScoreSubjectViewModel()
         {
-            EditScoreCommand = new NavigateModalCommand(() => new EditScoreInputViewModel());
+            SaveChangeCommand = new RelayCommand(SaveChange);
+            DiscardChangeCommand = new RelayCommand(DiscardChange);
 
-            LoadTableColumn();
+            LoadTable();
+            LoadCombobox();
+        }
 
+        private async void LoadTable()
+        {
+            //Create table
+            await LoadTableColumn();
             dataTable.Rows.Add("HS0033333333333331", "Nguyễn Văn An");
             dataTable.Rows.Add("HS0011111111111", "Nguyễn Văn Aaaaaaaaaaaaaa");
             dataTable.Rows.Add("HS0012222222222222222", "Nguyễn Văn Affffffffffff");
@@ -72,22 +189,24 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ScoreOption
                 dataTable.Rows.Add("HS0012222222222222222", "Nguyễn Văn Affffffffffff");
             }
 
-            LoadData();
+            //Load data into table
+            await LoadData();
+
+            //Event
             dataTable.ColumnChanged += OnColumnChanged;
         }
 
-
         private async Task LoadTableColumn()
         {
-            //if (curSubject == null)
-            //    return;
-
             dataTable = new DataTable();
             dataTable.Columns.Add("Mã học sinh", typeof(string));
             dataTable.Columns.Add("Tên học sinh", typeof(string));
             dataTable.Columns["Mã học sinh"].ReadOnly = true;
             dataTable.Columns["Tên học sinh"].ReadOnly = false;
             TableView = dataTable.DefaultView;
+
+            if (curSubject == null)
+                return;
 
             var scoreSheet = await GenericDataService<SubjectScoreType>.Instance.GetManyAsync(sc => sc.SubjectId == curSubject.Id,
                                                                                               score => score.Include(sc => sc.ScoreType));
@@ -108,7 +227,7 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ScoreOption
             TableView = dataTable.DefaultView;
         }
 
-        private async void LoadData()
+        private async Task LoadData()
         {
             if (dataTable.Columns.Count == 0 || curSubject == null)
                 return;
@@ -234,6 +353,131 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ScoreOption
             {
                 ToastMessageViewModel.ShowErrorToast("Không thể lưu. Đã có lỗi xảy ra");
             }
+        }
+
+        public void DiscardChange()
+        {
+            var result = System.Windows.MessageBox.Show(
+                "Bạn có chắc chắn muốn huỷ thay đổi?",
+                "Xác nhận huỷ",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Question
+            );
+
+            if (result != MessageBoxResult.Yes)
+                return;
+
+            foreach (var rowEntry in ChangedData)
+            {
+                DataRow row = rowEntry.Key;
+                Dictionary<string, Tuple<double, double?>> columnChanges = rowEntry.Value;
+
+                foreach (var columnEntry in columnChanges)
+                {
+                    string columnName = columnEntry.Key;
+                    double oldValue = columnEntry.Value.Item1;
+
+                    row[columnName] = oldValue >= 0 ? oldValue : DBNull.Value;
+                }
+            }
+
+            ChangedData.Clear();
+        }
+
+        private async void LoadCombobox()
+        {
+            await LoadSchoolYear();
+            await LoadGrade();
+            await LoadSemester();
+        }
+
+        private async Task LoadSchoolYear()
+        {
+            SchoolYearCollection = new ObservableCollection<string>();
+            IEnumerable<SchoolYear> sy = await GenericDataService<SchoolYear>.Instance.GetAllAsync();
+            var schoolYears = sy.ToList();
+
+            if (!schoolYears.Any())
+                return;
+
+            foreach (SchoolYear schoolYear in schoolYears)
+            {
+                string schoolyearstr = schoolYear.StartYear + "-" + schoolYear.EndYear;
+                SchoolYearCollection.Add(schoolyearstr);
+                SchoolYearDic.Add(schoolyearstr, schoolYear);
+            }
+        }
+
+        private async Task LoadGrade()
+        {
+            GradeCollection = new ObservableCollection<string>();
+            var grades = (await GenericDataService<Grade>.Instance.GetAllAsync()).ToList();
+
+            if (!grades.Any())
+                return;
+
+            foreach (Grade grade in grades)
+            {
+                string gradeName = $"Khối {grade.Level}";
+                GradeCollection.Add(gradeName);
+                GradeDic.Add(gradeName, grade);
+            }
+            GradeCollection.Add("Tất cả các khối");
+        }
+
+        private async Task LoadSubject(SchoolYear schoolYear, IEnumerable<Grade> grades)
+        {
+            if (schoolYear == null)
+                return;
+
+            SubjectCollection = new ObservableCollection<string>();
+            var subjects = (await GenericDataService<Subject>.Instance.GetManyAsync(s => s.YearId == schoolYear.Id)).ToList();
+
+            if (!subjects.Any() || grades == null || !grades.Any())
+                return;
+
+            var gradeId = grades.Select(g => g.Id);
+            subjects = subjects.Where(s => gradeId.Contains(s.GradeId)).ToList();
+
+            foreach (var subject in subjects)
+            {
+                Grade curGrade = grades.FirstOrDefault(g => g.Id == subject.GradeId);
+                string subjectName = $"{subject.Name} khối {curGrade.Level}";
+                SubjectCollection.Add(subjectName);
+                SubjectDic.Add(subjectName, subject);
+            }
+            SubjectCollection.Add("Tất cả các môn");
+        }
+
+        private async Task LoadSemester()
+        {
+            SemesterCollection.Add("Kỳ 1");
+            SemesterCollection.Add("Kỳ 2");
+        }
+
+        private async Task LoadClassroom(SchoolYear schoolYear, IEnumerable<Grade> grades)
+        {
+            ClassroomCollection = new ObservableCollection<string>();
+            var classrooms = (await GenericDataService<Classroom>.Instance.GetManyAsync(c => c.YearId == schoolYear.Id)).ToList();
+
+            if (!classrooms.Any() || grades == null || !grades.Any())
+                return;
+
+            var gradeId = grades.Select(g => g.Id);
+            classrooms = classrooms.Where(c => gradeId.Contains(c.GradeId)).ToList();
+
+            foreach (var classroom in classrooms)
+            {
+                string classroomName = $"Lớp {classroom.Name}";
+                ClassroomCollection.Add(classroomName);
+                ClassroomDic.Add(classroomName, classroom);
+            }
+            ClassroomCollection.Add("Tất cả các lớp");
+        }
+
+        public async void OnSelectionChanged()
+        {
+
         }
 
         public void OnSearchTextChange()

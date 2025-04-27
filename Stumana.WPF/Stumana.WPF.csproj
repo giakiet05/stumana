@@ -156,7 +156,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Stumana.DataAcess\Stumana.DataAcess.csproj" />
-    <ProjectReference Include="..\Stumana.Test\Stumana.Test.csproj" />
   </ItemGroup>
 
   <ItemGroup>

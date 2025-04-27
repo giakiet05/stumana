@@ -6,16 +6,14 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d"
-             Height="720" Width="1198">
+             Height="720" HorizontalAlignment="Stretch">
 
-    <Grid Background="White">
+    <Grid Background="White" HorizontalAlignment="Stretch">
         <Grid.RowDefinitions>
-            <RowDefinition Height="82"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
-
         </Grid.RowDefinitions>
-        <StackPanel Grid.Row="0"
+        <!--<StackPanel Grid.Row="0"
                     VerticalAlignment="Stretch"
                     HorizontalAlignment="Stretch"
                     Orientation="Horizontal">
@@ -49,126 +47,230 @@
                            Cursor="Hand"
                            ToolTip="Thiết lập điểm cho học sinh" />
             </Button>
-        </StackPanel>
-        <StackPanel Grid.Row="1" Orientation="Vertical">
-            <Border CornerRadius="8" Height="53" Width="1000" Background="#FCFAFA" BorderThickness="1"
-                    BorderBrush="#C4C4C4">
-                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+        </StackPanel>-->
+        <GroupBox Grid.Row="0">
+            <GroupBox.Style>
+                <Style TargetType="GroupBox">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="GroupBox">
+                                <StackPanel>
+                                    <ContentPresenter ContentSource="Header" />
+                                    <ContentPresenter />
+                                </StackPanel>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </GroupBox.Style>
+            <GroupBox.Header>
+                <Border Background="#059669"
+                        CornerRadius="10,10,0,0"
+                        Padding="10"
+                        Margin="0,10,0,0">
+                    <TextBlock Text="Bảng điểm học sinh"
+                               Foreground="White"
+                               FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
+                               FontSize="16"
+                               HorizontalAlignment="Center" />
+                </Border>
+            </GroupBox.Header>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
 
-                    <Button Style="{StaticResource MaterialDesignIconButton}">
-                        <materialDesign:PackIcon Kind="Magnify" Width="24" Height="24" Foreground="#8A8A8A" />
-                    </Button>
-
-                    <TextBox FontSize="14"
-                             Foreground="#8A8A8A"
-                             FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
-                             Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                             materialDesign:HintAssist.Hint="Tìm kiếm"
-                             materialDesign:TextFieldAssist.HasClearButton="True" Width="899" 
-                             Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}">
-                    </TextBox> 
-                    <Button Style="{StaticResource MaterialDesignIconButton}" Command="{Binding FilterCommand}">
-                        <materialDesign:PackIcon Kind="TuneVariant" Width="30" Height="30" Foreground="#C5CAE9" />
-                    </Button>
+                <StackPanel Orientation="Horizontal" Margin="0,20,0,10">
+                    <ComboBox Background="#FFFFFF"
+                              Padding="5 0 10 0"
+                              Width="150" Height="30"
+                              IsEditable="True"
+                              Text="Năm học*"
+                              Foreground="Black"
+                              Style="{StaticResource MaterialDesignComboBox}"
+                              FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
+                              Margin="20,0,20,0"
+                              HorizontalAlignment="Left"
+                              BorderBrush="#64748B" BorderThickness="1" />
+                    <ComboBox Background="#FFFFFF"
+                              Padding="5 0 10 0"
+                              Width="150" Height="30"
+                              IsEditable="True"
+                              Text="Môn học*"
+                              Foreground="Black"
+                              Style="{StaticResource MaterialDesignComboBox}"
+                              FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
+                              Margin="20,0,20,0"
+                              HorizontalAlignment="Left"
+                              BorderBrush="#64748B" BorderThickness="1" />
+                    <ComboBox Background="#FFFFFF"
+                              Padding="10 0 10 0"
+                              Width="150"
+                              Height="30"
+                              IsEditable="True"
+                              Text="Khối"
+                              Foreground="Black"
+                              Style="{StaticResource MaterialDesignComboBox}"
+                              FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
+                              Margin="20,0,20,0"
+                              HorizontalAlignment="Left"
+                              BorderBrush="#64748B" BorderThickness="1" />
+                    <ComboBox Background="#FFFFFF"
+                              Padding="10 0 10 0"
+                              Width="150"
+                              Height="30"
+                              IsEditable="True"
+                              Text="Học kỳ"
+                              Foreground="Black"
+                              Style="{StaticResource MaterialDesignComboBox}"
+                              FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
+                              Margin="20,0,20,0"
+                              HorizontalAlignment="Left"
+                              BorderBrush="#64748B" BorderThickness="1" />
+                    <ComboBox Background="#FFFFFF"
+                              Padding="10 0 10 0"
+                              Width="150" Height="30"
+                              IsEditable="True"
+                              Text="Lớp"
+                              Foreground="Black"
+                              Style="{StaticResource MaterialDesignComboBox}"
+                              FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
+                              Margin="20,0,20,0"
+                              HorizontalAlignment="Left"
+                              BorderBrush="#64748B" BorderThickness="1" />
                 </StackPanel>
-            </Border>
 
-            <ScrollViewer HorizontalScrollBarVisibility="Auto"
-                          VerticalScrollBarVisibility="Auto">
-                <DataGrid Margin="10 20 0 0" 
-                          AutoGenerateColumns="True"
-                          Background="White"
-                          Height="471"
-                          HorizontalAlignment="Stretch"
-                          CanUserAddRows="False"
-                          ItemsSource="{Binding TableView}">
-                    <!-- Tạo Style cho Header với góc bo tròn -->
-                    <DataGrid.Resources>
+                <StackPanel Grid.Row="1" Orientation="Vertical">
 
-                        <Style TargetType="DataGridCell" x:Key="ModifiedCellStyle">
-                            <Setter Property="Background" Value="LightYellow"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding Row.RowState}" Value="Modified">
-                                    <Setter Property="Background" Value="LightGreen"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
+                    <Border CornerRadius="8" 
+                            Height="50" Width="950"
+                            Background="#FCFAFA" 
+                            BorderThickness="1"
+                            BorderBrush="#C4C4C4">
+                        <StackPanel Orientation="Horizontal" 
+                                    VerticalAlignment="Center" 
+                                    HorizontalAlignment="Stretch">
+                            <Button Style="{StaticResource MaterialDesignIconButton}">
+                                <materialDesign:PackIcon Kind="Magnify" Width="25" Height="25" Foreground="#8A8A8A" />
+                            </Button>
 
-                        <Style TargetType="DataGridCell">
-                            <Setter Property="Background" Value="White"></Setter>
-                        </Style>
-                        <Style TargetType="DataGridColumnHeader">
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="DataGridColumnHeader">
-                                        <Border CornerRadius="10,10,0,0"
-                                                Background="#152259"
-                                                BorderBrush="Transparent"
-                                                BorderThickness="0"
-                                                Height="Auto" Padding="10">
-                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
-                                        </Border>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                            <Setter Property="Foreground" Value="White" />
-                            <Setter Property="FontSize" Value="16" />
-                            <Setter Property="FontFamily" Value="pack://application:,,,/Resource/Font/#Poppins Medium" />
-                            <Setter Property="HorizontalContentAlignment" Value="Center" />
-                        </Style>
+                            <TextBox FontSize="13"
+                                     Foreground="Black"
+                                     FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
+                                     Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                     materialDesign:HintAssist.Hint="Tìm kiếm"
+                                     materialDesign:TextFieldAssist.HasClearButton="True"
+                                     HorizontalAlignment="Right" Width="900"
+                                     Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}">
+                            </TextBox>
+                        </StackPanel>
+                    </Border>
 
-                    </DataGrid.Resources>
-                    <DataGrid.Style>
-                        <Style TargetType="DataGrid">
-                            <Setter Property="Background" Value="#F5F5F5" />
-                            <!-- Đổi màu nền -->
-                            <Setter Property="BorderBrush" Value="#152259" />
-                            <!-- Đổi màu viền -->
-                            <Setter Property="BorderThickness" Value="0" />
-                        </Style>
-                    </DataGrid.Style>
-                    <DataGrid.CellStyle>
-                        <Style BasedOn="{StaticResource MaterialDesignDataGridCell}" TargetType="DataGridCell">
-                            <Setter Property="BorderThickness" Value="0" />
-                            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
-                        </Style>
-                    </DataGrid.CellStyle>
-                </DataGrid>
-            </ScrollViewer>
-            <StackPanel Grid.Row="3" Orientation="Horizontal" FlowDirection="RightToLeft" Width="1034">
-                <Button Margin="10"
-                        VerticalAlignment="Center"
-                        Width="Auto"
-                        Height="40"
-                        Background="#E17D7D"
-                        Style="{StaticResource MaterialDesignRaisedButton}"
-                        materialDesign:ButtonAssist.CornerRadius="20"
-                        Command="{Binding DeleteScoreCommand}">
-                    <TextBlock HorizontalAlignment="Center"
-                               FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
-                               FontSize="16"
-                               Text="Hủy thay đổi"
-                               Foreground="Snow"
-                               Cursor="Hand"
-                               ToolTip="Nhấn để xóa năm học" />
-                </Button>
-                <Button Margin="10"
-                        VerticalAlignment="Center"
-                        Width="Auto"
-                        Height="40"
-                        Background="#8DB575"
-                        Style="{StaticResource MaterialDesignRaisedButton}"
-                        materialDesign:ButtonAssist.CornerRadius="20"
-                        Command="{Binding AddScoreCommand}">
-                    <TextBlock HorizontalAlignment="Center"
-                               FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
-                               FontSize="16"
-                               Text="Lưu thay đổi"
-                               Foreground="Snow"
-                               Cursor="Hand"
-                               ToolTip="Nhấn để thêm năm học" />
-                </Button>
-            </StackPanel>
+                    <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                                  VerticalScrollBarVisibility="Auto">
+                        <DataGrid Margin="10 20 0 0"
+                                  AutoGenerateColumns="True"
+                                  Background="White"
+                                  Height="471"
+                                  BorderBrush="Black"
+                                  BorderThickness="1"
+                                  HorizontalAlignment="Stretch"
+                                  CanUserAddRows="False"
+                                  ItemsSource="{Binding TableView}">
+                            <!-- Tạo Style cho Header với góc bo tròn -->
+                            <DataGrid.Resources>
+
+                                <Style TargetType="DataGridCell" x:Key="ModifiedCellStyle">
+                                    <Setter Property="Background" Value="LightYellow" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Row.RowState}" Value="Modified">
+                                            <Setter Property="Background" Value="LightGreen" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="Background" Value="White"></Setter>
+                                </Style>
+                                <Style TargetType="DataGridColumnHeader">
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="DataGridColumnHeader">
+                                                <Border CornerRadius="10,10,0,0"
+                                                        Background="#152259"
+                                                        BorderBrush="Transparent"
+                                                        BorderThickness="0"
+                                                        Height="Auto" Padding="10">
+                                                    <ContentPresenter HorizontalAlignment="Center"
+                                                                      VerticalAlignment="Center" />
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Setter Property="Foreground" Value="White" />
+                                    <Setter Property="FontSize" Value="16" />
+                                    <Setter Property="FontFamily"
+                                            Value="pack://application:,,,/Resource/Font/#Poppins Medium" />
+                                    <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                </Style>
+
+                            </DataGrid.Resources>
+                            <DataGrid.Style>
+                                <Style TargetType="DataGrid">
+                                    <Setter Property="Background" Value="#F5F5F5" />
+                                    <!-- Đổi màu nền -->
+                                    <Setter Property="BorderBrush" Value="#152259" />
+                                    <!-- Đổi màu viền -->
+                                    <Setter Property="BorderThickness" Value="0" />
+                                </Style>
+                            </DataGrid.Style>
+                            <DataGrid.CellStyle>
+                                <Style BasedOn="{StaticResource MaterialDesignDataGridCell}"
+                                       TargetType="DataGridCell">
+                                    <Setter Property="BorderThickness" Value="0" />
+                                    <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+                                </Style>
+                            </DataGrid.CellStyle>
+                        </DataGrid>
+                    </ScrollViewer>
+                </StackPanel>
+            </Grid>
+        </GroupBox>
+
+        <StackPanel Grid.Row="1" Orientation="Horizontal" FlowDirection="RightToLeft">
+            <Button Margin="10"
+                    VerticalAlignment="Center"
+                    Width="Auto"
+                    Height="40"
+                    Background="#E17D7D"
+                    Style="{StaticResource MaterialDesignRaisedButton}"
+                    materialDesign:ButtonAssist.CornerRadius="20"
+                    Command="{Binding DeleteScoreCommand}">
+                <TextBlock HorizontalAlignment="Center"
+                           FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
+                           FontSize="16"
+                           Text="Hủy thay đổi"
+                           Foreground="Snow"
+                           Cursor="Hand"
+                           ToolTip="Nhấn để xóa năm học" />
+            </Button>
+            <Button Margin="10"
+                    VerticalAlignment="Center"
+                    Width="Auto"
+                    Height="40"
+                    Background="#8DB575"
+                    Style="{StaticResource MaterialDesignRaisedButton}"
+                    materialDesign:ButtonAssist.CornerRadius="20"
+                    Command="{Binding AddScoreCommand}">
+                <TextBlock HorizontalAlignment="Center"
+                           FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
+                           FontSize="16"
+                           Text="Lưu thay đổi"
+                           Foreground="Snow"
+                           Cursor="Hand"
+                           ToolTip="Nhấn để thêm năm học" />
+            </Button>
         </StackPanel>
     </Grid>
 </UserControl>

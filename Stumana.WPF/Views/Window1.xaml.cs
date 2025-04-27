@@ -12,14 +12,14 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace Stumana.WPF.Views.MainView.ScoreOption
+namespace Stumana.WPF.Views
 {
     /// <summary>
-    /// Interaction logic for ScoreTable.xaml
+    /// Interaction logic for Window1.xaml
     /// </summary>
-    public partial class ScoreTable
+    public partial class Window1
     {
-        public ScoreTable()
+        public Window1()
         {
             InitializeComponent();
         }

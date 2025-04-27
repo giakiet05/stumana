@@ -3,8 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:Stumana.WPF.Views.AuthencationViews"
-             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d"
             MinWidth="1440" MinHeight="789">
    
@@ -157,25 +155,24 @@
             </ScrollViewer>
         <Grid Grid.Column="1" Margin="0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="100" />
+                <RowDefinition Height="70" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <Grid Grid.Row="0">
                 <StackPanel Orientation="Horizontal">
                     <Image Source="/Resource/Image/Avatar.png"
-                           Height="80" Width="80">
+                           HorizontalAlignment="Stretch"
+                           Margin="5">
 
                     </Image>
                     <TextBlock Text="ADMIN" Padding="10"
                                FontFamily="pack://application:,,,/Resource/Font/#Poppins SEMIBOLD"
-                               FontSize="40">
-
+                               FontSize="35">
                     </TextBlock>
 
                 </StackPanel>
-                <Rectangle VerticalAlignment="Bottom" Fill="#808080" Height="1" Margin="0,10,0,10" />
-
-
+                <Rectangle VerticalAlignment="Bottom" Fill="#808080" Height="1" 
+                           Margin="0,10,0,0" />
             </Grid>
             <ScrollViewer  Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
 

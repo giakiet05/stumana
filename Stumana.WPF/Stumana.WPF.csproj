@@ -151,11 +151,11 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.135" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Stumana.DataAcess\Stumana.DataAcess.csproj" />
-    <ProjectReference Include="..\Stumana.Test\Stumana.Test.csproj" />
   </ItemGroup>
 
   <ItemGroup>

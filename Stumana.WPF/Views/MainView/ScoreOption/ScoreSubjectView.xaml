@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d"
              Height="720" HorizontalAlignment="Stretch">
 
@@ -148,6 +149,73 @@
                               BorderBrush="#64748B" BorderThickness="1"
                               ItemsSource="{Binding ClassroomCollection}"
                               SelectedItem="{Binding SelectedClassroom, UpdateSourceTrigger=PropertyChanged}" />
+
+                    <Border VerticalAlignment="Center"
+                            BorderBrush="#64748B"
+                            BorderThickness="1"
+                            Width="150" Height="30">
+                        <Grid>
+                            <TextBlock Margin="10,0,0,0"
+                                       HorizontalAlignment="Left"
+                                       VerticalAlignment="Center"
+                                       Text="Khối*"
+                                       FontSize="13"
+                                       Foreground="Black"
+                                       FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium" />
+                            <materialDesign:PopupBox HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                                     materialDesign:HintAssist.FloatingHintHorizontalAlignment="Stretch"
+                                                     materialDesign:HintAssist.Foreground="{DynamicResource CommonText}"
+                                                     materialDesign:TextFieldAssist.UnderlineBrush="{DynamicResource Underline}"
+                                                     FontSize="12"
+                                                     Foreground="Black"
+                                                     PopupMode="Click"
+                                                     StaysOpen="True">
+                                <materialDesign:PopupBox.ToggleContent>
+                                    <Grid>
+                                        <TextBlock Text="" Width="150"/>
+
+                                        <TextBlock Text="▼"
+                                                   FontSize="6"
+                                                   VerticalAlignment="Center"
+                                                   HorizontalAlignment="Right"
+                                                   Margin="0,0,13,0"
+                                                   Foreground="Gray">
+                                            <TextBlock.RenderTransform>
+                                                <ScaleTransform ScaleX="1.7" ScaleY="1" />
+                                            </TextBlock.RenderTransform>
+                                        </TextBlock>
+                                    </Grid>
+                                </materialDesign:PopupBox.ToggleContent>
+                                <ItemsControl Width="150" ItemsSource="{Binding SourceCategory}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel>
+                                                <CheckBox
+                                                    Height="30"
+                                                    Margin="10,0,0,0"
+                                                    Content="{Binding Name}"
+                                                    FontSize="14"
+                                                    IsChecked="{Binding IsChecked, Mode=TwoWay}">
+                                                    <b:Interaction.Triggers>
+                                                        <b:EventTrigger EventName="Checked">
+                                                            <b:InvokeCommandAction
+                                                                Command="{Binding DataContext.FilterCategoryCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                                CommandParameter="{Binding}" />
+                                                        </b:EventTrigger>
+                                                        <b:EventTrigger EventName="Unchecked">
+                                                            <b:InvokeCommandAction
+                                                                Command="{Binding DataContext.FilterCategoryCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                                CommandParameter="{Binding}" />
+                                                        </b:EventTrigger>
+                                                    </b:Interaction.Triggers>
+                                                </CheckBox>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </materialDesign:PopupBox>
+                        </Grid>
+                    </Border>
                 </StackPanel>
 
                 <StackPanel Grid.Row="1" Orientation="Vertical">
@@ -188,12 +256,12 @@
                                   materialDesign:DataGridAssist.EnableEditBoxAssist="True"
                                   CanUserAddRows="False"
                                   ItemsSource="{Binding TableView}">
-                            <!-- Tạo Style cho Header với góc bo tròn -->
-                            <DataGrid.Resources>
 
+                            <DataGrid.Resources>
                                 <Style TargetType="DataGridCell">
                                     <Setter Property="Background" Value="White"></Setter>
                                 </Style>
+
                                 <Style TargetType="DataGridColumnHeader">
                                     <Setter Property="Template">
                                         <Setter.Value>
@@ -201,10 +269,53 @@
                                                 <Border Background="#152259"
                                                         BorderBrush="Black"
                                                         BorderThickness="1"
-                                                        Height="Auto" Padding="10">
-                                                    <ContentPresenter HorizontalAlignment="Center"
-                                                                      VerticalAlignment="Center" />
+                                                        Padding="10">
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="*" /> <!-- Text -->
+                                                            <ColumnDefinition Width="Auto" /> <!-- Sort Arrow -->
+                                                        </Grid.ColumnDefinitions>
+
+                                                        <!-- Header Text -->
+                                                        <ContentPresenter
+                                                            Grid.Column="0"
+                                                            HorizontalAlignment="Center"
+                                                            VerticalAlignment="Center"
+                                                            RecognizesAccessKey="True" />
+
+                                                        <!-- Sort Arrow -->
+                                                        <Path x:Name="SortArrow"
+                                                              Grid.Column="1"
+                                                              Data="M 0 0 L 8 0 L 4 4 Z"
+                                                              Fill="White"
+                                                              Width="8"
+                                                              Height="4"
+                                                              VerticalAlignment="Center"
+                                                              Margin="5,0,0,0"
+                                                              Visibility="Collapsed" />
+                                                    </Grid>
                                                 </Border>
+
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="SortDirection" Value="Ascending">
+                                                        <Setter TargetName="SortArrow" Property="Visibility"
+                                                                Value="Visible" />
+                                                        <Setter TargetName="SortArrow" Property="RenderTransform">
+                                                            <Setter.Value>
+                                                                <RotateTransform Angle="180" CenterX="4" CenterY="2" />
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </Trigger>
+                                                    <Trigger Property="SortDirection" Value="Descending">
+                                                        <Setter TargetName="SortArrow" Property="Visibility"
+                                                                Value="Visible" />
+                                                        <Setter TargetName="SortArrow" Property="RenderTransform">
+                                                            <Setter.Value>
+                                                                <RotateTransform Angle="0" />
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
                                             </ControlTemplate>
                                         </Setter.Value>
                                     </Setter>

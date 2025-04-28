@@ -234,9 +234,12 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ScoreOption
                 {
                     string columnName = $"{header} {i}";
                     ScoreTypeDetailDic[columnName] = scoreTypeDetail;
-                    dataTable.Columns.Add(columnName, typeof(string));
+                    dataTable.Columns.Add(columnName, typeof(double));
                 }
             }
+
+            dataTable.Columns.Add("Điểm TB", typeof(double));
+            dataTable.Columns["Điểm TB"].ReadOnly = true;
 
             TableView = dataTable.DefaultView;
         }
@@ -257,11 +260,14 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ScoreOption
             foreach (string studentId in studentIDList)
             {
                 DataRow dataRow = dataTable.NewRow();
+
+                double sumScore = 0;
+                double sumCoefficient = 0;
+
                 var studentScore = scoreDetails.Where(score => score.StudentAssignment.StudentId == studentId).ToList();
 
                 dataRow["Mã học sinh"] = studentId;
                 dataRow["Tên học sinh"] = studentScore[0].StudentAssignment.Student.Name;
-
 
                 foreach (SubjectScoreType subjectScoreType in scoreSheet)
                 {
@@ -271,11 +277,17 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ScoreOption
                     {
                         string columnName = $"{subjectScoreType.ScoreType.Name} {i}";
                         if (i <= scores.Count)
+                        {
                             dataRow[columnName] = scores[i - 1].Value;
+                            sumScore += scores[i-1].Value * subjectScoreType.ScoreType.Coefficient;
+                            sumCoefficient += subjectScoreType.ScoreType.Coefficient;
+                        }
                         else
                             dataRow[columnName] = DBNull.Value;
                     }
                 }
+
+                dataRow["Điểm TB"] = sumScore / sumCoefficient;
 
                 dataTable.Rows.Add(dataRow);
             }
@@ -299,7 +311,8 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ScoreOption
             object? newObj = e.ProposedValue;
             double? newValue = null;
 
-            if (!string.IsNullOrEmpty(Convert.ToString(newObj)))
+            //if (!string.IsNullOrEmpty(Convert.ToString(newObj)))
+            if (newObj != null || newObj != DBNull.Value)
             {
                 try
                 {
@@ -402,7 +415,7 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ScoreOption
 
         public void DiscardChange()
         {
-            var result = System.Windows.MessageBox.Show(
+            var result = MessageBox.Show(
                 "Bạn có chắc chắn muốn huỷ thay đổi?",
                 "Xác nhận huỷ",
                 MessageBoxButton.YesNo,
@@ -524,7 +537,58 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ScoreOption
             ClassroomCollection.Add("Tất cả các lớp");
         }
 
-        public async void OnSelectionChanged() { }
+        public async void OnFilterChangedLoad()
+        {
+            if (string.IsNullOrEmpty(SelectedSchoolYear) || string.IsNullOrEmpty(SelectedGrade))
+                return;
+
+            SchoolYear schoolYear = SchoolYearDic[SelectedSchoolYear];
+            List<Grade> grades = new List<Grade>();
+
+            if (SelectedGrade != "Tất cả các khối")
+                grades.Add(GradeDic[SelectedGrade]);
+            else
+            {
+                foreach (var gradePair in GradeDic)
+                {
+                    grades.Add(gradePair.Value);
+                }
+            }
+
+            await LoadSubject(schoolYear, grades);
+            await LoadClassroom(schoolYear, grades);
+        }
+
+        public async void OnFilterChange()
+        {
+            if (string.IsNullOrEmpty(SelectedSchoolYear) || string.IsNullOrEmpty(SelectedGrade) || string.IsNullOrEmpty(SelectedSubject))
+                return;
+
+            SchoolYear schoolYear = SchoolYearDic[SelectedSchoolYear];
+
+            List<Grade> grades = new List<Grade>();
+            if (SelectedGrade != "Tất cả các khối")
+                grades.Add(GradeDic[SelectedGrade]);
+            else
+            {
+                foreach (var gradePair in GradeDic)
+                {
+                    grades.Add(gradePair.Value);
+                }
+            }
+
+            List<Subject> subjects = new List<Subject>();
+            if (SelectedSubject != "Tất cả các môn") 
+                subjects.Add(SubjectDic[SelectedSubject]);
+            else
+            {
+                foreach (var subjectPair in SubjectDic)
+                {
+                    subjects.Add(subjectPair.Value);
+                }
+            }
+
+        }
 
         public void OnSearchTextChange()
         {

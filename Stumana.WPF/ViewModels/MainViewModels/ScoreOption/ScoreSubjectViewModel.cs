@@ -49,6 +49,8 @@ public class ScoreSubjectViewModel : BaseViewModel
     public Dictionary<string, Subject> SubjectDic { get; set; } = new();
     public Dictionary<string, Grade> GradeDic { get; set; } = new();
     public Dictionary<string, Classroom> ClassroomDic { get; set; }
+    public Subject? PreviousSubject { get; set; }
+    public List<Score>? PreviousScoreDetail { get; set; }
 
 
     private ObservableCollection<FilterItem> _gradeFilter = new();
@@ -63,9 +65,9 @@ public class ScoreSubjectViewModel : BaseViewModel
         }
     }
 
-    private ObservableCollection<FilterItem> _schoolyearFilter = new();
+    private ObservableCollection<string> _schoolyearFilter = new();
 
-    public ObservableCollection<FilterItem> SchoolYearFilter
+    public ObservableCollection<string> SchoolYearFilter
     {
         get => _schoolyearFilter;
         set
@@ -75,10 +77,25 @@ public class ScoreSubjectViewModel : BaseViewModel
         }
     }
 
+    private string _selectedSchoolYear;
 
-    private ObservableCollection<FilterItem> _subjectFilter = new();
+    public string SelectedSchoolYear
+    {
+        get => _selectedSchoolYear;
+        set
+        {
+            if (_selectedSchoolYear != value)
+            {
+                _selectedSchoolYear = value;
+                OnPropertyChanged();
+                OnFilterChange();
+            }
+        }
+    }
 
-    public ObservableCollection<FilterItem> SubjectFilter
+    private ObservableCollection<string> _subjectFilter = new();
+
+    public ObservableCollection<string> SubjectFilter
     {
         get => _subjectFilter;
         set
@@ -88,15 +105,57 @@ public class ScoreSubjectViewModel : BaseViewModel
         }
     }
 
+    private string _selectedSubject;
+
+    public string SelectedSubject
+    {
+        get => _selectedSubject;
+        set
+        {
+            if (_selectedSubject != value)
+            {
+                _selectedSubject = value;
+                OnPropertyChanged();
+                OnFilterChange();
+            }
+        }
+    }
+
+    private ObservableCollection<FilterItem> _classFilter = new();
+
+    public ObservableCollection<FilterItem> ClassFilter
+    {
+        get => _classFilter;
+        set
+        {
+            _classFilter = value;
+            OnPropertyChanged();
+        }
+    }
+
+    private ObservableCollection<FilterItem> _semesterFilter = new();
+
+    public ObservableCollection<FilterItem> SemesterFilter
+    {
+        get => _semesterFilter;
+        set
+        {
+            _semesterFilter = value;
+            OnPropertyChanged();
+        }
+    }
+
+    private Dictionary<string, int> SemesterDic { get; set; } = new();
+
     #endregion Properties
 
     #region Commands
 
     public ICommand SaveChangeCommand { get; set; }
     public ICommand DiscardChangeCommand { get; set; }
-    public ICommand FilterSchoolYearCommand { get; set; }
     public ICommand FilterGradeCommand { get; set; }
-    public ICommand FilterSubjectCommand { get; set; }
+    public ICommand FilterClassroomCommand { get; set; }
+    public ICommand FilterSemesterCommand { get; set; }
 
     #endregion Commands
 
@@ -107,16 +166,15 @@ public class ScoreSubjectViewModel : BaseViewModel
 
         //Filter Command
         FilterGradeCommand = new RelayCommand(FilterGrade);
+        FilterClassroomCommand = new RelayCommand(FilterClassRoom);
+        FilterSemesterCommand = new RelayCommand(FilterSemester);
 
-        LoadTable();
-        LoadGradeFilter();
+        LoadInitFilter();
+        ScoreDataTable.ColumnChanged += OnColumnChanged;
     }
 
-    private async void LoadTable()
+    private async void LoadTestTable()
     {
-        //Create table
-        await LoadTableColumn();
-
         //Testing
         ScoreDataTable.Rows.Add("HS0033333333333331", "Nguyễn Văn An");
         ScoreDataTable.Rows.Add("HS0011111111111", "Nguyễn Văn Aaaaaaaaaaaaaa");
@@ -125,16 +183,163 @@ public class ScoreSubjectViewModel : BaseViewModel
         {
             ScoreDataTable.Rows.Add("HS0012222222222222222", "Nguyễn Văn Affffffffffff");
         }
-
-        //Event
-        ScoreDataTable.ColumnChanged += OnColumnChanged;
     }
 
-    private async Task LoadTableColumn()
+    private async void LoadInitFilter()
+    {
+        await LoadSchoolYearFilter();
+        await LoadGradeFilter();
+    }
+
+    private async Task LoadSchoolYearFilter()
+    {
+        SchoolYearFilter.Clear();
+
+        List<SchoolYear> schoolYears = (await GenericDataService<SchoolYear>.Instance.GetAllAsync()).ToList();
+
+        if (!schoolYears.Any())
+            return;
+
+        foreach (SchoolYear schoolYear in schoolYears)
+        {
+            string schoolyearName = schoolYear.StartYear + " - " + schoolYear.EndYear;
+            SchoolYearFilter.Add(schoolyearName);
+            SchoolYearDic.Add(schoolyearName, schoolYear);
+        }
+    }
+
+    public async Task LoadGradeFilter()
+    {
+        GradeFilter.Clear();
+
+        //Test
+        //GradeFilter.Add(new FilterItem("All", false));
+        //GradeFilter.Add(new FilterItem("Khối 10", false));
+        //GradeFilter.Add(new FilterItem("Khối 11", false));
+        //GradeFilter.Add(new FilterItem("Khối 12", false));
+
+        var grades = (await GenericDataService<Grade>.Instance.GetAllAsync()).ToList();
+        if (!grades.Any())
+            return;
+
+        GradeFilter.Add(new FilterItem("All", false));
+        foreach (Grade grade in grades)
+        {
+            string gradeName = $"Khối {grade.Level}";
+            GradeFilter.Add(new FilterItem(gradeName, false));
+            GradeDic.Add(gradeName, grade);
+        }
+    }
+
+    public async Task LoadSubjectFilter(SchoolYear schoolYear, IEnumerable<Grade> grades)
+    {
+        SubjectFilter.Clear();
+
+        var gradeId = grades.Select(g => g.Id);
+        List<Subject> subjects = (await GenericDataService<Subject>.Instance.GetManyAsync(s => s.YearId == schoolYear.Id && gradeId.Contains(s.GradeId),
+                                                                                          query => query.Include(s => s.Grade))).ToList();
+
+        if (!subjects.Any())
+            return;
+
+        foreach (Subject subject in subjects)
+        {
+            string subjectName = $"{subject.Name} khối {subject.Grade.Level}";
+            SubjectDic.Add(subjectName, subject);
+            SubjectFilter.Add(subjectName);
+        }
+    }
+
+    public async Task LoadClassroomFilter(SchoolYear schoolYear, IEnumerable<Grade> grades)
+    {
+        ClassFilter.Clear();
+
+        var gradeId = grades.Select(g => g.Id);
+        List<Classroom> classrooms = (await GenericDataService<Classroom>.Instance.GetManyAsync(c => c.YearId == schoolYear.Id && gradeId.Contains(c.GradeId))).ToList();
+
+        if (!classrooms.Any())
+            return;
+
+        ClassFilter.Add(new FilterItem("All", false));
+        foreach (Classroom classroom in classrooms)
+        {
+            string className = $"Lớp {classroom.Name}";
+            ClassFilter.Add(new FilterItem(className, false));
+            ClassroomDic[className] = classroom;
+        }
+    }
+
+    public async Task LoadSemesterFilter(SchoolYear schoolYear, IEnumerable<Grade> grades)
+    {
+        SemesterFilter.Clear();
+        var gradeId = grades.Select(g => g.Id);
+        List<int> semesters = (await GenericDataService<StudentAssignment>.Instance.GetManyAsync(sa => sa.Classroom.YearId == schoolYear.Id && gradeId.Contains(sa.Classroom.GradeId),
+                                                                                                 query => query.Include(sa => sa.Classroom))).Select(sa => sa.Semester).Distinct().ToList();
+
+        if (!semesters.Any())
+            return;
+
+        SemesterFilter.Add(new FilterItem("All", false));
+        foreach (int semester in semesters)
+        {
+            string semesterName = $"HK {semester}";
+            SemesterFilter.Add(new FilterItem(semesterName, false));
+            SemesterDic[semesterName] = semester;
+        }
+    }
+
+    private async void OnFilterChange()
+    {
+        var countGradeFilter = GradeFilter.Count(i => i.IsChecked);
+
+        if (string.IsNullOrEmpty(SelectedSchoolYear) || countGradeFilter == 0)
+            return;
+
+        List<Grade> grades = GradeFilter.Where(i => i.IsChecked).Select(i => GradeDic[i.Name]).ToList();
+        await LoadSubjectFilter(SchoolYearDic[SelectedSchoolYear], grades);
+        await LoadClassroomFilter(SchoolYearDic[SelectedSchoolYear], grades);
+        await LoadSemesterFilter(SchoolYearDic[SelectedSchoolYear], grades);
+
+        if (string.IsNullOrEmpty(SelectedSubject))
+            return;
+
+        Subject subject = SubjectDic[SelectedSubject];
+        if (PreviousSubject == null || subject.Id != PreviousSubject.Id)
+        {
+            PreviousSubject = subject;
+            await LoadTableColumn(subject);
+        }
+
+        List<Classroom> classrooms = new List<Classroom>();
+        foreach (var filterItem in ClassFilter)
+        {
+            if (filterItem.IsChecked)
+                classrooms.Add(ClassroomDic[filterItem.Name]);
+        }
+
+        List<int> semesters = new List<int>();
+        foreach (var filterItem in SemesterFilter)
+        {
+            if (filterItem.IsChecked)
+                semesters.Add(SemesterDic[filterItem.Name]);
+        }
+
+        await LoadData(subject, classrooms, semesters);
+    }
+
+    private async Task LoadTableColumn(Subject curSubject)
     {
         ScoreDataTable = new DataTable();
+        ScoreDataTable.Columns.Add("Học kì", typeof(string));
+        ScoreDataTable.Columns.Add("Khối", typeof(string));
+        ScoreDataTable.Columns.Add("Môn học", typeof(string));
+        ScoreDataTable.Columns.Add("Lớp", typeof(string));
         ScoreDataTable.Columns.Add("Mã học sinh", typeof(string));
         ScoreDataTable.Columns.Add("Tên học sinh", typeof(string));
+        ScoreDataTable.Columns["Học kì"].ReadOnly = true;
+        ScoreDataTable.Columns["Khối"].ReadOnly = true;
+        ScoreDataTable.Columns["Môn học"].ReadOnly = true;
+        ScoreDataTable.Columns["Lớp"].ReadOnly = true;
         ScoreDataTable.Columns["Mã học sinh"].ReadOnly = true;
         ScoreDataTable.Columns["Tên học sinh"].ReadOnly = true;
         TableView = ScoreDataTable.DefaultView;
@@ -165,20 +370,37 @@ public class ScoreSubjectViewModel : BaseViewModel
         TableView = ScoreDataTable.DefaultView;
     }
 
-    private async Task LoadData(Subject curSubject)
+    private async Task LoadData(Subject curSubject, List<Classroom>? classrooms = null, List<int>? semesters = null)
     {
         if (ScoreDataTable.Columns.Count == 0)
             return;
 
         var scoreSheet = await GenericDataService<SubjectScoreType>.Instance.GetManyAsync(sc => sc.SubjectId == curSubject.Id,
                                                                                           score => score.Include(sc => sc.ScoreType));
-        var scoreTypeIds = scoreSheet.Select(ss => ss.Id).ToList();
-        var scoreDetails = await GenericDataService<Score>.Instance.GetManyAsync(score => scoreTypeIds.Contains(score.SubjectScoreTypeId),
-                                                                                 s => s.Include(s => s.StudentAssignment).ThenInclude(sa => sa.Student));
+        List<Score> scoreDetails;
+        if (PreviousSubject == null || PreviousSubject.Id != curSubject.Id)
+        {
+            var scoreTypeIds = scoreSheet.Select(ss => ss.Id).ToList();
+            scoreDetails = (await GenericDataService<Score>.Instance.GetManyAsync(score => scoreTypeIds.Contains(score.SubjectScoreTypeId),
+                                                                                  query => query.Include(s => s.StudentAssignment).ThenInclude(sa => sa.Student)
+                                                                                      .Include(s => s.StudentAssignment).ThenInclude(sa => sa.Classroom))).ToList();
+            PreviousScoreDetail = scoreDetails;
+        }
+        else
+            scoreDetails = PreviousScoreDetail;
+
+        if (classrooms != null && classrooms.Count > 0)
+        {
+            var classroomId = classrooms.Select(c => c.Id);
+            scoreDetails = scoreDetails.Where(s => classroomId.Contains(s.StudentAssignment.ClassroomId)).ToList();
+        }
+
+        if (semesters != null && semesters.Count > 0)
+            scoreDetails = scoreDetails.Where(s => semesters.Contains(s.StudentAssignment.Semester)).ToList();
 
         var studentIDList = scoreDetails.Select(score => score.StudentAssignment.StudentId).Distinct().ToList();
 
-        foreach (string studentId in studentIDList)
+        foreach (var studentId in studentIDList)
         {
             DataRow dataRow = ScoreDataTable.NewRow();
 
@@ -186,7 +408,12 @@ public class ScoreSubjectViewModel : BaseViewModel
             double sumCoefficient = 0;
 
             var studentScore = scoreDetails.Where(score => score.StudentAssignment.StudentId == studentId).ToList();
+            StudentAssignment studentAssignment = scoreDetails.FirstOrDefault(s => s.StudentAssignment.StudentId == studentId).StudentAssignment;
 
+            dataRow["Học kì"] = studentAssignment.Semester;
+            dataRow["Khối"] = curSubject.Grade.Name;
+            dataRow["Môn học"] = curSubject.Name;
+            dataRow["Lớp"] = studentAssignment.Classroom.Name;
             dataRow["Mã học sinh"] = studentId;
             dataRow["Tên học sinh"] = studentScore[0].StudentAssignment.Student.Name;
 
@@ -211,6 +438,58 @@ public class ScoreSubjectViewModel : BaseViewModel
             dataRow["Điểm TB"] = sumScore / sumCoefficient;
 
             ScoreDataTable.Rows.Add(dataRow);
+        }
+    }
+
+    private void FilterGrade(object param)
+    {
+        FilterItem filterItem = (FilterItem)param;
+        ProcessFilterItemSelection(filterItem, GradeFilter);
+        OnFilterChange();
+    }
+
+    private void FilterClassRoom(object param)
+    {
+        FilterItem filterItem = (FilterItem)param;
+        ProcessFilterItemSelection(filterItem, ClassFilter);
+        OnFilterChange();
+    }
+
+    private void FilterSemester(object param)
+    {
+        FilterItem filterItem = (FilterItem)param;
+        ProcessFilterItemSelection(filterItem, SemesterFilter);
+        OnFilterChange();
+    }
+
+    private void ProcessFilterItemSelection(FilterItem filterItem, ObservableCollection<FilterItem> filterItems)
+    {
+        if (filterItem.Name == "All")
+        {
+            if (filterItem.IsChecked)
+            {
+                foreach (FilterItem item in filterItems)
+                {
+                    if (!item.IsChecked)
+                        item.IsChecked = true;
+                }
+            }
+            else
+            {
+                int countIsChecked = filterItems.Count(i => i.IsChecked);
+                if (countIsChecked == filterItems.Count - 1)
+                {
+                    foreach (FilterItem item in filterItems)
+                        item.IsChecked = false;
+                }
+            }
+        }
+        else
+        {
+            if (filterItem.IsChecked == false && filterItems[0].IsChecked)
+            {
+                filterItems[0].IsChecked = false;
+            }
         }
     }
 
@@ -400,89 +679,6 @@ public class ScoreSubjectViewModel : BaseViewModel
             }));
 
         return filteredRows.Any() ? filteredRows.CopyToDataTable().DefaultView : new DataView(ScoreDataTable.Clone());
-    }
-
-    private async Task LoadSchoolYear()
-    {
-        List<SchoolYear> schoolYears = (await GenericDataService<SchoolYear>.Instance.GetAllAsync()).ToList();
-
-        if (!schoolYears.Any())
-            return;
-
-        SchoolYearFilter.Add(new FilterItem("All", false));
-        foreach (SchoolYear schoolYear in schoolYears)
-        {
-            string schoolyearName = schoolYear.StartYear + " - " + schoolYear.EndYear;
-            SchoolYearFilter.Add(new FilterItem(schoolyearName, false));
-            SchoolYearDic.Add(schoolyearName, schoolYear);
-        }
-    }
-
-    public async void LoadGradeFilter()
-    {
-        GradeFilter.Clear();
-
-        //Test
-        //GradeFilter.Add(new FilterItem("All", false));
-        //GradeFilter.Add(new FilterItem("Khối 10", false));
-        //GradeFilter.Add(new FilterItem("Khối 11", false));
-        //GradeFilter.Add(new FilterItem("Khối 12", false));
-
-        var grades = (await GenericDataService<Grade>.Instance.GetAllAsync()).ToList();
-        if (!grades.Any())
-            return;
-
-        GradeFilter.Add(new FilterItem("All", false));
-
-        foreach (Grade grade in grades)
-        {
-            string gradeName = $"Khối {grade.Level}";
-            GradeFilter.Add(new FilterItem(gradeName, false));
-            GradeDic.Add(gradeName, grade);
-        }
-    }
-
-    public async void LoadSubjectFilter(IEnumerable<SchoolYear> schoolYears, IEnumerable<Grade> grades)
-    {
-
-    }
-
-    private void FilterGrade(object param)
-    {
-        FilterItem filterItem = (FilterItem)param;
-        ProcessFilterItemSelection(filterItem, GradeFilter);
-        return;
-    }
-
-    private void ProcessFilterItemSelection(FilterItem filterItem, ObservableCollection<FilterItem> filterItems)
-    {
-        if (filterItem.Name == "All")
-        {
-            if (filterItem.IsChecked)
-            {
-                foreach (FilterItem item in filterItems)
-                {
-                    if (!item.IsChecked)
-                        item.IsChecked = true;
-                }
-            }
-            else
-            {
-                int countIsChecked = filterItems.Count(i => i.IsChecked);
-                if (countIsChecked == filterItems.Count - 1)
-                {
-                    foreach (FilterItem item in filterItems)
-                        item.IsChecked = false;
-                }
-            }
-        }
-        else
-        {
-            if (filterItem.IsChecked == false && filterItems[0].IsChecked)
-            {
-                filterItems[0].IsChecked = false;
-            }
-        }
     }
 }
 

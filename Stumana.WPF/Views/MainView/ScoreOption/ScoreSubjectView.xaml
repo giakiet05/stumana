@@ -88,68 +88,20 @@
                         </Style>
                     </StackPanel.Resources>
 
-                    <Border VerticalAlignment="Center"
-                            BorderBrush="#64748B"
-                            BorderThickness="1"
-                            Width="150" Height="30">
-                        <materialDesign:PopupBox HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                                                 materialDesign:HintAssist.FloatingHintHorizontalAlignment="Stretch"
-                                                 FontSize="12"
-                                                 Foreground="Black"
-                                                 PopupMode="Click"
-                                                 StaysOpen="True"
-                                                 materialDesign:RippleAssist.RippleSizeMultiplier="0.2"
-                                                 materialDesign:RippleAssist.IsCentered="False">
-                            <materialDesign:PopupBox.ToggleContent>
-                                <Grid>
-                                    <TextBlock Margin="10,0,0,0"
-                                               HorizontalAlignment="Left"
-                                               VerticalAlignment="Center"
-                                               Text="Năm học*"
-                                               FontSize="13"
-                                               Width="150"
-                                               Foreground="Black"
-                                               FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium" />
-                                    <TextBlock Text="▼"
-                                               FontSize="6"
-                                               VerticalAlignment="Center"
-                                               HorizontalAlignment="Right"
-                                               Margin="0,0,13,0"
-                                               Foreground="Gray">
-                                        <TextBlock.RenderTransform>
-                                            <ScaleTransform ScaleX="1.5" ScaleY="1" />
-                                        </TextBlock.RenderTransform>
-                                    </TextBlock>
-                                </Grid>
-                            </materialDesign:PopupBox.ToggleContent>
-                            <ItemsControl Width="150" ItemsSource="{Binding SchoolYearFilter}">
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <StackPanel>
-                                            <CheckBox Height="30"
-                                                      Margin="10,0,0,0"
-                                                      Content="{Binding Name}"
-                                                      FontSize="14"
-                                                      IsChecked="{Binding IsChecked, Mode=TwoWay}">
-                                                <b:Interaction.Triggers>
-                                                    <b:EventTrigger EventName="Checked">
-                                                        <b:InvokeCommandAction
-                                                            Command="{Binding DataContext.FilterSchoolYearCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
-                                                            CommandParameter="{Binding}" />
-                                                    </b:EventTrigger>
-                                                    <b:EventTrigger EventName="Unchecked">
-                                                        <b:InvokeCommandAction
-                                                            Command="{Binding DataContext.FilterSchoolYearCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
-                                                            CommandParameter="{Binding}" />
-                                                    </b:EventTrigger>
-                                                </b:Interaction.Triggers>
-                                            </CheckBox>
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-                        </materialDesign:PopupBox>
-                    </Border>
+                    <ComboBox Background="#FFFFFF"
+                              Padding="5 0 10 0"
+                              Width="150" Height="30"
+                              IsEditable="True"
+                              Text="Năm học*"
+                              Foreground="Black"
+                              Style="{StaticResource MaterialDesignComboBox}"
+                              FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
+                              Margin="20,0,20,0"
+                              HorizontalAlignment="Left"
+                              BorderBrush="#64748B" BorderThickness="1"
+                              IsReadOnly="True"
+                              ItemsSource="{Binding SchoolYearFilter}"
+                              SelectedItem="{Binding SelectedSchoolYear, UpdateSourceTrigger=PropertyChanged}" />
                     <Border VerticalAlignment="Center"
                             BorderBrush="#64748B"
                             BorderThickness="1"
@@ -212,68 +164,20 @@
                             </ItemsControl>
                         </materialDesign:PopupBox>
                     </Border>
-                    <Border VerticalAlignment="Center"
-                            BorderBrush="#64748B"
-                            BorderThickness="1"
-                            Width="150" Height="30">
-                        <materialDesign:PopupBox HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                                                 materialDesign:HintAssist.FloatingHintHorizontalAlignment="Stretch"
-                                                 FontSize="12"
-                                                 Foreground="Black"
-                                                 PopupMode="Click"
-                                                 StaysOpen="True"
-                                                 materialDesign:RippleAssist.RippleSizeMultiplier="0.2"
-                                                 materialDesign:RippleAssist.IsCentered="False">
-                            <materialDesign:PopupBox.ToggleContent>
-                                <Grid>
-                                    <TextBlock Margin="10,0,0,0"
-                                               HorizontalAlignment="Left"
-                                               VerticalAlignment="Center"
-                                               Text="Môn học*"
-                                               FontSize="13"
-                                               Width="150"
-                                               Foreground="Black"
-                                               FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium" />
-                                    <TextBlock Text="▼"
-                                               FontSize="6"
-                                               VerticalAlignment="Center"
-                                               HorizontalAlignment="Right"
-                                               Margin="0,0,13,0"
-                                               Foreground="Gray">
-                                        <TextBlock.RenderTransform>
-                                            <ScaleTransform ScaleX="1.5" ScaleY="1" />
-                                        </TextBlock.RenderTransform>
-                                    </TextBlock>
-                                </Grid>
-                            </materialDesign:PopupBox.ToggleContent>
-                            <ItemsControl Width="150" ItemsSource="{Binding SubjectFilter}">
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <StackPanel>
-                                            <CheckBox Height="30"
-                                                      Margin="10,0,0,0"
-                                                      Content="{Binding Name}"
-                                                      FontSize="14"
-                                                      IsChecked="{Binding IsChecked, Mode=TwoWay}">
-                                                <b:Interaction.Triggers>
-                                                    <b:EventTrigger EventName="Checked">
-                                                        <b:InvokeCommandAction
-                                                            Command="{Binding DataContext.FilterSubjectCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
-                                                            CommandParameter="{Binding}" />
-                                                    </b:EventTrigger>
-                                                    <b:EventTrigger EventName="Unchecked">
-                                                        <b:InvokeCommandAction
-                                                            Command="{Binding DataContext.FilterSubjectCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
-                                                            CommandParameter="{Binding}" />
-                                                    </b:EventTrigger>
-                                                </b:Interaction.Triggers>
-                                            </CheckBox>
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-                        </materialDesign:PopupBox>
-                    </Border>
+                    <ComboBox Background="#FFFFFF"
+                              Padding="5 0 10 0"
+                              Width="150" Height="30"
+                              IsEditable="True"
+                              Text="Môn học*"
+                              Foreground="Black"
+                              Style="{StaticResource MaterialDesignComboBox}"
+                              FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
+                              Margin="20,0,20,0"
+                              HorizontalAlignment="Left"
+                              BorderBrush="#64748B" BorderThickness="1"
+                              IsReadOnly="True"
+                              ItemsSource="{Binding SubjectFilter}"
+                              SelectedItem="{Binding SelectedSubject, UpdateSourceTrigger=PropertyChanged}" />
                     <Border VerticalAlignment="Center"
                             BorderBrush="#64748B"
                             BorderThickness="1"
@@ -308,7 +212,7 @@
                                     </TextBlock>
                                 </Grid>
                             </materialDesign:PopupBox.ToggleContent>
-                            <ItemsControl Width="150" ItemsSource="{Binding GradeFilter}">
+                            <ItemsControl Width="150" ItemsSource="{Binding ClassFilter}">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
                                         <StackPanel>
@@ -320,12 +224,12 @@
                                                 <b:Interaction.Triggers>
                                                     <b:EventTrigger EventName="Checked">
                                                         <b:InvokeCommandAction
-                                                            Command="{Binding DataContext.FilterGradeCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                            Command="{Binding DataContext.FilterClassroomCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
                                                             CommandParameter="{Binding}" />
                                                     </b:EventTrigger>
                                                     <b:EventTrigger EventName="Unchecked">
                                                         <b:InvokeCommandAction
-                                                            Command="{Binding DataContext.FilterGradeCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                            Command="{Binding DataContext.FilterClassroomCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
                                                             CommandParameter="{Binding}" />
                                                     </b:EventTrigger>
                                                 </b:Interaction.Triggers>
@@ -370,7 +274,7 @@
                                     </TextBlock>
                                 </Grid>
                             </materialDesign:PopupBox.ToggleContent>
-                            <ItemsControl Width="150" ItemsSource="{Binding GradeFilter}">
+                            <ItemsControl Width="150" ItemsSource="{Binding SemesterFilter}">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
                                         <StackPanel>
@@ -382,12 +286,12 @@
                                                 <b:Interaction.Triggers>
                                                     <b:EventTrigger EventName="Checked">
                                                         <b:InvokeCommandAction
-                                                            Command="{Binding DataContext.FilterGradeCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                            Command="{Binding DataContext.FilterSemesterCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
                                                             CommandParameter="{Binding}" />
                                                     </b:EventTrigger>
                                                     <b:EventTrigger EventName="Unchecked">
                                                         <b:InvokeCommandAction
-                                                            Command="{Binding DataContext.FilterGradeCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                            Command="{Binding DataContext.FilterSemesterCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
                                                             CommandParameter="{Binding}" />
                                                     </b:EventTrigger>
                                                 </b:Interaction.Triggers>

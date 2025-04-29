@@ -4,6 +4,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d">
     <Grid Background="White">
         <Border BorderThickness="1" CornerRadius="10" BorderBrush="#152259" Margin="0 0 0 0">
@@ -82,6 +83,56 @@
                                   Margin="20,0,20,0"
                                   HorizontalAlignment="Left"
                                   BorderBrush="#64748B" BorderThickness="1" />
+
+                        <materialDesign:PopupBox Width="110" Height="40"
+                                                 HorizontalAlignment="Center"
+                                                 materialDesign:HintAssist.FloatingHintHorizontalAlignment="Stretch"
+                                                 materialDesign:HintAssist.Foreground="{DynamicResource CommonText}"
+                                                 materialDesign:TextFieldAssist.UnderlineBrush="{DynamicResource Underline}"
+                                                 BorderBrush="{x:Null}"
+                                                 FontSize="12"
+                                                 Foreground="{DynamicResource CommonText}"
+                                                 IsEnabled="{Binding HaveExpenseBook}"
+                                                 PopupMode="Click"
+                                                 StaysOpen="True">
+                            <materialDesign:PopupBox.ToggleContent>
+                                <materialDesign:PackIcon Width="25"
+                                                         Height="25"
+                                                         Margin="5,0,0,0"
+                                                         HorizontalAlignment="Right"
+                                                         VerticalAlignment="Center"
+                                                         Foreground="{DynamicResource CommonText}"
+                                                         Kind="Shape" />
+                            </materialDesign:PopupBox.ToggleContent>
+                            <ItemsControl Width="150" ItemsSource="{Binding SourceCategory}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel>
+                                            <CheckBox
+                                                Height="30"
+                                                Margin="10,0,0,0"
+                                                Content="{Binding Name}"
+                                                FontSize="14"
+                                                IsChecked="{Binding IsChecked, Mode=TwoWay}">
+                                                <b:Interaction.Triggers>
+                                                    <b:EventTrigger EventName="Checked">
+                                                        <b:InvokeCommandAction
+                                                            Command="{Binding DataContext.FilterCategoryCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                            CommandParameter="{Binding}" />
+                                                    </b:EventTrigger>
+                                                    <b:EventTrigger EventName="Unchecked">
+                                                        <b:InvokeCommandAction
+                                                            Command="{Binding DataContext.FilterCategoryCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                            CommandParameter="{Binding}" />
+                                                    </b:EventTrigger>
+                                                </b:Interaction.Triggers>
+                                            </CheckBox>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </materialDesign:PopupBox>
+
                     </StackPanel>
 
                     <StackPanel Grid.Row="1" Orientation="Vertical">

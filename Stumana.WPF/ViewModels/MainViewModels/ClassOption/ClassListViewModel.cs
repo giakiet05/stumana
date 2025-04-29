@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Stumana.DataAccess.Services;
 using Stumana.DataAcess.Models;
 using Stumana.WPF.Commands;
+using Stumana.WPF.ViewModels.PopupModels;
 
 namespace Stumana.WPF.ViewModels.MainViewModels.ClassOption
 {
@@ -13,7 +14,7 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ClassOption
         #region Commands
 
         public ICommand ExportCommand { get; set; }
-        public ICommand AddClassCommand { get; set; }
+        public ICommand AddClassroomCommand { get; set; }
 
         #endregion Commands
 
@@ -125,7 +126,7 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ClassOption
             LoadClassTableColumn();
             LoadStudentTableColumn();
 
-            AddClassCommand = new NavigateModalCommand()
+            AddClassroomCommand = new NavigateModalCommand(() => new AddClassroomViewModel());
             //ClassDataTable.Rows.Add("10A1", 45);
         }
 

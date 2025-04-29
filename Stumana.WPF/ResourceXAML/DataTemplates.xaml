@@ -149,6 +149,10 @@
         <popupViews:SubjectScoreFilterView/>
     </DataTemplate>
 
+    <DataTemplate DataType="{x:Type popupViewModels:AddClassroomViewModel}">
+        <popupViews:AddClassroomView/>
+    </DataTemplate>
+
     <!--#endregion-->
     <!--#region admin-->
 

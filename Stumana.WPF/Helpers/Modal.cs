@@ -4,10 +4,10 @@ using System.Windows.Media;
 
 namespace Stumana.WPF.Helpers
 {
-    public class ModalControl : ContentControl
+    public class Modal : ContentControl
     {
         public static readonly DependencyProperty IsOpenProperty = 
-            DependencyProperty.Register(nameof(IsOpen), typeof(bool), typeof(ModalControl), new PropertyMetadata((object)false));
+            DependencyProperty.Register(nameof(IsOpen), typeof(bool), typeof(Modal), new PropertyMetadata((object)false));
         public bool IsOpen
         {
             get => (bool)GetValue(IsOpenProperty);
@@ -15,17 +15,17 @@ namespace Stumana.WPF.Helpers
         }
 
         public static readonly DependencyProperty CornerRadiusProperty =
-            DependencyProperty.Register(nameof(CornerRadius), typeof(CornerRadius), typeof(ModalControl), new PropertyMetadata(new CornerRadius()));
+            DependencyProperty.Register(nameof(CornerRadius), typeof(CornerRadius), typeof(Modal), new PropertyMetadata(new CornerRadius()));
         public CornerRadius CornerRadius
         {
             get => (CornerRadius)GetValue(CornerRadiusProperty);
             set => SetValue(CornerRadiusProperty, value);
         }
 
-        static ModalControl()
+        static Modal()
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(ModalControl), new FrameworkPropertyMetadata(typeof(ModalControl)));
-            BackgroundProperty.OverrideMetadata(typeof(ModalControl), new FrameworkPropertyMetadata(CreateDefaultBackground()));
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(Modal), new FrameworkPropertyMetadata(typeof(Modal)));
+            BackgroundProperty.OverrideMetadata(typeof(Modal), new FrameworkPropertyMetadata(CreateDefaultBackground()));
         }
 
         private static object CreateDefaultBackground()

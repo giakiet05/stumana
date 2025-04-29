@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Stumana.WPF"
+        xmlns:custom="clr-namespace:Stumana.WPF.Helpers"
         xmlns:viewModels="clr-namespace:Stumana.WPF.ViewModels"
         xmlns:views="clr-namespace:Stumana.WPF.Views"
         xmlns:authencationViewModels="clr-namespace:Stumana.WPF.ViewModels.AuthencationViewModels"
@@ -16,10 +17,10 @@
         WindowStartupLocation="CenterScreen">
     <Grid>
         <!--ControlBar-->
-        <!--<components:ControlBar/>
-        <custom:Modal Grid.RowSpan="2" Panel.ZIndex ="1" IsOpen="{Binding IsOpen}">
+        <!--<components:ControlBar/>-->
+        <custom:ModalControl Grid.RowSpan="2" Panel.ZIndex ="1" IsOpen="{Binding IsOpen}">
             <ContentControl Content="{Binding CurrentModelViewModel}" />
-        </custom:Modal>-->  
+        </custom:ModalControl>
 
         <ContentControl Grid.Row="1" Content="{Binding CurrentViewModel}"/>
 

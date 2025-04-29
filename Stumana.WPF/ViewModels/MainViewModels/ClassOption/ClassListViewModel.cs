@@ -4,6 +4,7 @@ using System.Windows.Input;
 using Microsoft.EntityFrameworkCore;
 using Stumana.DataAccess.Services;
 using Stumana.DataAcess.Models;
+using Stumana.WPF.Commands;
 
 namespace Stumana.WPF.ViewModels.MainViewModels.ClassOption
 {
@@ -11,7 +12,8 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ClassOption
     {
         #region Commands
 
-        public ICommand exportCommand { get; }
+        public ICommand ExportCommand { get; set; }
+        public ICommand AddClassCommand { get; set; }
 
         #endregion Commands
 
@@ -86,18 +88,6 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ClassOption
             }
         }
 
-        private string _searchString;
-
-        public string SearchString
-        {
-            get => _searchString;
-            set
-            {
-                _searchString = value;
-                OnPropertyChanged();
-            }
-        }
-
         public DataTable ClassDataTable { get; set; } = new DataTable();
         private DataView _classTableView;
 
@@ -135,7 +125,8 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ClassOption
             LoadClassTableColumn();
             LoadStudentTableColumn();
 
-            ClassDataTable.Rows.Add("10A1", 45);
+            AddClassCommand = new NavigateModalCommand()
+            //ClassDataTable.Rows.Add("10A1", 45);
         }
 
         private void LoadClassTableColumn()
@@ -161,7 +152,7 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ClassOption
         {
             var studentAssignments = await GenericDataService<StudentAssignment>.Instance.GetManyAsync(sa => sa.ClassroomId == classroom.Id,
                                                                                                        query => query.Include(sa => sa.Student));
-
+            StudentDataTable.Rows.Clear();
             foreach (var studentAssignment in studentAssignments)
             {
                 DataRow newRow = StudentDataTable.NewRow();

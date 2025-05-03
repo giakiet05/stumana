@@ -3,122 +3,131 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:Stumana.WPF.Views.Popup"
              mc:Ignorable="d"
-             d:DesignHeight="691" d:DesignWidth="969"
-             Background="White">
+             d:DesignHeight="691" d:DesignWidth="969">
 
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Stumana.WPF;component/ResourceXAML/Styles/CommonStyles.xaml"/>
-                <ResourceDictionary Source="/Stumana.WPF;component/ResourceXAML/Styles/InputStyles.xaml"/>
-                <ResourceDictionary Source="/Stumana.WPF;component/ResourceXAML/Styles/FilterStyles.xaml"/>
+                <ResourceDictionary Source="/Stumana.WPF;component/ResourceXAML/Styles/CommonStyles.xaml" />
+                <ResourceDictionary Source="/Stumana.WPF;component/ResourceXAML/Styles/InputStyles.xaml" />
+                <ResourceDictionary Source="/Stumana.WPF;component/ResourceXAML/Styles/FilterStyles.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <Grid Margin="80">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="100"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+    <Border Background="White"
+            VerticalAlignment="Center" HorizontalAlignment="Center"
+            Width="700" Padding="30"
+            CornerRadius="20">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
 
-        <!-- Title -->
-        <TextBlock Grid.Row="0"
-                   Text="Thêm lớp học"
-                   FontSize="30"
-                   FontWeight="SemiBold"
-                   Margin="0,0,0,20"
-                   Foreground="#333333"
-                   FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"/>
+            </Grid.RowDefinitions>
 
-        <!-- Grade -->
-        <Grid Grid.Row="1" Margin="0,0,0,25">
-            <ComboBox Style="{StaticResource FilterComboBoxStyle}"
-                      Tag="Khối"
-                      ItemsSource="{Binding GradesList}"
-                      SelectedItem="{Binding SelectedGrade}"
-                      DisplayMemberPath="Name"
-                      Height="35"
-                      HorizontalAlignment="Left">
-                <ComboBox.ItemContainerStyle>
-                    <Style TargetType="ComboBoxItem" BasedOn="{StaticResource FilterComboBoxItemStyle}"/>
-                </ComboBox.ItemContainerStyle>
-            </ComboBox>
-        </Grid>
+            <!-- Title -->
+            <TextBlock Grid.Row="0"
+                       Text="Thêm lớp học"
+                       FontSize="30"
+                       FontWeight="SemiBold"
+                       Margin="0,0,0,20"
+                       Foreground="#333333"
+                       FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium" />
+            <!-- Classroom ID, Classroom Name -->
+            <Grid Grid.Row="1" Margin="0,0,0,25">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="20" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
 
-        <!-- Classroom ID, Classroom Name -->
-        <Grid Grid.Row="2" Margin="0,0,0,25">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="20"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0">
+                    <TextBlock Text="Tên lớp học" Style="{StaticResource LabelStyle}" />
+                    <TextBox Style="{StaticResource InputFieldStyle}"
+                             Text="{Binding ClassroomName, UpdateSourceTrigger=PropertyChanged}" />
+                    <TextBlock Foreground="Red"
+                               Text="⚠ Tên lớp học quá dài hoặc không hợp lệ"
+                               Visibility="{Binding IsClassroomNameInvalid, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    </TextBlock>
+                </StackPanel>
 
-            <StackPanel Grid.Column="0">
-                <TextBlock Text="Mã lớp học" Style="{StaticResource LabelStyle}"/>
-                <TextBox Style="{StaticResource InputFieldStyle}"
-                         Text="{Binding ClassroomId, UpdateSourceTrigger=PropertyChanged}"/>
+                <!--<StackPanel Grid.Column="2">
+                    <TextBlock Text="Số lượng" Style="{StaticResource LabelStyle}" />
+                    <TextBox Style="{StaticResource InputFieldStyle}"
+                             Text="{Binding Quantity, UpdateSourceTrigger=PropertyChanged}">
+                        <b:Interaction.Behaviors>
+                            <helpers:NumericInputBehavior />
+                        </b:Interaction.Behaviors>
+                    </TextBox>
+                    <TextBlock Foreground="Red"
+                               Text="⚠ Số lượng học sinh không hợp lệ" />
+                </StackPanel>-->
+            </Grid>
+            <Grid Grid.Row="2" Margin="0,0,0,25">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="20" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <StackPanel>
+                    <TextBlock Text="Năm học" Style="{StaticResource LabelStyle}" />
+                    <Border BorderBrush="#E0E0E0"
+                            BorderThickness="1"
+                            Height="40"
+                            HorizontalAlignment="Stretch"
+                            Padding="10,5,10,5"
+                            CornerRadius="10">
+                        <ComboBox Style="{StaticResource MaterialDesignComboBox}"
+                                  FontSize="15"
+                                  Foreground="Black"
+                                  IsReadOnly="True"
+                                  ItemsSource="{Binding SchoolYearCollection}"
+                                  SelectedItem="{Binding SelectedSchoolYear}">
+                        </ComboBox>
+                    </Border>
+                    <TextBlock Foreground="Red"
+                        Text="⚠ Năm học không hợp lệ"
+                        Visibility="{Binding IsSchoolYearInvalid, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="2">
+                    <TextBlock Text="Khối lớp" Style="{StaticResource LabelStyle}" />
+                    <Border BorderBrush="#E0E0E0"
+                            BorderThickness="1"
+                            Height="40"
+                            Padding="10,5,10,5"
+                            CornerRadius="10">
+                        <ComboBox Style="{StaticResource MaterialDesignComboBox}"
+                                  FontSize="15"
+                                  Foreground="Black"
+                                  IsReadOnly="True"
+                                  ItemsSource="{Binding GradeCollection}"
+                                  SelectedItem="{Binding SelectedGrade}">
+                        </ComboBox>
+                    </Border>
+                    <TextBlock Foreground="Red"
+                        Text="⚠ Khối lớp học không hợp lệ"
+                        Visibility="{Binding IsGradeInvalid, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                </StackPanel>
+            </Grid>
+
+            <!-- Action buttons -->
+            <StackPanel Grid.Row="3" Orientation="Horizontal">
+                <Button Style="{StaticResource PrimaryButtonStyle}"
+                        Margin="0,0,20,0"
+                        Content="Thêm lớp học"
+                        Command="{Binding AddClassCommand}" />
+                <Button Style="{StaticResource PrimaryButtonStyle}"
+                        Margin="20,0,20,0"
+                        Content="Hủy"
+                        Command="{Binding CancelCommand}" />
             </StackPanel>
-
-            <StackPanel Grid.Column="2">
-                <TextBlock Text="Tên lớp học" Style="{StaticResource LabelStyle}"/>
-                <TextBox Style="{StaticResource InputFieldStyle}"
-                         Text="{Binding ClassroomName, UpdateSourceTrigger=PropertyChanged}"/>
-            </StackPanel>
         </Grid>
+    </Border>
 
-        <!-- Quantity and School Year -->
-        <Grid Grid.Row="3" Margin="0,0,0,25">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="20"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <StackPanel Grid.Column="0">
-                <TextBlock Text="Số lượng" Style="{StaticResource LabelStyle}"/>
-                <TextBox Style="{StaticResource InputFieldStyle}"
-                         Text="{Binding Quantity, UpdateSourceTrigger=PropertyChanged}"/>
-            </StackPanel>
-            <StackPanel Grid.Column="2">
-                <TextBlock Text="Mã năm học" Style="{StaticResource LabelStyle}"/>
-                <TextBox Style="{StaticResource InputFieldStyle}"
-                         Text="{Binding SchoolYearId, UpdateSourceTrigger=PropertyChanged}"/>
-            </StackPanel>
-        </Grid>
-
-        <!-- Action buttons -->
-        <Grid Grid.Row="5" Margin="0,15,0,0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
-
-            <Button Grid.Column="0"
-                    HorizontalAlignment="Left"
-                    Style="{StaticResource CircleButtonStyle}"
-                    Content="+"
-                    Command="{Binding AddAnotherClassroomCommand}"
-                    ToolTip="Thêm một lớp học khác sau khi thêm lớp này"/>
-
-            <TextBlock Grid.Column="0"
-                       Text="Thêm lớp khác"
-                       FontSize="16"
-                       VerticalAlignment="Center"
-                       Margin="35,0,0,0"
-                       Foreground="#666666"
-                       FontFamily="pack://application:,,,/Resource/Font/#Poppins Regular"/>
-
-            <Button Grid.Column="1"
-                    Style="{StaticResource PrimaryButtonStyle}"
-                    Content="Thêm lớp học"
-                    Command="{Binding AddClassroomCommand}"/>
-        </Grid>
-    </Grid>
 </UserControl>

@@ -13,7 +13,7 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ClassOption
     {
         #region Commands
 
-        public ICommand ExportCommand { get; set; }
+        public ICommand AddStudentToClassCommand { get; set; }
         public ICommand AddClassroomCommand { get; set; }
 
         #endregion Commands
@@ -120,13 +120,14 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ClassOption
 
         public ClassListViewModel()
         {
-            LoadSchoolYear();
-            LoadGrade();
+            LoadSchoolYearFilter();
+            LoadGradeFilter();
 
             LoadClassTableColumn();
             LoadStudentTableColumn();
 
             AddClassroomCommand = new NavigateModalCommand(() => new AddClassroomViewModel());
+            AddStudentToClassCommand = new NavigateModalCommand(() => new AddStudentToClassViewModel());
             //ClassDataTable.Rows.Add("10A1", 45);
         }
 
@@ -184,19 +185,11 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ClassOption
 
             List<Classroom> classrooms = new List<Classroom>();
 
-            if (SelectedSchoolYear != "Tất cả các năm")
-            {
-                SchoolYear curSchoolYear = SchoolYearsDic[SelectedSchoolYear];
-                classrooms = (await GenericDataService<Classroom>.Instance.GetManyAsync(cl => cl.YearId == curSchoolYear.Id)).ToList();
-            }
-            else
-                classrooms = (await GenericDataService<Classroom>.Instance.GetAllAsync()).ToList();
+            SchoolYear curSchoolYear = SchoolYearsDic[SelectedSchoolYear];
+            classrooms = (await GenericDataService<Classroom>.Instance.GetManyAsync(cl => cl.YearId == curSchoolYear.Id)).ToList();
 
-            if (SelectedGrade != "Tất cả các khối")
-            {
-                Grade curGrade = GradeDic[SelectedGrade];
-                classrooms = classrooms.Where(cl => cl.GradeId == curGrade.Id).ToList();
-            }
+            Grade curGrade = GradeDic[SelectedGrade];
+            classrooms = classrooms.Where(cl => cl.GradeId == curGrade.Id).ToList();
 
             ClassDataTable.Rows.Clear();
             ClassroomDic.Clear();
@@ -208,7 +201,7 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ClassOption
             }
         }
 
-        private async void LoadSchoolYear()
+        private async void LoadSchoolYearFilter()
         {
             SchoolYearCollection = new ObservableCollection<string>();
             var sy = await GenericDataService<SchoolYear>.Instance.GetAllAsync();
@@ -218,11 +211,9 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ClassOption
                 SchoolYearCollection.Add(schoolyearstr);
                 SchoolYearsDic.Add(schoolyearstr, schoolYear);
             }
-
-            SchoolYearCollection.Add("Tất cả các năm");
         }
 
-        private async void LoadGrade()
+        private async void LoadGradeFilter()
         {
             GradeCollection = new ObservableCollection<string>();
             var grades = await GenericDataService<Grade>.Instance.GetAllAsync();
@@ -231,8 +222,6 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ClassOption
                 GradeCollection.Add("Khối" + grade.Level);
                 GradeDic.Add("Khối" + grade.Level, grade);
             }
-
-            GradeCollection.Add("Tất cả các khối");
         }
     }
 }

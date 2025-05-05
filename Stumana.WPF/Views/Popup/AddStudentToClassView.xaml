@@ -93,16 +93,21 @@
             </DataGrid>
         </ScrollViewer>
 
+        <StackPanel Grid.Row="2" Orientation="Horizontal" FlowDirection="RightToLeft">
+            <Button Width="130"
+                    Style="{StaticResource PrimaryButtonStyle}"
+                    Content="Thêm"
+                    FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
+                    Margin="20"
+                    FontSize="18" />
 
-        <Button Grid.Row="2"
-                Width="131" Height="45"
-                Style="{StaticResource PrimaryButtonStyle}"
-                Content="Thêm"
-                FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
-                Command="{Binding AddStudentCommand}"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Bottom"
-                Margin="20"
-                FontSize="20" />
+            <Button Width="130"
+                    Style="{StaticResource PrimaryButtonStyle}"
+                    Content="Hủy"
+                    FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
+                    Command="{Binding CancelCommand}"
+                    Margin="20"
+                    FontSize="18" />
+        </StackPanel>
     </Grid>
 </UserControl>

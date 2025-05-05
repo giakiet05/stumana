@@ -8,6 +8,14 @@
              mc:Ignorable="d"
              Height="720" HorizontalAlignment="Stretch">
 
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Stumana.WPF;component/ResourceXAML/Styles/CommonStyles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
     <Grid Background="White" HorizontalAlignment="Stretch">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"></RowDefinition>
@@ -438,33 +446,17 @@
         <StackPanel Grid.Row="1" Orientation="Horizontal" FlowDirection="RightToLeft">
             <Button Margin="10"
                     VerticalAlignment="Center"
-                    Width="Auto"
-                    Height="40"
-                    Background="#E17D7D"
-                    Style="{StaticResource MaterialDesignRaisedButton}"
+                    Content="Hủy thay đổi"
+                    Style="{StaticResource PrimaryButtonStyle}"
                     materialDesign:ButtonAssist.CornerRadius="20"
                     Command="{Binding DiscardChangeCommand}">
-                <TextBlock HorizontalAlignment="Center"
-                           FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
-                           FontSize="16"
-                           Text="Hủy thay đổi"
-                           Foreground="Snow"
-                           Cursor="Hand" />
             </Button>
             <Button Margin="10"
                     VerticalAlignment="Center"
-                    Width="Auto"
-                    Height="40"
-                    Background="#8DB575"
-                    Style="{StaticResource MaterialDesignRaisedButton}"
+                    Content="Lưu thay đổi"
+                    Style="{StaticResource PrimaryButtonStyle}"
                     materialDesign:ButtonAssist.CornerRadius="20"
                     Command="{Binding SaveChangeCommand}">
-                <TextBlock HorizontalAlignment="Center"
-                           FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
-                           FontSize="16"
-                           Text="Lưu thay đổi"
-                           Foreground="Snow"
-                           Cursor="Hand" />
             </Button>
         </StackPanel>
     </Grid>

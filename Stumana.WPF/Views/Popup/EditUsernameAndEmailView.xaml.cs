@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Stumana.WPF.Views.MainView.SubjectOption
+namespace Stumana.WPF.Views.Popup
 {
     /// <summary>
-    /// Interaction logic for ObjectView.xaml
+    /// Interaction logic for EditUsernameAndEmailView.xaml
     /// </summary>
-    public partial class ObjectView : UserControl
+    public partial class EditUsernameAndEmailView : UserControl
     {
-        public ObjectView()
+        public EditUsernameAndEmailView()
         {
             InitializeComponent();
         }

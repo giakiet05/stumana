@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d"
-             Height="720" Width="1198">
+             d:DesignHeight="720" d:DesignWidth="1198">
 
     <UserControl.Resources>
         <ResourceDictionary>
@@ -18,8 +18,8 @@
     <Grid Background="White">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="520"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
 
         <TextBlock Grid.Row="0"
@@ -48,7 +48,7 @@
                     Width="1000"
                     Height="Auto"
                     HorizontalAlignment="Left">
-                    <TextBox Text="Admin123"
+                    <TextBox Text="{Binding Username}"
                              FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
                              Background="Transparent"
                              Foreground="#152259"
@@ -58,7 +58,7 @@
                              Padding="5" />
                 </Border>
             </StackPanel>
-            <StackPanel Orientation="Vertical" Margin="10"/>
+            <StackPanel Orientation="Vertical" Margin="10" />
             <StackPanel Orientation="Vertical" Margin="10">
                 <TextBlock
                     Text="Email"
@@ -67,15 +67,14 @@
                     Foreground="#808080">
 
                 </TextBlock>
-                <Border
-                    BorderThickness="2"
-                    CornerRadius="4"
-                    Background="#DCDCDC"
-                    Padding="2"
-                    Width="1000"
-                    Height="Auto"
-                    HorizontalAlignment="Left">
-                    <TextBox Text="Admin123@gm.uit.edu.vn"
+                <Border BorderThickness="2"
+                        CornerRadius="4"
+                        Background="#DCDCDC"
+                        Padding="2"
+                        Width="1000"
+                        Height="Auto"
+                        HorizontalAlignment="Left">
+                    <TextBox Text="{Binding Email}"
                              FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
                              Background="Transparent"
                              Foreground="#152259"
@@ -94,7 +93,8 @@
                     FontSize="20"
                     Style="{StaticResource PrimaryButtonStyle}"
                     materialDesign:ButtonAssist.CornerRadius="30"
-                    Content="Đổi mật khẩu">
+                    Content="Đổi mật khẩu"
+                    Command="{Binding ChangePasswordCommand}">
             </Button>
             <Button Margin="10"
                     VerticalAlignment="Center"
@@ -103,7 +103,8 @@
                     Style="{StaticResource PrimaryButtonStyle}"
                     materialDesign:ButtonAssist.CornerRadius="30"
                     Content="Chỉnh sửa"
-                    FontSize="20">
+                    FontSize="20"
+                    Command="{Binding EditCommand}">
             </Button>
         </StackPanel>
     </Grid>

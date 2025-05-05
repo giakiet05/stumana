@@ -287,13 +287,12 @@
         <StackPanel Grid.Row="2"
                     Orientation="Horizontal"
                     FlowDirection="RightToLeft">
-            <Button Width="300"
-                    Content="Thêm học sinh vào lớp học"
+            <Button Width="200"
+                    Content="Xuất danh sách lớp"
                     FontSize="18"
                     Padding="10"
                     Margin="20"
-                    Style="{StaticResource PrimaryButtonStyle}"
-                    Command="{Binding AddStudentToClassCommand}" />
+                    Style="{StaticResource PrimaryButtonStyle}"/>
         </StackPanel>
     </Grid>
 </UserControl>

@@ -1,17 +1,17 @@
 ﻿
 using System.Windows.Input;
+using Stumana.DataAcess.Models;
+using Stumana.WPF.Commands;
+using Stumana.WPF.Stores;
+using Stumana.WPF.ViewModels.PopupModels;
 
 namespace Stumana.WPF.ViewModels.MainViewModels.AccountOption
 {
     public class AccountOptionViewModel : BaseViewModel 
     {
-        public ICommand editCommand { get; }
-        public ICommand changePasswordCommand { get; }
-        public AccountOptionViewModel()
-        {
-            
-        }
-        // Example properties
+        public ICommand EditCommand { get; set; }
+        public ICommand ChangePasswordCommand { get; set; }
+
         private string _username;
         public string Username
         {
@@ -22,17 +22,7 @@ namespace Stumana.WPF.ViewModels.MainViewModels.AccountOption
                 OnPropertyChanged(nameof(Username));
             }
         }
-        private string _id;
 
-        public string Id
-        {
-            get =>_id; 
-            set
-            {
-                _id = value;
-                OnPropertyChanged(nameof(Id));
-            }
-        }
         private string _email;
 
         public string Email
@@ -45,15 +35,21 @@ namespace Stumana.WPF.ViewModels.MainViewModels.AccountOption
             }
         }
 
-        private string _password;
-
-        public string Password
+        public AccountOptionViewModel()
         {
-            get => _password;
-            set 
+            ChangePasswordCommand = new NavigateModalCommand(() => new EditPasswordViewModel());
+            EditCommand = new NavigateModalCommand(() => new EditUsernameAndEmailViewModel());
+
+            LoadData();
+        }
+
+        private void LoadData()
+        {
+            User user = AccountStore.Instance.CurrentUser;
+            if (user != null)
             {
-                _password = value;
-                OnPropertyChanged(nameof(Password));
+                Username = user.Username;
+                Email = user.Email;
             }
         }
     }

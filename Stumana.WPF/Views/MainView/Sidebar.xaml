@@ -4,155 +4,146 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d"
-            MinWidth="1440" MinHeight="789">
-   
+             MinWidth="1440" MinHeight="789">
+
     <Grid Background="White">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <ScrollViewer  Grid.Column="0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-        <Grid   Background="#152259" Width="241">
-            <StackPanel Height="148" VerticalAlignment="Top" Margin="0 20 0 0">
-                <Image
-                    Source="/Resource/Image/SchoolLogo.png/"
-                    Width="65" Height="65">
-                </Image>
-                <TextBlock
-                    Padding="0 30 0 0"
-                    HorizontalAlignment="Center"
-                    Text="EliteAcademy.edu"
-                    FontFamily="pack://application:,,,/Resource/Font/#Poppins SemiBold"
-                    Foreground="White">
+        <ScrollViewer Grid.Column="0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+            <Grid Background="#152259" Width="241">
+                <StackPanel Height="148" VerticalAlignment="Top" Margin="0 20 0 0">
+                    <Image Source="/Resource/Image/SchoolLogo.png/"
+                           Width="65" Height="65">
+                    </Image>
+                    <TextBlock Padding="0 30 0 0"
+                               HorizontalAlignment="Center"
+                               Text="EliteAcademy.edu"
+                               FontFamily="pack://application:,,,/Resource/Font/#Poppins SemiBold"
+                               Foreground="White">
 
-                </TextBlock>
-                <Rectangle Fill="#BDBDBD" Width="241.03" Height="1" Margin="0,10,0,10" />
+                    </TextBlock>
+                    <Rectangle Fill="#BDBDBD" Width="241.03" Height="1" Margin="0,10,0,10" />
+                </StackPanel>
 
-
-            </StackPanel>
-            <StackPanel Width="192" Height="458">
-                <RadioButton GroupName="Options"
-                             Height="40"
-                             Command="{Binding AccountNavigateCommand}">
-                    <StackPanel Orientation="Horizontal">
-                        <Image Height="17"
-                               Source="/Resource/Image/UserIcon.png">
-                        </Image>
-                        <TextBlock Padding="10"
-                                   Text="Tài khoản"
-                                   Foreground="White"
-                                   FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium">
-                        </TextBlock>
-                    </StackPanel>
-                </RadioButton>
-                <RadioButton GroupName="Options"
-                             Height="40"
-                             Command="{Binding SubjectNavigateCommand}">
-                    <StackPanel Orientation="Horizontal">
-                        <Image Height="17"
-                               Source="/Resource/Image/Book-Search--Streamline-Ultimate.png">
-                        </Image>
-                        <TextBlock Padding="10"
-                                   Text="Môn học"
-                                   Foreground="White"
-                                   FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium">
-                        </TextBlock>
-                    </StackPanel>
-                </RadioButton>
-                <RadioButton
-                    GroupName="Options"
-                    Height="40"
-                    Command="{Binding StudentNavigateCommand}">
-                    <StackPanel Orientation="Horizontal">
-                        <Image Height="17"
-                               Source="/Resource/Image/Student-Fill--Streamline-Phosphor-Fill.png">
-                        </Image>
-                        <TextBlock Padding="10"
-                                   Text="Học sinh"
-                                   Foreground="White"
-                                   FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium">
-                        </TextBlock>
-                    </StackPanel>
-                </RadioButton>
-                <RadioButton
-                    GroupName="Options"
-                    Height="40"
-                    Command="{Binding SemesterNavigateCommand}">
-                    <StackPanel Orientation="Horizontal">
-                        <Image Height="17"
-                               Source="/Resource/Image/Calendar-Time--Streamline-Tabler.png">
-                        </Image>
-                        <TextBlock Padding="10"
-                                   Text="Năm học"
-                                   Foreground="White"
-                                   FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium">
-                        </TextBlock>
-                    </StackPanel>
-                </RadioButton>
-                <RadioButton
-                    GroupName="Options"
-                    Height="40"
-                    Command="{Binding ClassNavigateCommand}">
-                    <StackPanel Orientation="Horizontal">
-                        <Image Height="17"
-                               Source="/Resource/Image/Presentation-Audience--Streamline-Ultimate.png">
-                        </Image>
-                        <TextBlock Padding="10"
-                                   Text="Lớp học"
-                                   Foreground="White"
-                                   FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium">
-                        </TextBlock>
-                    </StackPanel>
-                </RadioButton>
-                <RadioButton
-                    GroupName="Options"
-                    Height="40"
-                    Command="{Binding ScoreNavigateCommand}">
-                    <StackPanel Orientation="Horizontal">
-                        <Image Height="17"
-                               Source="/Resource/Image/List-Letters--Streamline-Tabler.png">
-                        </Image>
-                        <TextBlock Padding="10"
-                                   Text="Điểm số"
-                                   Foreground="White"
-                                   FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium">
-                        </TextBlock>
-                    </StackPanel>
-                </RadioButton>
-                <RadioButton
-                    GroupName="Options"
-                    Height="40"
-                    Command="{Binding ReportNavigateCommand}">
-                    <StackPanel Orientation="Horizontal">
-                        <Image Height="17"
-                               Source="/Resource/Image/Percentage-80--Streamline-Tabler.png">
-                        </Image>
-                        <TextBlock Padding="10"
-                                   Text="Báo cáo"
-                                   Foreground="White"
-                                   FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium">
-                        </TextBlock>
-                    </StackPanel>
-                </RadioButton>
-            </StackPanel>
-            <StackPanel Width="192" Height="142" VerticalAlignment="Bottom">
-                <RadioButton
-                    GroupName="Options"
-                    Height="40">
-                    <StackPanel Orientation="Horizontal">
-                        <Image Height="17"
-                               Source="/Resource/Image/Transfer-Out--Streamline-Tabler.png">
-                        </Image>
-                        <TextBlock Padding="10"
-                                   Text="Đăng xuất"
-                                   Foreground="White"
-                                   FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium">
-                        </TextBlock>
-                    </StackPanel>
-                </RadioButton>
-            </StackPanel>
-        </Grid>
-            </ScrollViewer>
+                <StackPanel Width="192" Height="458">
+                    <RadioButton GroupName="Option"
+                                 Height="40"
+                                 Command="{Binding AccountNavigateCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Height="17"
+                                   Source="/Resource/Image/UserIcon.png">
+                            </Image>
+                            <TextBlock Padding="10"
+                                       Text="Tài khoản"
+                                       Foreground="White"
+                                       FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium">
+                            </TextBlock>
+                        </StackPanel>
+                    </RadioButton>
+                    <RadioButton GroupName="Option"
+                                 Height="40"
+                                 Command="{Binding SemesterNavigateCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Height="17"
+                                   Source="/Resource/Image/Calendar-Time--Streamline-Tabler.png">
+                            </Image>
+                            <TextBlock Padding="10"
+                                       Text="Năm học"
+                                       Foreground="White"
+                                       FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium">
+                            </TextBlock>
+                        </StackPanel>
+                    </RadioButton>
+                    <RadioButton GroupName="Option"
+                                 Height="40"
+                                 Command="{Binding SubjectNavigateCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Height="17"
+                                   Source="/Resource/Image/Book-Search--Streamline-Ultimate.png">
+                            </Image>
+                            <TextBlock Padding="10"
+                                       Text="Môn học"
+                                       Foreground="White"
+                                       FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium">
+                            </TextBlock>
+                        </StackPanel>
+                    </RadioButton>
+                    <RadioButton GroupName="Option"
+                                 Height="40"
+                                 Command="{Binding ClassNavigateCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Height="17"
+                                   Source="/Resource/Image/Presentation-Audience--Streamline-Ultimate.png">
+                            </Image>
+                            <TextBlock Padding="10"
+                                       Text="Lớp học"
+                                       Foreground="White"
+                                       FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium">
+                            </TextBlock>
+                        </StackPanel>
+                    </RadioButton>
+                    <RadioButton GroupName="Option"
+                                 Height="40"
+                                 Command="{Binding StudentNavigateCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Height="17"
+                                   Source="/Resource/Image/Student-Fill--Streamline-Phosphor-Fill.png">
+                            </Image>
+                            <TextBlock Padding="10"
+                                       Text="Học sinh"
+                                       Foreground="White"
+                                       FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium">
+                            </TextBlock>
+                        </StackPanel>
+                    </RadioButton>
+                    <RadioButton GroupName="Option"
+                                 Height="40"
+                                 Command="{Binding ScoreNavigateCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Height="17"
+                                   Source="/Resource/Image/List-Letters--Streamline-Tabler.png">
+                            </Image>
+                            <TextBlock Padding="10"
+                                       Text="Điểm số"
+                                       Foreground="White"
+                                       FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium">
+                            </TextBlock>
+                        </StackPanel>
+                    </RadioButton>
+                    <RadioButton GroupName="Option"
+                                 Height="40"
+                                 Command="{Binding ReportNavigateCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Height="17"
+                                   Source="/Resource/Image/Percentage-80--Streamline-Tabler.png">
+                            </Image>
+                            <TextBlock Padding="10"
+                                       Text="Báo cáo"
+                                       Foreground="White"
+                                       FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium">
+                            </TextBlock>
+                        </StackPanel>
+                    </RadioButton>
+                </StackPanel>
+                <StackPanel Width="192" Height="142" VerticalAlignment="Bottom">
+                    <RadioButton GroupName="Option"
+                                 Height="40">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Height="17"
+                                   Source="/Resource/Image/Transfer-Out--Streamline-Tabler.png">
+                            </Image>
+                            <TextBlock Padding="10"
+                                       Text="Đăng xuất"
+                                       Foreground="White"
+                                       FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium">
+                            </TextBlock>
+                        </StackPanel>
+                    </RadioButton>
+                </StackPanel>
+            </Grid>
+        </ScrollViewer>
         <Grid Grid.Column="1" Margin="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="70" />
@@ -171,12 +162,12 @@
                     </TextBlock>
 
                 </StackPanel>
-                <Rectangle VerticalAlignment="Bottom" Fill="#808080" Height="1" 
+                <Rectangle VerticalAlignment="Bottom" Fill="#808080" Height="1"
                            Margin="0,10,0,0" />
             </Grid>
-            <ScrollViewer  Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
 
-                <ContentControl  Content="{Binding CurrentLayoutVM}" />
+                <ContentControl Content="{Binding CurrentLayoutVM}" />
             </ScrollViewer>
 
         </Grid>

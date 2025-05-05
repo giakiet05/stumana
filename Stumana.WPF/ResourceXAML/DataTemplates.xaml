@@ -112,7 +112,7 @@
     </DataTemplate>
 
     <DataTemplate DataType="{x:Type subjectOptionViewModels:ObjectViewModel}">
-        <subjectOptionViews:ObjectView/>
+        <subjectOptionViews:SubjectView/>
     </DataTemplate>
     <!--#endregion-->
 
@@ -147,6 +147,14 @@
     
     <DataTemplate DataType="{x:Type popupViewModels:SubjectScoreFilterViewModel}">
         <popupViews:SubjectScoreFilterView/>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type popupViewModels:AddClassroomViewModel}">
+        <popupViews:AddClassroomView/>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type popupViewModels:EditUsernameAndEmailViewModel}">
+        <popupViews:EditUsernameAndEmailView/>
     </DataTemplate>
 
     <!--#endregion-->

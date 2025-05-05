@@ -25,5 +25,10 @@
         {
             return BCrypt.Net.BCrypt.Verify(enteredPassword, Password);
         }
+
+        public void ChangePassword(string newPassword)
+        {
+            Password = HashPassword(newPassword);
+        }
     }
 }

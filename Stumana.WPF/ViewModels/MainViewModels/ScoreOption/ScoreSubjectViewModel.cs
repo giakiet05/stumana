@@ -242,6 +242,7 @@ public class ScoreSubjectViewModel : BaseViewModel
         if (!subjects.Any())
             return;
 
+        SubjectDic.Clear();
         foreach (Subject subject in subjects)
         {
             string subjectName = $"{subject.Name} khối {subject.Grade.Level}";
@@ -260,6 +261,7 @@ public class ScoreSubjectViewModel : BaseViewModel
         if (!classrooms.Any())
             return;
 
+        ClassroomDic.Clear();
         ClassFilter.Add(new FilterItem("All", false));
         foreach (Classroom classroom in classrooms)
         {
@@ -279,6 +281,7 @@ public class ScoreSubjectViewModel : BaseViewModel
         if (!semesters.Any())
             return;
 
+        SemesterDic.Clear();
         SemesterFilter.Add(new FilterItem("All", false));
         foreach (int semester in semesters)
         {
@@ -400,6 +403,7 @@ public class ScoreSubjectViewModel : BaseViewModel
 
         var studentIDList = scoreDetails.Select(score => score.StudentAssignment.StudentId).Distinct().ToList();
 
+        ScoreDataTable.Rows.Clear();
         foreach (var studentId in studentIDList)
         {
             DataRow dataRow = ScoreDataTable.NewRow();

@@ -18,7 +18,7 @@ namespace Stumana.WPF
 
             using (var context = AppDbContextFactory.Instance.CreateDbContext())
             {
-                context.Database.Migrate();
+                //context.Database.Migrate();
                 NavigationStore.Instance.CurrentViewModel = new SidebarViewModel();
                 
                 ModalNavigationStore.Instance.CurrentModalViewModel = null;

@@ -4,6 +4,8 @@ using System.Windows.Input;
 using Microsoft.EntityFrameworkCore;
 using Stumana.DataAccess.Services;
 using Stumana.DataAcess.Models;
+using Stumana.WPF.Commands;
+using Stumana.WPF.ViewModels.PopupModels;
 
 namespace Stumana.WPF.ViewModels.MainViewModels.ClassOption
 {
@@ -11,7 +13,8 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ClassOption
     {
         #region Commands
 
-        public ICommand exportCommand { get; }
+        public ICommand AddStudentToClassCommand { get; set; }
+        public ICommand AddClassroomCommand { get; set; }
 
         #endregion Commands
 
@@ -86,18 +89,6 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ClassOption
             }
         }
 
-        private string _searchString;
-
-        public string SearchString
-        {
-            get => _searchString;
-            set
-            {
-                _searchString = value;
-                OnPropertyChanged();
-            }
-        }
-
         public DataTable ClassDataTable { get; set; } = new DataTable();
         private DataView _classTableView;
 
@@ -129,13 +120,15 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ClassOption
 
         public ClassListViewModel()
         {
-            LoadSchoolYear();
-            LoadGrade();
+            LoadSchoolYearFilter();
+            LoadGradeFilter();
 
             LoadClassTableColumn();
             LoadStudentTableColumn();
 
-            ClassDataTable.Rows.Add("10A1", 45);
+            AddClassroomCommand = new NavigateModalCommand(() => new AddClassroomViewModel());
+            AddStudentToClassCommand = new NavigateModalCommand(() => new AddStudentToClassViewModel());
+            //ClassDataTable.Rows.Add("10A1", 45);
         }
 
         private void LoadClassTableColumn()
@@ -161,7 +154,7 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ClassOption
         {
             var studentAssignments = await GenericDataService<StudentAssignment>.Instance.GetManyAsync(sa => sa.ClassroomId == classroom.Id,
                                                                                                        query => query.Include(sa => sa.Student));
-
+            StudentDataTable.Rows.Clear();
             foreach (var studentAssignment in studentAssignments)
             {
                 DataRow newRow = StudentDataTable.NewRow();
@@ -192,19 +185,11 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ClassOption
 
             List<Classroom> classrooms = new List<Classroom>();
 
-            if (SelectedSchoolYear != "Tất cả các năm")
-            {
-                SchoolYear curSchoolYear = SchoolYearsDic[SelectedSchoolYear];
-                classrooms = (await GenericDataService<Classroom>.Instance.GetManyAsync(cl => cl.YearId == curSchoolYear.Id)).ToList();
-            }
-            else
-                classrooms = (await GenericDataService<Classroom>.Instance.GetAllAsync()).ToList();
+            SchoolYear curSchoolYear = SchoolYearsDic[SelectedSchoolYear];
+            classrooms = (await GenericDataService<Classroom>.Instance.GetManyAsync(cl => cl.YearId == curSchoolYear.Id)).ToList();
 
-            if (SelectedGrade != "Tất cả các khối")
-            {
-                Grade curGrade = GradeDic[SelectedGrade];
-                classrooms = classrooms.Where(cl => cl.GradeId == curGrade.Id).ToList();
-            }
+            Grade curGrade = GradeDic[SelectedGrade];
+            classrooms = classrooms.Where(cl => cl.GradeId == curGrade.Id).ToList();
 
             ClassDataTable.Rows.Clear();
             ClassroomDic.Clear();
@@ -216,7 +201,7 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ClassOption
             }
         }
 
-        private async void LoadSchoolYear()
+        private async void LoadSchoolYearFilter()
         {
             SchoolYearCollection = new ObservableCollection<string>();
             var sy = await GenericDataService<SchoolYear>.Instance.GetAllAsync();
@@ -226,11 +211,9 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ClassOption
                 SchoolYearCollection.Add(schoolyearstr);
                 SchoolYearsDic.Add(schoolyearstr, schoolYear);
             }
-
-            SchoolYearCollection.Add("Tất cả các năm");
         }
 
-        private async void LoadGrade()
+        private async void LoadGradeFilter()
         {
             GradeCollection = new ObservableCollection<string>();
             var grades = await GenericDataService<Grade>.Instance.GetAllAsync();
@@ -239,8 +222,6 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ClassOption
                 GradeCollection.Add("Khối" + grade.Level);
                 GradeDic.Add("Khối" + grade.Level, grade);
             }
-
-            GradeCollection.Add("Tất cả các khối");
         }
     }
 }

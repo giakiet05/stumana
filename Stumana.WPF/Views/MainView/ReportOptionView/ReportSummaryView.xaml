@@ -1,10 +1,11 @@
-﻿<UserControl x:Class="Stumana.WPF.Views.MainView.ReportOptionView.ReportSummarytView"
+﻿<UserControl x:Class="Stumana.WPF.Views.MainView.ReportOptionView.ReportSummaryView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Stumana.WPF.Views.AuthencationViews"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:viewmodels="clr-namespace:Stumana.WPF.ViewModels.MainViewModels.ReportOption"
              mc:Ignorable="d" 
              Height="750" Width="1198">
 
@@ -13,8 +14,6 @@
             <RowDefinition Height="82"></RowDefinition>
             <RowDefinition Height="10"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
-
-
         </Grid.RowDefinitions>
         <StackPanel
             Grid.Row="0"          
@@ -24,40 +23,38 @@
             HorizontalAlignment="Left"
             Orientation="Horizontal">
             <Button x:Name="btSemetser"
-             Margin="10"
-             VerticalAlignment="Center"
-        
-             Width="300"
-             Height="39"
-             Background="#EDE995"
-             Style="{StaticResource MaterialDesignRaisedButton}"
-             materialDesign:ButtonAssist.CornerRadius="4">
+                    Margin="10"
+                    VerticalAlignment="Center"
+                    Width="300"
+                    Height="39"
+                    Background="#EDE995"
+                    Style="{StaticResource MaterialDesignRaisedButton}"
+                    materialDesign:ButtonAssist.CornerRadius="4"
+                    Command="{Binding ReportSubjectCommand}">
                 <TextBlock HorizontalAlignment="Center"
-   
-                 FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
-                FontSize="24"
-                Text="Tổng kết môn học"
-                Foreground="Snow"
-                Cursor="Hand"
-                ToolTip="Thiết lập điểm môn" />
+                           FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
+                           FontSize="24"
+                           Text="Tổng kết môn học"
+                           Foreground="Snow"
+                           Cursor="Hand"
+                           ToolTip="Thiết lập điểm môn" />
             </Button>
             <Button x:Name="btGrade"
-             Margin="10"
-             VerticalAlignment="Center"
-        
-             Width="200"
-             Height="39"
-           Background="#CCCCCC"
-             Style="{StaticResource MaterialDesignRaisedButton}"
-             materialDesign:ButtonAssist.CornerRadius="4">
+                    Margin="10"
+                    VerticalAlignment="Center"
+                    Width="200"
+                    Height="39"
+                    Background="#CCCCCC"
+                    Style="{StaticResource MaterialDesignRaisedButton}"
+                    materialDesign:ButtonAssist.CornerRadius="4"
+                    Command="{Binding ReportSummaryCommand}">
                 <TextBlock HorizontalAlignment="Center"
-   
-                FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
-            FontSize="24"
-            Text="Tổng kết"
-            Foreground="Snow"
-            Cursor="Hand"
-            ToolTip="Thiết lập điểm cho học sinh" />
+                           FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
+                           FontSize="24"
+                           Text="Tổng kết"
+                           Foreground="Snow"
+                           Cursor="Hand"
+                           ToolTip="Thiết lập điểm cho học sinh" />
             </Button>
         </StackPanel>
         <StackPanel Grid.Row="2" Orientation="Vertical">
@@ -69,9 +66,7 @@
                                 <Setter.Value>
                                     <ControlTemplate TargetType="GroupBox">
                                         <StackPanel>
-                                            <!-- Header GroupBox -->
                                             <ContentPresenter ContentSource="Header" />
-                                            <!-- Nội dung GroupBox -->
                                             <ContentPresenter />
                                         </StackPanel>
                                     </ControlTemplate>
@@ -82,10 +77,10 @@
                     <GroupBox.Header>
                         <Border Background="#059669"  CornerRadius="10,10,0,0" Padding="10">
                             <TextBlock Text=" Tổng kết "
-                       Foreground="White"
-                       FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
-                       FontSize="16" 
-                       HorizontalAlignment="Center"/>
+                                       Foreground="White"
+                                       FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
+                                       FontSize="16" 
+                                       HorizontalAlignment="Center"/>
                         </Border>
                     </GroupBox.Header>
                     <Grid>
@@ -95,52 +90,56 @@
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
-                            <!-- Hàng cho ComboBox -->
                             <RowDefinition Height="*" />
-                            <!-- Hàng cho DataGrid -->
-
                         </Grid.RowDefinitions>
 
-                        <!-- ComboBox -->
                         <StackPanel Grid.ColumnSpan="1" Orientation="Horizontal">
                             <ComboBox Background="#FFFFFF"
-                              Padding="10 0 10 0"
-                              Width="150"
-                              Height="30"
-                              IsEditable="True"
-                              Text="Năm học"
-                              Foreground="#C4C4C4"
-                              FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
-                              Margin="20"      
-                              HorizontalAlignment="Left" 
-                              BorderBrush="#64748B" BorderThickness="1"/>
+                                      Padding="10 0 10 0"
+                                      Width="150"
+                                      Height="30"
+                                      IsEditable="True"
+                                      ItemsSource="{Binding SchoolYearCollection}"
+                                      SelectedItem="{Binding SelectedSchoolYear}"
+                                      Foreground="#C4C4C4"
+                                      FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
+                                      Margin="20"      
+                                      HorizontalAlignment="Left" 
+                                      BorderBrush="#64748B" BorderThickness="1"/>
                             <ComboBox Background="#FFFFFF"
-  Padding="10 0 10 0"         
- Width="150"
- Height="30"
- IsEditable="True"
- Text="Học kì"
- Foreground="#C4C4C4"
- FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
- Margin="20"      
- HorizontalAlignment="Left" 
- BorderBrush="#64748B" BorderThickness="1"/>
+                                      Padding="10 0 10 0"         
+                                      Width="150"
+                                      Height="30"
+                                      IsEditable="True"
+                                      ItemsSource="{Binding SemesterCollection}"
+                                      SelectedItem="{Binding SelectedSemester}"
+                                      Foreground="#C4C4C4"
+                                      FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
+                                      Margin="20"      
+                                      HorizontalAlignment="Left" 
+                                      BorderBrush="#64748B" BorderThickness="1"/>
                         </StackPanel>
-                        <!-- DataGrid -->
-                        <DataGrid Margin="10 20 0 10" AutoGenerateColumns="False" Height="500" Width="1100"
-                  HorizontalAlignment="Left" CanUserAddRows="False" Grid.Row="1" Grid.ColumnSpan="2">
 
-                            <!-- Tạo Style cho Header với góc bo tròn -->
+                        <DataGrid Margin="10 20 0 10" 
+                                  AutoGenerateColumns="False" 
+                                  Height="500" 
+                                  Width="1100"
+                                  HorizontalAlignment="Left" 
+                                  CanUserAddRows="False" 
+                                  Grid.Row="1" 
+                                  Grid.ColumnSpan="2"
+                                  ItemsSource="{Binding ReportTableView}">
+
                             <DataGrid.Resources>
                                 <Style TargetType="DataGridColumnHeader">
                                     <Setter Property="Template">
                                         <Setter.Value>
                                             <ControlTemplate TargetType="DataGridColumnHeader">
                                                 <Border CornerRadius="10,10,0,0" 
-                                        Background="#152259" 
-                                        BorderBrush="Transparent" 
-                                        BorderThickness="0"
-                                        Height="34">
+                                                        Background="#152259" 
+                                                        BorderBrush="Transparent" 
+                                                        BorderThickness="0"
+                                                        Height="34">
                                                     <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
                                                 </Border>
                                             </ControlTemplate>
@@ -156,11 +155,8 @@
                             <DataGrid.Style>
                                 <Style TargetType="DataGrid">
                                     <Setter Property="Background" Value="#F5F5F5" />
-                                    <!-- Đổi màu nền -->
                                     <Setter Property="BorderBrush" Value="#152259" />
-                                    <!-- Đổi màu viền -->
                                     <Setter Property="BorderThickness" Value="0" />
-                                    <!-- Độ dày viền -->
                                 </Style>
                             </DataGrid.Style>
 
@@ -171,19 +167,16 @@
                                 </Style>
                             </DataGrid.CellStyle>
 
-                            <!-- Cột 1: Mã học sinh -->
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="STT" Width="250" />
-                                <DataGridTextColumn Header="Lớp" Width="250" />
-                                <DataGridTextColumn Header="Số lượng đạt" Width="250" />
-                                <DataGridTextColumn Header="Tỉ lệ" Width="250" />
+                                <DataGridTextColumn Header="STT" Width="250" Binding="{Binding STT}" />
+                                <DataGridTextColumn Header="Lớp" Width="250" Binding="{Binding Lớp}" />
+                                <DataGridTextColumn Header="Số lượng đạt" Width="250" Binding="{Binding [Số lượng đạt]}" />
+                                <DataGridTextColumn Header="Tỉ lệ" Width="250" Binding="{Binding Tỉ lệ}" />
                             </DataGrid.Columns>
                         </DataGrid>
-
                     </Grid>
                 </GroupBox>
             </Border>
-
         </StackPanel>
     </Grid>
 </UserControl>

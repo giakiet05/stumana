@@ -269,14 +269,6 @@
                                         <Setter Property="FocusVisualStyle" Value="{x:Null}" />
                                     </Style>
                                 </DataGrid.CellStyle>
-
-                                <!--<DataGrid.Columns>
-                                        <DataGridTextColumn Header="Mã học sinh" Width="Auto" />
-                                        <DataGridTextColumn Header="Họ tên" Width="Auto" />
-                                        <DataGridTextColumn Header="Giới tính" Width="Auto" />
-                                        <DataGridTextColumn Header="Năm sinh" Width="Auto" />
-                                        <DataGridTextColumn Header="Địa chỉ" Width="Auto" />
-                                    </DataGrid.Columns>-->
                             </DataGrid>
                         </Border>
                     </ScrollViewer>

@@ -45,10 +45,11 @@ public class ScoreSubjectViewModel : BaseViewModel
         }
     }
 
-    public Dictionary<string, SchoolYear> SchoolYearDic { get; set; } = new();
     public Dictionary<string, Subject> SubjectDic { get; set; } = new();
+    public Dictionary<string, SchoolYear> SchoolYearDic { get; set; } = new();
     public Dictionary<string, Grade> GradeDic { get; set; } = new();
     public Dictionary<string, Classroom> ClassroomDic { get; set; }
+    private Dictionary<string, int> SemesterDic { get; set; } = new();
     public Subject? PreviousSubject { get; set; }
     public List<Score>? PreviousScoreDetail { get; set; }
 
@@ -144,8 +145,6 @@ public class ScoreSubjectViewModel : BaseViewModel
             OnPropertyChanged();
         }
     }
-
-    private Dictionary<string, int> SemesterDic { get; set; } = new();
 
     #endregion Properties
 

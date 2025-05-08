@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Data;
+using System.Text.RegularExpressions;
 using System.Windows.Input;
 using Stumana.DataAccess.Services;
 using Stumana.DataAcess.Models;

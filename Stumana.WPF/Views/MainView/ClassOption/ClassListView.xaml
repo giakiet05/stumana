@@ -145,13 +145,6 @@
                                 </Style>
                             </ComboBox.ItemContainerStyle>
                         </ComboBox>
-
-                        <Button Margin="20,0,0,0"
-                                Width="130"
-                                Content="Thêm lớp học"
-                                Padding="10"
-                                Style="{StaticResource PrimaryButtonStyle}"
-                                Command="{Binding AddClassroomCommand}" />
                     </StackPanel>
                     <!-- DataGrid -->
                     <Border Grid.Row="1" Grid.Column="0" Margin="0,0,30,0" VerticalAlignment="Stretch">
@@ -283,8 +276,22 @@
                     Content="Xuất danh sách lớp"
                     FontSize="18"
                     Padding="10"
-                    Margin="20"
+                    Margin="10,15,10,15"
                     Style="{StaticResource PrimaryButtonStyle}"/>
+            <Button Margin="10,15,10,15"
+                    Width="220"
+                    FontSize="18"
+                    Content="Thêm học sinh vào lớp"
+                    Padding="10"
+                    Style="{StaticResource PrimaryButtonStyle}"
+                    Command="{Binding AddStudentToClassCommand}"/>
+            <Button Margin="10,15,10,15"
+                    Width="140"
+                    FontSize="18"
+                    Content="Thêm lớp học"
+                    Padding="10"
+                    Style="{StaticResource PrimaryButtonStyle}"
+                    Command="{Binding AddClassroomCommand}" />
         </StackPanel>
     </Grid>
 </UserControl>

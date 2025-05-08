@@ -241,7 +241,7 @@
                               HorizontalAlignment="Stretch"
                               VerticalAlignment="Stretch">
                     <DataGrid Margin="0 0 0 0"
-                              AutoGenerateColumns="True"
+                              AutoGenerateColumns="False"
                               BorderBrush="Black"
                               BorderThickness="1"
                               HorizontalAlignment="Stretch"
@@ -255,13 +255,13 @@
                                     <Setter.Value>
                                         <ControlTemplate TargetType="DataGridColumnHeader">
                                             <Border Background="#152259"
-                                                    BorderBrush="Black"
+                                                    BorderBrush="Transparent"
                                                     BorderThickness="1"
                                                     Padding="10">
                                                 <Grid>
                                                     <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="*" /> <!-- Text -->
-                                                        <ColumnDefinition Width="Auto" /> <!-- Sort Arrow -->
+                                                        <ColumnDefinition Width="*" />
+                                                        <ColumnDefinition Width="Auto" />
                                                     </Grid.ColumnDefinitions>
 
                                                     <!-- Header Text -->
@@ -331,6 +331,19 @@
                                 <Setter Property="FocusVisualStyle" Value="{x:Null}" />
                             </Style>
                         </DataGrid.CellStyle>
+
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Khối" Binding="{Binding [Khối]}" />
+                            <DataGridTextColumn Header="Lớp" Binding="{Binding [Lớp]}"/>
+                            <DataGridTextColumn Header="Họ và tên" Binding="{Binding [Họ và tên]}"/>
+                            <DataGridTextColumn Header="Giới tính" Binding="{Binding [Giới tính]}"/>
+                            <DataGridTextColumn Header="Ngày sinh" Binding="{Binding [Ngày sinh]}"/>
+                            <DataGridTextColumn Header="Địa chỉ" Binding="{Binding [Địa chỉ]}"/>
+                            <DataGridTextColumn Header="Số điện thoại" Binding="{Binding [Số điện thoại]}"/>
+                            <DataGridTextColumn Header="Email" Binding="{Binding [Email]}"/>
+                            <DataGridTextColumn Header="TB học kỳ 1" Binding="{Binding [TB học kỳ 1]}"/>
+                            <DataGridTextColumn Header="TB học kỳ 2" Binding="{Binding [TB học kỳ 2]}"/>
+                        </DataGrid.Columns>
                     </DataGrid>
                 </ScrollViewer>
             </Grid>
@@ -339,15 +352,11 @@
         <StackPanel Grid.Row="1" Orientation="Horizontal" FlowDirection="RightToLeft">
             <Button Margin="10"
                     VerticalAlignment="Center"
-                    Content="Hủy thay đổi"
-                    Style="{StaticResource PrimaryButtonStyle}"
-                    materialDesign:ButtonAssist.CornerRadius="20">
-            </Button>
-            <Button Margin="10"
-                    VerticalAlignment="Center"
                     Content="Thêm học sinh"
+                    FontSize="18" Width="180"
                     Style="{StaticResource PrimaryButtonStyle}"
-                    materialDesign:ButtonAssist.CornerRadius="20">
+                    materialDesign:ButtonAssist.CornerRadius="20"
+                    Command="{Binding AddStudentCommand}">
             </Button>
         </StackPanel>
     </Grid>

@@ -32,18 +32,23 @@ public class AddStudentToClassViewModel : BaseViewModel
     public async void LoadData()
     {
         StudentChoiceTableView = new ObservableCollection<StudentChoiceInfo>();
+        var studentAssignment = (await GenericDataService<StudentAssignment>.Instance.GetAllAsync()).Select(sa => sa.StudentId).Distinct().ToList();
+        var unassignStudent = (await GenericDataService<Student>.Instance.GetManyAsync(s => !studentAssignment.Contains(s.Id))).ToList();
 
-        StudentChoiceInfo student = new StudentChoiceInfo
+        foreach (Student student in unassignStudent)
         {
-            IsSelected = true,
-            StudentID = "STU00001",
-            Name = "An Nam",
-            Birthday = DateTime.Now,
-            PhoneNumber = "0901295343",
-            Email = "admin@gmail.com"
-        };
+            StudentChoiceInfo choice = new StudentChoiceInfo
+            {
+                IsSelected = false,
+                StudentID = student.Id,
+                Name = student.Name,
+                Birthday = student.Birthday,
+                Email = student.Email,
+                PhoneNumber = student.Phone
+            };
 
-        StudentChoiceTableView.Add(student);
+            StudentChoiceTableView.Add(choice);
+        }
     }
 
     private async void SaveChange()
@@ -52,7 +57,37 @@ public class AddStudentToClassViewModel : BaseViewModel
         int studentNum = (await GenericDataService<StudentAssignment>.Instance.GetManyAsync(sa => sa.ClassroomId == CurClassroom.Id)).Count();
         var studentAdded = StudentChoiceTableView.Where(s => s.IsSelected).ToList();
 
-        //if (studentAdded.Count + studentNum >)
+        if (studentAdded.Count + studentNum > 40)
+        {
+            ToastMessageViewModel.ShowErrorToast("Số lượng học sinh quá sĩ số tối đa");
+            return;
+        }
+
+        foreach (var student in studentAdded)
+        {
+            List<StudentAssignment> newStudentAssignments = new();
+            newStudentAssignments.Add(new StudentAssignment
+            {
+                Semester = 1,
+                Conduct = String.Empty,
+                Absence = 0,
+                StudentId = student.StudentID,
+                ClassroomId = CurClassroom.Id
+            });
+            newStudentAssignments.Add(new StudentAssignment
+            {
+                Semester = 2,
+                Conduct = String.Empty,
+                Absence = 0,
+                StudentId = student.StudentID,
+                ClassroomId = CurClassroom.Id
+            });
+
+            await GenericDataService<StudentAssignment>.Instance.CreateManyAsync(newStudentAssignments);
+        }
+
+        ToastMessageViewModel.ShowSuccessToast("Thêm học sinh thành công");
+        ModalNavigationStore.Instance.Close();
     }
 }
 

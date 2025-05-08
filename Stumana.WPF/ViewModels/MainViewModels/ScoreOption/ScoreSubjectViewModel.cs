@@ -567,6 +567,7 @@ public class ScoreSubjectViewModel : BaseViewModel
                 Dictionary<string, Tuple<double, double?>> columnChanges = rowEntry.Value;
 
                 string studentId = row["Mã học sinh"].ToString();
+                int semester = SemesterDic[row["Học kì"].ToString()];
 
                 foreach (var columnEntry in columnChanges)
                 {
@@ -576,7 +577,7 @@ public class ScoreSubjectViewModel : BaseViewModel
 
                     string scoreTypeName = columnName.Substring(0, columnName.LastIndexOf(' '));
 
-                    var studentAssignment = await GenericDataService<StudentAssignment>.Instance.GetOneAsync(sa => sa.StudentId == studentId);
+                    var studentAssignment = await GenericDataService<StudentAssignment>.Instance.GetOneAsync(sa => sa.StudentId == studentId && sa.Semester == semester);
                     var scoreType = await GenericDataService<SubjectScoreType>.Instance.GetOneAsync(sst => sst.ScoreType.Name == scoreTypeName,
                                                                                                     query => query.Include(sst => sst.ScoreType));
                     if (newValue == null)

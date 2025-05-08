@@ -73,11 +73,11 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ClassOption
         }
 
         private Dictionary<string, Classroom> ClassroomDic { get; set; } = new();
-        private DataRowView _selectedClass;
+        private DataRowView? _selectedClass;
 
-        public DataRowView SelectedClass
+        public DataRowView? SelectedClass
         {
-            get { return _selectedClass; }
+            get => _selectedClass;
             set
             {
                 if (_selectedClass != value)
@@ -127,7 +127,7 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ClassOption
             LoadStudentTableColumn();
 
             AddClassroomCommand = new NavigateModalCommand(() => new AddClassroomViewModel());
-            AddStudentToClassCommand = new NavigateModalCommand(() => new AddStudentToClassViewModel(ClassroomDic[SelectedClass["Tên lớp"].ToString()]));
+            AddStudentToClassCommand = new NavigateModalCommand(() => new AddStudentToClassViewModel(ClassroomDic[SelectedClass["Tên lớp"].ToString()]), HaveSelectClass);
             //ClassDataTable.Rows.Add("10A1", 45);
         }
 
@@ -222,6 +222,17 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ClassOption
                 GradeCollection.Add("Khối" + grade.Level);
                 GradeDic.Add("Khối" + grade.Level, grade);
             }
+        }
+
+        private bool HaveSelectClass()
+        {
+            if (SelectedClass == null)
+            {
+                ToastMessageViewModel.ShowErrorToast("Chưa chọn lớp");
+                return false;
+            }
+
+            return true;
         }
     }
 }

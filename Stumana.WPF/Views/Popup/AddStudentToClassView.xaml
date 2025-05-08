@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d"
              d:DesignHeight="547" d:DesignWidth="969"
              Background="White">
@@ -20,6 +21,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
@@ -30,9 +32,26 @@
                    FontSize="35"
                    FontWeight="SemiBold"
                    Foreground="#333333"
-                   Margin="20,30,0,0" />
+                   Margin="20,20,0,0" />
+        <StackPanel Grid.Row="1" Orientation="Horizontal"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Stretch">
+            <Button Style="{StaticResource MaterialDesignIconButton}">
+                <materialDesign:PackIcon Kind="Magnify" Width="25" Height="25" Foreground="#8A8A8A" />
+            </Button>
 
-        <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+            <TextBox FontSize="13"
+                     Foreground="Black"
+                     FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
+                     Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                     materialDesign:HintAssist.Hint="Tìm kiếm"
+                     materialDesign:TextFieldAssist.HasClearButton="True"
+                     HorizontalAlignment="Right" Width="900"
+                     Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}">
+            </TextBox>
+        </StackPanel>
+
+        <ScrollViewer Grid.Row="2" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
             <DataGrid Margin="10 20 0 0"
                       AutoGenerateColumns="False"
                       HorizontalAlignment="Stretch"
@@ -96,14 +115,14 @@
             </DataGrid>
         </ScrollViewer>
 
-        <StackPanel Grid.Row="2" Orientation="Horizontal" FlowDirection="RightToLeft">
+        <StackPanel Grid.Row="3" Orientation="Horizontal" FlowDirection="RightToLeft">
             <Button Width="130"
                     Style="{StaticResource PrimaryButtonStyle}"
                     Content="Lưu thay đổi"
                     FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
                     Margin="20"
-                    FontSize="18" 
-                    Command="{Binding SaveChangeCommand}"/>
+                    FontSize="18"
+                    Command="{Binding SaveChangeCommand}" />
 
             <Button Width="130"
                     Style="{StaticResource PrimaryButtonStyle}"

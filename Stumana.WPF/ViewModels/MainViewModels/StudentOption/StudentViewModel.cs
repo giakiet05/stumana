@@ -242,7 +242,7 @@ namespace Stumana.WPF.ViewModels.MainViewModels.StudentOption
             {
                 Classroom classroom = classrooms.First(c => c.Id == studentAssignment.ClassroomId);
                 string gradeName = classroom.Grade.Name;
-                string className = classroom.Name;
+                string? className = classroom.Name;
 
                 string studentName = studentAssignment.Student.Name;
                 string studentGender = studentAssignment.Student.Gender;

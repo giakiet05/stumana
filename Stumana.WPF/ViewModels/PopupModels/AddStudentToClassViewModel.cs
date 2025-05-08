@@ -2,7 +2,6 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
-using Microsoft.EntityFrameworkCore;
 using Stumana.DataAccess.Services;
 using Stumana.DataAcess.Models;
 using Stumana.WPF.Commands;
@@ -13,10 +12,6 @@ namespace Stumana.WPF.ViewModels.PopupModels;
 public class AddStudentToClassViewModel : BaseViewModel
 {
     public ObservableCollection<StudentChoiceInfo> StudentChoiceTableView { get; set; }
-
-    public Dictionary<string, StudentAssignment> StudentDic { get; set; } = new();
-
-    public Dictionary<string, Tuple<bool, bool>> ChangeTable { get; set; } = new();
 
     public Classroom CurClassroom { get; set; }
 
@@ -47,40 +42,17 @@ public class AddStudentToClassViewModel : BaseViewModel
             PhoneNumber = "0901295343",
             Email = "admin@gmail.com"
         };
-        student.OnSelectedChanged += OnSelectedChanged;
 
         StudentChoiceTableView.Add(student);
     }
 
-    private void OnSelectedChanged(object? sender, EventArgs e)
-    {
-        var choice = sender as StudentChoiceInfo;
-        if (choice != null)
-            return;
-
-        bool originalValue = StudentDic.ContainsKey(choice.StudentID);
-        bool newValue = choice.IsSelected;
-
-        if (originalValue == newValue)
-        {
-            if (ChangeTable.ContainsKey(choice.StudentID))
-                ChangeTable.Remove(choice.StudentID);
-            return;
-        }
-        
-        ChangeTable[choice.StudentID] = Tuple.Create(originalValue, newValue);
-    }
-
     private async void SaveChange()
     {
-        foreach (var change in ChangeTable)
-        {
-            bool originalValue = change.Value.Item1;
+        //int maxStudentNum = (await GenericDataService<Asset>.Instance.GetOneAsync(a => a.YearId == CurClassroom.YearId)).
+        int studentNum = (await GenericDataService<StudentAssignment>.Instance.GetManyAsync(sa => sa.ClassroomId == CurClassroom.Id)).Count();
+        var studentAdded = StudentChoiceTableView.Where(s => s.IsSelected).ToList();
 
-            if (originalValue)
-            {
-            }
-        }
+        //if (studentAdded.Count + studentNum >)
     }
 }
 
@@ -97,12 +69,12 @@ public class StudentChoiceInfo : INotifyPropertyChanged
             {
                 _isSelected = value;
                 OnPropertyChanged();
-                OnSelectedChanged?.Invoke(this, EventArgs.Empty);
+                //OnSelectedChanged?.Invoke(this, EventArgs.Empty);
             }
         }
     }
 
-    public event EventHandler? OnSelectedChanged;
+    //public event EventHandler? OnSelectedChanged;
 
     public string StudentID { get; set; }
     public string Name { get; set; }

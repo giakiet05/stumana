@@ -157,6 +157,10 @@
         <popupViews:EditUsernameAndEmailView/>
     </DataTemplate>
 
+    <DataTemplate DataType="{x:Type popupViewModels:AddSemesterViewModel}">
+        <popupViews:AddSemesterView/>
+    </DataTemplate>
+
     <!--#endregion-->
     <!--#region admin-->
 

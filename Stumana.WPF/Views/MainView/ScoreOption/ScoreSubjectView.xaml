@@ -6,7 +6,7 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d"
-             Height="720" HorizontalAlignment="Stretch">
+             d:DesignHeight="1000" d:DesignWidth="1000">
 
     <UserControl.Resources>
         <ResourceDictionary>
@@ -21,61 +21,33 @@
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
-        <!--<StackPanel Grid.Row="0"
-                    VerticalAlignment="Stretch"
-                    HorizontalAlignment="Stretch"
-                    Orientation="Horizontal">
-            <Button Margin="10"
-                    VerticalAlignment="Center"
-                    Width="179"
-                    Height="39"
-                    Background="#EDE995"
-                    Style="{StaticResource MaterialDesignRaisedButton}"
-                    materialDesign:ButtonAssist.CornerRadius="4">
-                <TextBlock HorizontalAlignment="Center"
-                           FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
-                           FontSize="24"
-                           Text="Điểm môn"
-                           Foreground="Snow"
-                           Cursor="Hand"
-                           ToolTip="Thiết lập điểm môn" />
-            </Button>
-            <Button Margin="10"
-                    VerticalAlignment="Center"
-                    Width="200"
-                    Height="39"
-                    Background="#CCCCCC"
-                    Style="{StaticResource MaterialDesignRaisedButton}"
-                    materialDesign:ButtonAssist.CornerRadius="4">
-                <TextBlock HorizontalAlignment="Center"
-                           FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
-                           FontSize="24"
-                           Text="Điểm cá nhân"
-                           Foreground="Snow"
-                           Cursor="Hand"
-                           ToolTip="Thiết lập điểm cho học sinh" />
-            </Button>
-        </StackPanel>-->
-        <GroupBox Grid.Row="0">
+
+        <GroupBox Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <GroupBox.Style>
                 <Style TargetType="GroupBox">
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="GroupBox">
-                                <StackPanel>
-                                    <ContentPresenter ContentSource="Header" />
-                                    <ContentPresenter />
-                                </StackPanel>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="*" />
+                                    </Grid.RowDefinitions>
+                                    <ContentPresenter Grid.Row="0" ContentSource="Header" />
+                                    <ContentPresenter Grid.Row="1" />
+                                </Grid>
                             </ControlTemplate>
                         </Setter.Value>
                     </Setter>
+                    <Setter Property="Background" Value="Transparent" />    
                 </Style>
             </GroupBox.Style>
             <GroupBox.Header>
                 <Border Background="#059669"
                         CornerRadius="10,10,0,0"
                         Padding="10"
-                        Margin="0,10,0,0">
+                        Margin="0,10,0,0"
+                        HorizontalAlignment="Stretch">
                     <TextBlock Text="Bảng điểm học sinh"
                                Foreground="White"
                                FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
@@ -83,13 +55,15 @@
                                HorizontalAlignment="Center" />
                 </Border>
             </GroupBox.Header>
+
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"></RowDefinition>
                     <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
                 </Grid.RowDefinitions>
 
-                <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,20,0,10">
+                <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,20,0,10" HorizontalAlignment="Center">
                     <StackPanel.Resources>
                         <Style TargetType="Border">
                             <Setter Property="Margin" Value="15,0,15,0" />
@@ -99,9 +73,9 @@
                     <ComboBox Background="#FFFFFF"
                               Padding="5 0 10 0"
                               Width="150" Height="30"
-                              IsEditable="True"
-                              Text="Năm học*"
                               Foreground="Black"
+                              materialDesign:HintAssist.Hint="Năm học*"
+                              materialDesign:HintAssist.HintOpacity="1"
                               Style="{StaticResource MaterialDesignComboBox}"
                               FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
                               Margin="20,0,20,0"
@@ -175,9 +149,9 @@
                     <ComboBox Background="#FFFFFF"
                               Padding="5 0 10 0"
                               Width="150" Height="30"
-                              IsEditable="True"
-                              Text="Môn học*"
                               Foreground="Black"
+                              materialDesign:HintAssist.Hint="Môn học*"
+                              materialDesign:HintAssist.HintOpacity="1"
                               Style="{StaticResource MaterialDesignComboBox}"
                               FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
                               Margin="20,0,20,0"
@@ -312,134 +286,129 @@
                     </Border>
                 </StackPanel>
 
-                <StackPanel Grid.Row="1" Orientation="Vertical">
+                <Border Grid.Row="1" CornerRadius="8"
+                        Height="50" Width="950"
+                        Background="#FCFAFA"
+                        BorderThickness="1"
+                        BorderBrush="#C4C4C4">
+                    <StackPanel Orientation="Horizontal"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Stretch">
+                        <Button Style="{StaticResource MaterialDesignIconButton}">
+                            <materialDesign:PackIcon Kind="Magnify" Width="25" Height="25" Foreground="#8A8A8A" />
+                        </Button>
 
-                    <Border CornerRadius="8"
-                            Height="50" Width="950"
-                            Background="#FCFAFA"
-                            BorderThickness="1"
-                            BorderBrush="#C4C4C4">
-                        <StackPanel Orientation="Horizontal"
-                                    VerticalAlignment="Center"
-                                    HorizontalAlignment="Stretch">
-                            <Button Style="{StaticResource MaterialDesignIconButton}">
-                                <materialDesign:PackIcon Kind="Magnify" Width="25" Height="25" Foreground="#8A8A8A" />
-                            </Button>
+                        <TextBox FontSize="13"
+                                 Foreground="Black"
+                                 FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
+                                 Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                 materialDesign:HintAssist.Hint="Tìm kiếm"
+                                 materialDesign:TextFieldAssist.HasClearButton="True"
+                                 HorizontalAlignment="Right" Width="900"
+                                 Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}">
+                        </TextBox>
+                    </StackPanel>
+                </Border>
 
-                            <TextBox FontSize="13"
-                                     Foreground="Black"
-                                     FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
-                                     Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                                     materialDesign:HintAssist.Hint="Tìm kiếm"
-                                     materialDesign:TextFieldAssist.HasClearButton="True"
-                                     HorizontalAlignment="Right" Width="900"
-                                     Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}">
-                            </TextBox>
-                        </StackPanel>
-                    </Border>
+                <ScrollViewer Grid.Row="2" 
+                              Margin="0,20,0,0"
+                              HorizontalScrollBarVisibility="Auto"
+                              VerticalScrollBarVisibility="Disabled"
+                              HorizontalAlignment="Stretch"
+                              VerticalAlignment="Stretch">
+                    <DataGrid Margin="0 0 0 0"
+                              AutoGenerateColumns="True"
+                              BorderBrush="Black"
+                              BorderThickness="1"
+                              HorizontalAlignment="Stretch"
+                              VerticalAlignment="Stretch"
+                              CanUserAddRows="False"
+                              ItemsSource="{Binding TableView}">
 
-                    <ScrollViewer HorizontalScrollBarVisibility="Auto"
-                                  VerticalScrollBarVisibility="Auto">
-                        <DataGrid Margin="0 20 0 0"
-                                  AutoGenerateColumns="True"
-                                  Background="White"
-                                  Height="471"
-                                  BorderBrush="Black"
-                                  BorderThickness="1"
-                                  HorizontalAlignment="Stretch"
-                                  materialDesign:DataGridAssist.EnableEditBoxAssist="True"
-                                  CanUserAddRows="False"
-                                  ItemsSource="{Binding TableView}">
+                        <DataGrid.Resources>
+                            <Style TargetType="DataGridColumnHeader">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="DataGridColumnHeader">
+                                            <Border Background="#152259"
+                                                    BorderBrush="Black"
+                                                    BorderThickness="1"
+                                                    Padding="10">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*" /> <!-- Text -->
+                                                        <ColumnDefinition Width="Auto" /> <!-- Sort Arrow -->
+                                                    </Grid.ColumnDefinitions>
 
-                            <DataGrid.Resources>
-                                <Style TargetType="DataGridCell">
-                                    <Setter Property="Background" Value="White"></Setter>
-                                </Style>
+                                                    <!-- Header Text -->
+                                                    <ContentPresenter
+                                                        Grid.Column="0"
+                                                        HorizontalAlignment="Center"
+                                                        VerticalAlignment="Center"
+                                                        RecognizesAccessKey="True" />
 
-                                <Style TargetType="DataGridColumnHeader">
-                                    <Setter Property="Template">
-                                        <Setter.Value>
-                                            <ControlTemplate TargetType="DataGridColumnHeader">
-                                                <Border Background="#152259"
-                                                        BorderBrush="Black"
-                                                        BorderThickness="1"
-                                                        Padding="10">
-                                                    <Grid>
-                                                        <Grid.ColumnDefinitions>
-                                                            <ColumnDefinition Width="*" /> <!-- Text -->
-                                                            <ColumnDefinition Width="Auto" /> <!-- Sort Arrow -->
-                                                        </Grid.ColumnDefinitions>
+                                                    <!-- Sort Arrow -->
+                                                    <Path x:Name="SortArrow"
+                                                          Grid.Column="1"
+                                                          Data="M 0 0 L 8 0 L 4 4 Z"
+                                                          Fill="White"
+                                                          Width="8"
+                                                          Height="4"
+                                                          VerticalAlignment="Center"
+                                                          Margin="5,0,0,0"
+                                                          Visibility="Collapsed" />
+                                                </Grid>
+                                            </Border>
 
-                                                        <!-- Header Text -->
-                                                        <ContentPresenter
-                                                            Grid.Column="0"
-                                                            HorizontalAlignment="Center"
-                                                            VerticalAlignment="Center"
-                                                            RecognizesAccessKey="True" />
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="SortDirection" Value="Ascending">
+                                                    <Setter TargetName="SortArrow" Property="Visibility"
+                                                            Value="Visible" />
+                                                    <Setter TargetName="SortArrow" Property="RenderTransform">
+                                                        <Setter.Value>
+                                                            <RotateTransform Angle="180" CenterX="4" CenterY="2" />
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </Trigger>
+                                                <Trigger Property="SortDirection" Value="Descending">
+                                                    <Setter TargetName="SortArrow" Property="Visibility"
+                                                            Value="Visible" />
+                                                    <Setter TargetName="SortArrow" Property="RenderTransform">
+                                                        <Setter.Value>
+                                                            <RotateTransform Angle="0" />
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter Property="Foreground" Value="White" />
+                                <Setter Property="FontSize" Value="16" />
+                                <Setter Property="FontFamily"
+                                        Value="pack://application:,,,/Resource/Font/#Poppins Medium" />
+                                <Setter Property="HorizontalContentAlignment" Value="Center" />
+                            </Style>
 
-                                                        <!-- Sort Arrow -->
-                                                        <Path x:Name="SortArrow"
-                                                              Grid.Column="1"
-                                                              Data="M 0 0 L 8 0 L 4 4 Z"
-                                                              Fill="White"
-                                                              Width="8"
-                                                              Height="4"
-                                                              VerticalAlignment="Center"
-                                                              Margin="5,0,0,0"
-                                                              Visibility="Collapsed" />
-                                                    </Grid>
-                                                </Border>
-
-                                                <ControlTemplate.Triggers>
-                                                    <Trigger Property="SortDirection" Value="Ascending">
-                                                        <Setter TargetName="SortArrow" Property="Visibility"
-                                                                Value="Visible" />
-                                                        <Setter TargetName="SortArrow" Property="RenderTransform">
-                                                            <Setter.Value>
-                                                                <RotateTransform Angle="180" CenterX="4" CenterY="2" />
-                                                            </Setter.Value>
-                                                        </Setter>
-                                                    </Trigger>
-                                                    <Trigger Property="SortDirection" Value="Descending">
-                                                        <Setter TargetName="SortArrow" Property="Visibility"
-                                                                Value="Visible" />
-                                                        <Setter TargetName="SortArrow" Property="RenderTransform">
-                                                            <Setter.Value>
-                                                                <RotateTransform Angle="0" />
-                                                            </Setter.Value>
-                                                        </Setter>
-                                                    </Trigger>
-                                                </ControlTemplate.Triggers>
-                                            </ControlTemplate>
-                                        </Setter.Value>
-                                    </Setter>
-                                    <Setter Property="Foreground" Value="White" />
-                                    <Setter Property="FontSize" Value="16" />
-                                    <Setter Property="FontFamily"
-                                            Value="pack://application:,,,/Resource/Font/#Poppins Medium" />
-                                    <Setter Property="HorizontalContentAlignment" Value="Center" />
-                                </Style>
-
-                            </DataGrid.Resources>
-                            <DataGrid.Style>
-                                <Style TargetType="DataGrid">
-                                    <Setter Property="Background" Value="#F5F5F5" />
-                                    <!-- Đổi màu nền -->
-                                    <Setter Property="BorderBrush" Value="#152259" />
-                                    <!-- Đổi màu viền -->
-                                    <Setter Property="BorderThickness" Value="0" />
-                                </Style>
-                            </DataGrid.Style>
-                            <DataGrid.CellStyle>
-                                <Style BasedOn="{StaticResource MaterialDesignDataGridCell}"
-                                       TargetType="DataGridCell">
-                                    <Setter Property="BorderThickness" Value="0" />
-                                    <Setter Property="FocusVisualStyle" Value="{x:Null}" />
-                                </Style>
-                            </DataGrid.CellStyle>
-                        </DataGrid>
-                    </ScrollViewer>
-                </StackPanel>
+                        </DataGrid.Resources>
+                        <DataGrid.Style>
+                            <Style TargetType="DataGrid">
+                                <Setter Property="Background" Value="#F5F5F5" />
+                                <!-- Đổi màu nền -->
+                                <Setter Property="BorderBrush" Value="#152259" />
+                                <!-- Đổi màu viền -->
+                                <Setter Property="BorderThickness" Value="0" />
+                            </Style>
+                        </DataGrid.Style>
+                        <DataGrid.CellStyle>
+                            <Style BasedOn="{StaticResource MaterialDesignDataGridCell}"
+                                   TargetType="DataGridCell">
+                                <Setter Property="BorderThickness" Value="0" />
+                                <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+                            </Style>
+                        </DataGrid.CellStyle>
+                    </DataGrid>
+                </ScrollViewer>
             </Grid>
         </GroupBox>
 

@@ -3,165 +3,361 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:Stumana.WPF.Views.AuthencationViews"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d"
-             Height="720" Width="1198">
+             d:DesignWidth="1000" d:DesignHeight="700">
 
-    <Grid Background="White">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Stumana.WPF;component/ResourceXAML/Styles/CommonStyles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid Background="White" HorizontalAlignment="Stretch">
         <Grid.RowDefinitions>
-            <RowDefinition Height="20"></RowDefinition>
-            <RowDefinition Height="0"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
-
         </Grid.RowDefinitions>
-        <StackPanel
-            Grid.Row="0"
-            Height="59"
-            Width="1198"
-            VerticalAlignment="Top"
-            HorizontalAlignment="Left"
-            Orientation="Horizontal" />
-        <StackPanel Grid.Row="2" Orientation="Vertical">
-            <Border CornerRadius="8" Height="53" Width="1000" Background="#FCFAFA" BorderThickness="1"
-                    BorderBrush="#C4C4C4">
-                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
 
-                    <Button x:Name="btStudentFilter" Style="{StaticResource MaterialDesignIconButton}">
-                        <materialDesign:PackIcon Kind="Magnify" Width="24" Height="24" Foreground="#8A8A8A" />
-                    </Button>
+        <GroupBox Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <GroupBox.Style>
+                <Style TargetType="GroupBox">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="GroupBox">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="*" />
+                                    </Grid.RowDefinitions>
+                                    <ContentPresenter Grid.Row="0" ContentSource="Header" />
+                                    <ContentPresenter Grid.Row="1" />
+                                </Grid>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                    <Setter Property="Background" Value="Transparent" />
+                </Style>
+            </GroupBox.Style>
+            <GroupBox.Header>
+                <Border Background="#059669"
+                        CornerRadius="10,10,0,0"
+                        Padding="10"
+                        Margin="0,10,0,0"
+                        HorizontalAlignment="Stretch">
+                    <TextBlock Text="Danh sách học sinh"
+                               Foreground="White"
+                               FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
+                               FontSize="16"
+                               HorizontalAlignment="Center" />
+                </Border>
+            </GroupBox.Header>
 
-                    <TextBox
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
 
-                        FontSize="14"
-                        Foreground="#8A8A8A"
-                        FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
-                        Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                        materialDesign:HintAssist.Hint="Tìm kiếm"
-                        materialDesign:TextFieldAssist.HasClearButton="True" Width="899" />
-                    <Button Style="{StaticResource MaterialDesignIconButton}">
-                        <materialDesign:PackIcon Kind="TuneVariant" Width="30" Height="30" Foreground="#C5CAE9" />
-                    </Button>
+                <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,20,0,10" HorizontalAlignment="Center">
+                    <StackPanel.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="Margin" Value="15,0,15,0" />
+                        </Style>
+                    </StackPanel.Resources>
+
+                    <ComboBox Background="#FFFFFF"
+                              Padding="5 0 10 0"
+                              Width="150" Height="30"
+                              Foreground="Black"
+                              materialDesign:HintAssist.Hint="Năm học*"
+                              materialDesign:HintAssist.HintOpacity="1"
+                              Style="{StaticResource MaterialDesignComboBox}"
+                              FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
+                              Margin="20,0,20,0"
+                              HorizontalAlignment="Left"
+                              BorderBrush="#64748B" BorderThickness="1"
+                              IsReadOnly="True"
+                              ItemsSource="{Binding SchoolYearFilter}"
+                              SelectedItem="{Binding SelectedSchoolYear, UpdateSourceTrigger=PropertyChanged}" />
+                    <Border VerticalAlignment="Center"
+                            BorderBrush="#64748B"
+                            BorderThickness="1"
+                            Width="150" Height="30">
+                        <materialDesign:PopupBox HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                                 materialDesign:HintAssist.FloatingHintHorizontalAlignment="Stretch"
+                                                 FontSize="12"
+                                                 Foreground="Black"
+                                                 PopupMode="Click"
+                                                 StaysOpen="True"
+                                                 materialDesign:RippleAssist.RippleSizeMultiplier="0.2"
+                                                 materialDesign:RippleAssist.IsCentered="False">
+                            <materialDesign:PopupBox.ToggleContent>
+                                <Grid>
+                                    <TextBlock Margin="10,0,0,0"
+                                               HorizontalAlignment="Left"
+                                               VerticalAlignment="Center"
+                                               Text="Khối*"
+                                               FontSize="13"
+                                               Width="150"
+                                               Foreground="Black"
+                                               FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium" />
+                                    <TextBlock Text="▼"
+                                               FontSize="6"
+                                               VerticalAlignment="Center"
+                                               HorizontalAlignment="Right"
+                                               Margin="0,0,13,0"
+                                               Foreground="Gray">
+                                        <TextBlock.RenderTransform>
+                                            <ScaleTransform ScaleX="1.5" ScaleY="1" />
+                                        </TextBlock.RenderTransform>
+                                    </TextBlock>
+                                </Grid>
+                            </materialDesign:PopupBox.ToggleContent>
+                            <ItemsControl Width="150" ItemsSource="{Binding GradeFilter}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel>
+                                            <CheckBox Height="30"
+                                                      Margin="10,0,0,0"
+                                                      Content="{Binding Name}"
+                                                      FontSize="14"
+                                                      IsChecked="{Binding IsChecked, Mode=TwoWay}">
+                                                <b:Interaction.Triggers>
+                                                    <b:EventTrigger EventName="Checked">
+                                                        <b:InvokeCommandAction
+                                                            Command="{Binding DataContext.FilterGradeCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                            CommandParameter="{Binding}" />
+                                                    </b:EventTrigger>
+                                                    <b:EventTrigger EventName="Unchecked">
+                                                        <b:InvokeCommandAction
+                                                            Command="{Binding DataContext.FilterGradeCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                            CommandParameter="{Binding}" />
+                                                    </b:EventTrigger>
+                                                </b:Interaction.Triggers>
+                                            </CheckBox>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </materialDesign:PopupBox>
+                    </Border>
+                    <Border VerticalAlignment="Center"
+                            BorderBrush="#64748B"
+                            BorderThickness="1"
+                            Width="150" Height="30">
+                        <materialDesign:PopupBox HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                                 materialDesign:HintAssist.FloatingHintHorizontalAlignment="Stretch"
+                                                 FontSize="12"
+                                                 Foreground="Black"
+                                                 PopupMode="Click"
+                                                 StaysOpen="True"
+                                                 materialDesign:RippleAssist.RippleSizeMultiplier="0.2"
+                                                 materialDesign:RippleAssist.IsCentered="False">
+                            <materialDesign:PopupBox.ToggleContent>
+                                <Grid>
+                                    <TextBlock Margin="10,0,0,0"
+                                               HorizontalAlignment="Left"
+                                               VerticalAlignment="Center"
+                                               Text="Lớp"
+                                               FontSize="13"
+                                               Width="150"
+                                               Foreground="Black"
+                                               FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium" />
+                                    <TextBlock Text="▼"
+                                               FontSize="6"
+                                               VerticalAlignment="Center"
+                                               HorizontalAlignment="Right"
+                                               Margin="0,0,13,0"
+                                               Foreground="Gray">
+                                        <TextBlock.RenderTransform>
+                                            <ScaleTransform ScaleX="1.5" ScaleY="1" />
+                                        </TextBlock.RenderTransform>
+                                    </TextBlock>
+                                </Grid>
+                            </materialDesign:PopupBox.ToggleContent>
+                            <ItemsControl Width="150" ItemsSource="{Binding ClassFilter}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel>
+                                            <CheckBox Height="30"
+                                                      Margin="10,0,0,0"
+                                                      Content="{Binding Name}"
+                                                      FontSize="14"
+                                                      IsChecked="{Binding IsChecked, Mode=TwoWay}">
+                                                <b:Interaction.Triggers>
+                                                    <b:EventTrigger EventName="Checked">
+                                                        <b:InvokeCommandAction
+                                                            Command="{Binding DataContext.FilterClassroomCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                            CommandParameter="{Binding}" />
+                                                    </b:EventTrigger>
+                                                    <b:EventTrigger EventName="Unchecked">
+                                                        <b:InvokeCommandAction
+                                                            Command="{Binding DataContext.FilterClassroomCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                            CommandParameter="{Binding}" />
+                                                    </b:EventTrigger>
+                                                </b:Interaction.Triggers>
+                                            </CheckBox>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </materialDesign:PopupBox>
+                    </Border>
                 </StackPanel>
-            </Border>
 
-            <DataGrid Margin="10 20 0 0" AutoGenerateColumns="False" Height="546" Width="1100"
-                      HorizontalAlignment="Left" CanUserAddRows="False">
+                <Border Grid.Row="1" CornerRadius="8"
+                        Height="50" Width="950"
+                        Background="#FCFAFA"
+                        BorderThickness="1"
+                        BorderBrush="#C4C4C4">
+                    <StackPanel Orientation="Horizontal"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Stretch">
+                        <Button Style="{StaticResource MaterialDesignIconButton}">
+                            <materialDesign:PackIcon Kind="Magnify" Width="25" Height="25" Foreground="#8A8A8A" />
+                        </Button>
 
-                <!-- Tạo Style cho Header với góc bo tròn -->
-                <DataGrid.Resources>
-                    <Style TargetType="DataGridColumnHeader">
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="DataGridColumnHeader">
-                                    <Border CornerRadius="10,10,0,0"
-                                            Background="#152259"
-                                            BorderBrush="Transparent"
-                                            BorderThickness="0"
-                                            Height="34">
-                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
-                                    </Border>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                        <Setter Property="Foreground" Value="White" />
-                        <Setter Property="FontSize" Value="16" />
-                        <Setter Property="FontFamily" Value="pack://application:,,,/Resource/Font/#Poppins Medium" />
-                        <Setter Property="HorizontalContentAlignment" Value="Center" />
-                    </Style>
+                        <TextBox FontSize="13"
+                                 Foreground="Black"
+                                 FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
+                                 Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                 materialDesign:HintAssist.Hint="Tìm kiếm"
+                                 materialDesign:TextFieldAssist.HasClearButton="True"
+                                 HorizontalAlignment="Right" Width="900"
+                                 Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}">
+                        </TextBox>
+                    </StackPanel>
+                </Border>
 
-                </DataGrid.Resources>
-                <DataGrid.Style>
-                    <Style TargetType="DataGrid">
-                        <Setter Property="Background" Value="#F5F5F5" />
-                        <!-- Đổi màu nền -->
-                        <Setter Property="BorderBrush" Value="#152259" />
-                        <!-- Đổi màu viền -->
-                        <Setter Property="BorderThickness" Value="0" />
-                        <!-- Độ dày viền -->
+                <ScrollViewer Grid.Row="2"
+                              Margin="0,20,0,0"
+                              HorizontalScrollBarVisibility="Auto"
+                              VerticalScrollBarVisibility="Disabled"
+                              HorizontalAlignment="Stretch"
+                              VerticalAlignment="Stretch">
+                    <DataGrid Margin="0 0 0 0"
+                              AutoGenerateColumns="False"
+                              BorderBrush="Black"
+                              BorderThickness="1"
+                              HorizontalAlignment="Stretch"
+                              VerticalAlignment="Stretch"
+                              CanUserAddRows="False"
+                              ItemsSource="{Binding TableView}">
 
-                    </Style>
-                </DataGrid.Style>
-                <DataGrid.CellStyle>
-                    <Style BasedOn="{StaticResource MaterialDesignDataGridCell}" TargetType="DataGridCell">
-                        <Setter Property="BorderThickness" Value="0" />
-                        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
-                    </Style>
-                </DataGrid.CellStyle>
-                <!-- Cột 1: Tên -->
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="Mã học sinh" Width="250" />
-                    <DataGridTextColumn Header="Họ" Width="250" />
-                    <DataGridTextColumn Header="Tên" Width="250" />
-                    <DataGridTextColumn Header="Địa chỉ" Width="250" />
-                    <DataGridTextColumn Header="Ngày sinh" Width="250" />
-                    <DataGridTextColumn Header="Số điện thoại" Width="250" />
-                    <DataGridTextColumn Header="Dân tộc" Width="250" />
-                    <DataGridTextColumn Header="Tôn giáo" Width="250" />
-                    <DataGridTextColumn Header="Email" Width="250" />
-                    <DataGridTextColumn Header="Giới tính" Width="250" />
+                        <DataGrid.Resources>
+                            <Style TargetType="DataGridColumnHeader">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="DataGridColumnHeader">
+                                            <Border Background="#152259"
+                                                    BorderBrush="Transparent"
+                                                    BorderThickness="1"
+                                                    Padding="10">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*" />
+                                                        <ColumnDefinition Width="Auto" />
+                                                    </Grid.ColumnDefinitions>
 
-                </DataGrid.Columns>
-            </DataGrid>
-            <StackPanel Grid.Row="3" Orientation="Horizontal" FlowDirection="RightToLeft" Width="1034">
-                <Button x:Name="btEditStudent"
-                        Margin="10"
-                        VerticalAlignment="Center"
+                                                    <!-- Header Text -->
+                                                    <ContentPresenter
+                                                        Grid.Column="0"
+                                                        HorizontalAlignment="Center"
+                                                        VerticalAlignment="Center"
+                                                        RecognizesAccessKey="True" />
 
-                        Width="99"
-                        Height="40"
-                        Background="#6C6C6C"
-                        Style="{StaticResource MaterialDesignRaisedButton}"
-                        materialDesign:ButtonAssist.CornerRadius="20">
-                    <TextBlock HorizontalAlignment="Center"
+                                                    <!-- Sort Arrow -->
+                                                    <Path x:Name="SortArrow"
+                                                          Grid.Column="1"
+                                                          Data="M 0 0 L 8 0 L 4 4 Z"
+                                                          Fill="White"
+                                                          Width="8"
+                                                          Height="4"
+                                                          VerticalAlignment="Center"
+                                                          Margin="5,0,0,0"
+                                                          Visibility="Collapsed" />
+                                                </Grid>
+                                            </Border>
 
-                               FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
-                               FontSize="16"
-                               Text="Sửa"
-                               Foreground="Snow"
-                               Cursor="Hand"
-                               ToolTip="Nhấn để sửa thông tin" />
-                </Button>
-                <Button x:Name="btDeleteStudent"
-                        Margin="10"
-                        VerticalAlignment="Center"
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="SortDirection" Value="Ascending">
+                                                    <Setter TargetName="SortArrow" Property="Visibility"
+                                                            Value="Visible" />
+                                                    <Setter TargetName="SortArrow" Property="RenderTransform">
+                                                        <Setter.Value>
+                                                            <RotateTransform Angle="180" CenterX="4" CenterY="2" />
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </Trigger>
+                                                <Trigger Property="SortDirection" Value="Descending">
+                                                    <Setter TargetName="SortArrow" Property="Visibility"
+                                                            Value="Visible" />
+                                                    <Setter TargetName="SortArrow" Property="RenderTransform">
+                                                        <Setter.Value>
+                                                            <RotateTransform Angle="0" />
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter Property="Foreground" Value="White" />
+                                <Setter Property="FontSize" Value="16" />
+                                <Setter Property="FontFamily"
+                                        Value="pack://application:,,,/Resource/Font/#Poppins Medium" />
+                                <Setter Property="HorizontalContentAlignment" Value="Center" />
+                            </Style>
 
-                        Width="99"
-                        Height="40"
-                        Background="#E17D7D"
-                        Style="{StaticResource MaterialDesignRaisedButton}"
-                        materialDesign:ButtonAssist.CornerRadius="20">
-                    <TextBlock HorizontalAlignment="Center"
+                        </DataGrid.Resources>
+                        <DataGrid.Style>
+                            <Style TargetType="DataGrid">
+                                <Setter Property="Background" Value="#F5F5F5" />
+                                <!-- Đổi màu nền -->
+                                <Setter Property="BorderBrush" Value="#152259" />
+                                <!-- Đổi màu viền -->
+                                <Setter Property="BorderThickness" Value="0" />
+                            </Style>
+                        </DataGrid.Style>
+                        <DataGrid.CellStyle>
+                            <Style BasedOn="{StaticResource MaterialDesignDataGridCell}"
+                                   TargetType="DataGridCell">
+                                <Setter Property="BorderThickness" Value="0" />
+                                <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+                            </Style>
+                        </DataGrid.CellStyle>
 
-                               FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
-                               FontSize="16"
-                               Text="Xóa"
-                               Foreground="Snow"
-                               Cursor="Hand"
-                               ToolTip="Nhấn để xóa học sinh" />
-                </Button>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Khối" Binding="{Binding [Khối]}" />
+                            <DataGridTextColumn Header="Lớp" Binding="{Binding [Lớp]}"/>
+                            <DataGridTextColumn Header="Họ và tên" Binding="{Binding [Họ và tên]}"/>
+                            <DataGridTextColumn Header="Giới tính" Binding="{Binding [Giới tính]}"/>
+                            <DataGridTextColumn Header="Ngày sinh" Binding="{Binding [Ngày sinh]}"/>
+                            <DataGridTextColumn Header="Địa chỉ" Binding="{Binding [Địa chỉ]}"/>
+                            <DataGridTextColumn Header="Số điện thoại" Binding="{Binding [Số điện thoại]}"/>
+                            <DataGridTextColumn Header="Email" Binding="{Binding [Email]}"/>
+                            <DataGridTextColumn Header="TB học kỳ 1" Binding="{Binding [TB học kỳ 1]}"/>
+                            <DataGridTextColumn Header="TB học kỳ 2" Binding="{Binding [TB học kỳ 2]}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </ScrollViewer>
+            </Grid>
+        </GroupBox>
 
-                <Button x:Name="btAddStudent"
-                        Command="{Binding addCommand}"
-                        Margin="10"
-                        VerticalAlignment="Center"
-
-                        Width="99"
-                        Height="40"
-                        Background="#8DB575"
-                        Style="{StaticResource MaterialDesignRaisedButton}"
-                        materialDesign:ButtonAssist.CornerRadius="20">
-                    <TextBlock HorizontalAlignment="Center"
-
-                               FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
-                               FontSize="16"
-                               Text="Thêm"
-                               Foreground="Snow"
-                               Cursor="Hand"
-                               ToolTip="Nhấn để thêm học sinh" />
-                </Button>
-            </StackPanel>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" FlowDirection="RightToLeft">
+            <Button Margin="10"
+                    VerticalAlignment="Center"
+                    Content="Thêm học sinh"
+                    FontSize="18" Width="180"
+                    Style="{StaticResource PrimaryButtonStyle}"
+                    materialDesign:ButtonAssist.CornerRadius="20"
+                    Command="{Binding AddStudentCommand}">
+            </Button>
         </StackPanel>
     </Grid>
 </UserControl>

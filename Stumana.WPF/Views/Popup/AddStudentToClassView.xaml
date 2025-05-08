@@ -32,15 +32,14 @@
                    Foreground="#333333"
                    Margin="20,30,0,0" />
 
-        <ScrollViewer Grid.Row="1">
+        <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
             <DataGrid Margin="10 20 0 0"
                       AutoGenerateColumns="False"
                       HorizontalAlignment="Stretch"
                       VerticalAlignment="Stretch"
                       CanUserAddRows="False"
                       IsReadOnly="True"
-                      ItemsSource="{Binding ClassTableView}"
-                      SelectedItem="{Binding SelectedClass, Mode=TwoWay}">
+                      ItemsSource="{Binding StudentChoiceTableView}">
 
                 <!-- Tạo Style cho Header với góc bo tròn -->
                 <DataGrid.Resources>
@@ -87,8 +86,12 @@
                 </DataGrid.CellStyle>
 
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Tên Lớp" Width="*" Binding="{Binding [Tên lớp]}" />
-                    <DataGridTextColumn Header="Sĩ số" Width="*" Binding="{Binding [Sĩ số]}" />
+                    <DataGridCheckBoxColumn Header="Chọn" IsReadOnly="False" Binding="{Binding IsSelected}" />
+                    <DataGridTextColumn Header="Mã học sinh" Binding="{Binding StudentID}" />
+                    <DataGridTextColumn Header="Họ tên" Binding="{Binding Name}" />
+                    <DataGridTextColumn Header="Ngày sinh" Binding="{Binding Birthday, StringFormat=\{0:dd/MM/yyyy\}}" />
+                    <DataGridTextColumn Header="Số điện thoại" Binding="{Binding PhoneNumber}" />
+                    <DataGridTextColumn Header="Email" Binding="{Binding Email}" />
                 </DataGrid.Columns>
             </DataGrid>
         </ScrollViewer>
@@ -96,10 +99,11 @@
         <StackPanel Grid.Row="2" Orientation="Horizontal" FlowDirection="RightToLeft">
             <Button Width="130"
                     Style="{StaticResource PrimaryButtonStyle}"
-                    Content="Thêm"
+                    Content="Lưu thay đổi"
                     FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
                     Margin="20"
-                    FontSize="18" />
+                    FontSize="18" 
+                    Command="{Binding SaveChangeCommand}"/>
 
             <Button Width="130"
                     Style="{StaticResource PrimaryButtonStyle}"

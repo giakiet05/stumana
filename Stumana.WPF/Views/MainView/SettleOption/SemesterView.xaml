@@ -176,7 +176,8 @@
                         Height="40"
                         Background="#8DB575"
                         Style="{StaticResource MaterialDesignRaisedButton}"
-                        materialDesign:ButtonAssist.CornerRadius="20">
+                        materialDesign:ButtonAssist.CornerRadius="20"
+                        Command="{Binding AddSemesterCommand}">
                     <TextBlock HorizontalAlignment="Center"
                                FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
                                FontSize="16"

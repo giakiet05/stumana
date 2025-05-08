@@ -128,7 +128,7 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ClassOption
 
             AddClassroomCommand = new NavigateModalCommand(() => new AddClassroomViewModel());
             AddStudentToClassCommand = new NavigateModalCommand(() => new AddStudentToClassViewModel(ClassroomDic[SelectedClass["Tên lớp"].ToString()]), HaveSelectClass);
-            //ClassDataTable.Rows.Add("10A1", 45);
+            //AddStudentToClassCommand = new NavigateModalCommand(() => new AddStudentToClassViewModel());
         }
 
         private void LoadClassTableColumn()

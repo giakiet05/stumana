@@ -211,6 +211,7 @@
                 </StackPanel>
 
                 <Border Grid.Row="1" CornerRadius="8"
+                        HorizontalAlignment="Center"
                         Height="50" Width="950"
                         Background="#FCFAFA"
                         BorderThickness="1"

@@ -35,6 +35,12 @@ public class AddStudentToClassViewModel : BaseViewModel
 
     public ICommand SaveChangeCommand { get; set; }
 
+    public AddStudentToClassViewModel()
+    {
+        SaveChangeCommand = new RelayCommand(SaveChange);
+        CancelCommand = new RelayCommand(() => ModalNavigationStore.Instance.Close());
+    }
+
     public AddStudentToClassViewModel(Classroom classroom)
     {
         CurClassroom = classroom;

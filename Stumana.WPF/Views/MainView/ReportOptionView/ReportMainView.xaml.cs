@@ -16,13 +16,13 @@ using System.Windows.Shapes;
 namespace Stumana.WPF.Views.MainView.ReportOptionView
 {
     /// <summary>
-    /// Interaction logic for ReportSummaryView.xaml
+    /// Interaction logic for ReportMainView.xaml
     /// </summary>
-    public partial class ReportSummaryView : UserControl
+    public partial class ReportMainView : UserControl
     {
-        public ReportSummaryView()
+        public ReportMainView()
         {
-          
+            InitializeComponent();
         }
     }
 }

@@ -1,17 +1,13 @@
 ﻿using Stumana.DataAccess.Services;
 using Stumana.DataAcess.Models;
 using Stumana.WPF.Commands;
-using Stumana.WPF.ViewModels;
-using System;
 using System.Collections.ObjectModel;
 using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace Stumana.WPF.ViewModels.MainViewModels.ReportOption
 {
-    public class ReportSummaryViewModel : BaseViewModel
+    public class ReportSemesterViewModel : BaseViewModel
     {
         private readonly GenericDataService<SchoolYear> _schoolYearService;
         private readonly GenericDataService<Score> _scoreService;
@@ -88,7 +84,7 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ReportOption
             }
         }
 
-        public ReportSummaryViewModel()
+        public ReportSemesterViewModel()
         {
             _schoolYearService = GenericDataService<SchoolYear>.Instance;
             _scoreService = GenericDataService<Score>.Instance;

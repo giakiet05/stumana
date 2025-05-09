@@ -38,7 +38,7 @@ namespace Stumana.WPF.ViewModels.MainViewModels
             SemesterNavigateCommand = new NavigateLayoutCommand(() => new SemesterViewModel());
             ClassNavigateCommand = new NavigateLayoutCommand(() => new ClassListViewModel());
             ScoreNavigateCommand = new NavigateLayoutCommand(() => new ScoreSubjectViewModel());
-            ReportNavigateCommand = new NavigateLayoutCommand(() => new ReportSubjectViewModel());
+            ReportNavigateCommand = new NavigateLayoutCommand(() => new ReportMainViewModel());
         }
 
         public void OnCurrentLayoutModelChanged()

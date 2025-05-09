@@ -51,10 +51,10 @@
                             CornerRadius="10,10,0,0"
                             Padding="10"
                             HorizontalAlignment="Stretch">
-                        <TextBlock Text="Danh sách lớp"
+                        <TextBlock Text="Danh Sách Lớp"
                                    Foreground="White"
                                    FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
-                                   FontSize="20"
+                                   FontSize="16"
                                    HorizontalAlignment="Center" />
                     </Border>
                 </GroupBox.Header>

@@ -64,7 +64,7 @@
                                 CornerRadius="10,10,0,0"
                                 Padding="10"
                                 HorizontalAlignment="Stretch">
-                            <TextBlock Text="Năm học"
+                            <TextBlock Text="Năm Học"
                                        Foreground="White"
                                        FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
                                        FontSize="16"
@@ -229,7 +229,7 @@
                                 CornerRadius="10,10,0,0"
                                 Padding="10"
                                 HorizontalAlignment="Stretch">
-                            <TextBlock Text="Khối lớp"
+                            <TextBlock Text="Khối Lớp"
                                        Foreground="White"
                                        FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
                                        FontSize="16"

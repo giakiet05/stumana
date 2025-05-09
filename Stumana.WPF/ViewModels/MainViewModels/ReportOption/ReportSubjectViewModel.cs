@@ -1,13 +1,8 @@
 ﻿using Stumana.WPF.Commands;
-using Stumana.WPF.ViewModels;
 using Stumana.DataAccess.Services;
 using Stumana.DataAcess.Models;
-using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.ObjectModel;
 using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace Stumana.WPF.ViewModels.MainViewModels.ReportOption

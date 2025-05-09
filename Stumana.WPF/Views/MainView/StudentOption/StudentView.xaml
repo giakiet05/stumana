@@ -48,26 +48,22 @@
                         Padding="10"
                         Margin="0,10,0,0"
                         HorizontalAlignment="Stretch">
-                    <TextBlock Text="Danh sách học sinh"
+                    <TextBlock Text="Danh Sách Học Sinh"
                                Foreground="White"
                                FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
-                               FontSize="20"
+                               FontSize="16"
                                HorizontalAlignment="Center" />
                 </Border>
             </GroupBox.Header>
 
             <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="261*"/>
-                    <ColumnDefinition Width="239*"/>
-                </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"></RowDefinition>
                     <RowDefinition Height="Auto"></RowDefinition>
                     <RowDefinition Height="*"></RowDefinition>
                 </Grid.RowDefinitions>
 
-                <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="225,20,0,10" HorizontalAlignment="Left" Grid.ColumnSpan="2">
+                <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,10,0,0" HorizontalAlignment="Center">
                     <StackPanel.Resources>
                         <Style TargetType="Border">
                             <Setter Property="Margin" Value="15,0,15,0" />
@@ -214,35 +210,41 @@
                     </Border>
                 </StackPanel>
 
-                <Border Grid.Row="1" CornerRadius="8"
-                        HorizontalAlignment="Left"
-                        Height="50" Width="1000"
+                <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+                        CornerRadius="8"
+                        Margin="0,10,0,0"
+                        HorizontalAlignment="Center"
+                        Height="40" Width="1000"
                         Background="#FCFAFA"
                         BorderThickness="1"
-                        BorderBrush="#C4C4C4" Grid.ColumnSpan="2">
-                    <StackPanel Orientation="Horizontal"
-                                VerticalAlignment="Center"
-                                HorizontalAlignment="Stretch">
-                        <Button Style="{StaticResource MaterialDesignIconButton}">
-                            <materialDesign:PackIcon Kind="Magnify" Width="25" Height="25" Foreground="#8A8A8A" />
-                        </Button>
+                        BorderBrush="#C4C4C4">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <materialDesign:PackIcon Grid.Column="0" Kind="Magnify"
+                                                 Width="25" Height="25"
+                                                 Margin="5"
+                                                 Foreground="#8A8A8A"
+                                                 VerticalAlignment="Center"
+                                                 HorizontalAlignment="Center" />
 
-                        <TextBox FontSize="13"
+                        <TextBox Grid.Column="1" FontSize="16"
                                  Foreground="Black"
                                  FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
                                  Style="{StaticResource MaterialDesignOutlinedTextBox}"
                                  materialDesign:HintAssist.Hint="Tìm kiếm"
                                  materialDesign:TextFieldAssist.HasClearButton="True"
-                                 HorizontalAlignment="Right" Width="900"
-                                 Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}">
+                                 Padding="20,5,5,5">
                         </TextBox>
-                    </StackPanel>
+                    </Grid>
                 </Border>
 
                 <ScrollViewer Grid.Row="2"
                               Margin="0,20,0,0"
                               HorizontalScrollBarVisibility="Auto"
-                              VerticalScrollBarVisibility="Disabled" Grid.ColumnSpan="2">
+                              VerticalScrollBarVisibility="Disabled" Grid.ColumnSpan="2" Grid.Column="0">
                     <DataGrid Margin="0 0 0 0"
                               AutoGenerateColumns="False"
                               BorderBrush="Black"
@@ -337,15 +339,15 @@
 
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Khối" Binding="{Binding [Khối]}" />
-                            <DataGridTextColumn Header="Lớp" Binding="{Binding [Lớp]}"/>
-                            <DataGridTextColumn Header="Họ và tên" Binding="{Binding [Họ và tên]}"/>
-                            <DataGridTextColumn Header="Giới tính" Binding="{Binding [Giới tính]}"/>
-                            <DataGridTextColumn Header="Ngày sinh" Binding="{Binding [Ngày sinh]}"/>
-                            <DataGridTextColumn Header="Địa chỉ" Binding="{Binding [Địa chỉ]}"/>
-                            <DataGridTextColumn Header="Số điện thoại" Binding="{Binding [Số điện thoại]}"/>
-                            <DataGridTextColumn Header="Email" Binding="{Binding [Email]}"/>
-                            <DataGridTextColumn Header="TB học kỳ 1" Binding="{Binding [TB học kỳ 1]}"/>
-                            <DataGridTextColumn Header="TB học kỳ 2" Binding="{Binding [TB học kỳ 2]}"/>
+                            <DataGridTextColumn Header="Lớp" Binding="{Binding [Lớp]}" />
+                            <DataGridTextColumn Header="Họ và tên" Binding="{Binding [Họ và tên]}" />
+                            <DataGridTextColumn Header="Giới tính" Binding="{Binding [Giới tính]}" />
+                            <DataGridTextColumn Header="Ngày sinh" Binding="{Binding [Ngày sinh]}" />
+                            <DataGridTextColumn Header="Địa chỉ" Binding="{Binding [Địa chỉ]}" />
+                            <DataGridTextColumn Header="Số điện thoại" Binding="{Binding [Số điện thoại]}" />
+                            <DataGridTextColumn Header="Email" Binding="{Binding [Email]}" />
+                            <DataGridTextColumn Header="TB học kỳ 1" Binding="{Binding [TB học kỳ 1]}" />
+                            <DataGridTextColumn Header="TB học kỳ 2" Binding="{Binding [TB học kỳ 2]}" />
                         </DataGrid.Columns>
                     </DataGrid>
                 </ScrollViewer>

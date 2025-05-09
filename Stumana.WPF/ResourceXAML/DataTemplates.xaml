@@ -22,7 +22,6 @@
     xmlns:subjectOptionViewModels="clr-namespace:Stumana.WPF.ViewModels.MainViewModels.SubjectOption"
     xmlns:popupViewModels="clr-namespace:Stumana.WPF.ViewModels.PopupModels"
     xmlns:mainViewModels="clr-namespace:Stumana.WPF.ViewModels.MainViewModels"
-    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
 
     xmlns:authencationViewModels="clr-namespace:Stumana.WPF.ViewModels.AuthencationViewModels"
     xmlns:local="clr-namespace:Stumana.WPF"
@@ -61,11 +60,14 @@
     <!--#endregion-->
 
     <!--#region ReportOption-->
+    <DataTemplate DataType="{x:Type reportOptionViewModels:ReportMainViewModel}">
+        <reportOptionViews:ReportMainView />
+    </DataTemplate>
     <DataTemplate DataType="{x:Type reportOptionViewModels:ReportSubjectViewModel}">
         <reportOptionViews:ReportSubjectView />
     </DataTemplate>
-    <DataTemplate DataType="{x:Type reportOptionViewModels:ReportSummaryViewModel}">
-        <reportOptionViews:ReportSummaryView />
+    <DataTemplate DataType="{x:Type reportOptionViewModels:ReportSemesterViewModel}">
+        <reportOptionViews:ReportSemesterView />
     </DataTemplate>
     <!--#endregion-->
     <!--#region ScoreOption-->

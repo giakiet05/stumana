@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d"
              d:DesignWidth="1300" d:DesignHeight="600">
 
@@ -23,7 +24,12 @@
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
 
-        <Grid Grid.Column="0"
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Grid.Column="0"
               Background="White"
               HorizontalAlignment="Stretch"
               Margin="0,0,0,0">
@@ -72,8 +78,38 @@
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
 
+                        <Border Grid.Row="0" CornerRadius="8"
+                                Margin="0,10,0,0"
+                                HorizontalAlignment="Center"
+                                Height="37" Width="400"
+                                Background="#FCFAFA"
+                                BorderThickness="1"
+                                BorderBrush="#C4C4C4">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <materialDesign:PackIcon Grid.Column="0" Kind="Magnify"
+                                                         Width="25" Height="25"
+                                                         Margin="5"
+                                                         Foreground="#8A8A8A"
+                                                         VerticalAlignment="Center"
+                                                         HorizontalAlignment="Center" />
+
+                                <TextBox Grid.Column="1" FontSize="16"
+                                         Foreground="Black"
+                                         FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
+                                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                         materialDesign:HintAssist.Hint="Tìm kiếm"
+                                         materialDesign:TextFieldAssist.HasClearButton="True"
+                                         Padding="5">
+                                </TextBox>
+                            </Grid>
+                        </Border>
+
                         <Border Grid.Row="1" Margin="0,0,0,0" VerticalAlignment="Stretch">
-                            <DataGrid Margin="10 20 10 0"
+                            <DataGrid Margin="10 10 10 0"
                                       AutoGenerateColumns="True"
                                       HorizontalAlignment="Stretch"
                                       CanUserAddRows="False"
@@ -125,7 +161,7 @@
                                 </DataGrid.CellStyle>
 
                                 <DataGrid.Columns>
-                                    <DataGridTextColumn Header="Mã năm" Width="*" MinWidth="300"/>
+                                    <DataGridTextColumn Header="Mã năm" Width="*" MinWidth="300" />
                                     <DataGridTextColumn Header="Năm học" Width="*" MinWidth="300" />
                                 </DataGrid.Columns>
                             </DataGrid>
@@ -158,7 +194,7 @@
             </Border>
         </Grid>
 
-        <Grid Grid.Column="1"
+        <Grid Grid.Row="0" Grid.Column="1"
               Background="White"
               HorizontalAlignment="Stretch"
               Margin="0,0,0,0">
@@ -207,8 +243,38 @@
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
 
+                        <Border Grid.Row="0" CornerRadius="8"
+                                Margin="0,10,0,0"
+                                HorizontalAlignment="Center"
+                                Height="37" Width="400"
+                                Background="#FCFAFA"
+                                BorderThickness="1"
+                                BorderBrush="#C4C4C4">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <materialDesign:PackIcon Grid.Column="0" Kind="Magnify"
+                                                         Width="25" Height="25"
+                                                         Margin="5"
+                                                         Foreground="#8A8A8A"
+                                                         VerticalAlignment="Center"
+                                                         HorizontalAlignment="Center" />
+
+                                <TextBox Grid.Column="1" FontSize="16"
+                                         Foreground="Black"
+                                         FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
+                                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                         materialDesign:HintAssist.Hint="Tìm kiếm"
+                                         materialDesign:TextFieldAssist.HasClearButton="True"
+                                         Padding="5">
+                                </TextBox>
+                            </Grid>
+                        </Border>
+
                         <Border Grid.Row="1" Margin="0,0,0,0" VerticalAlignment="Stretch">
-                            <DataGrid Margin="10 20 10 0"
+                            <DataGrid Margin="10 10 10 0"
                                       AutoGenerateColumns="True"
                                       HorizontalAlignment="Stretch"
                                       CanUserAddRows="False"
@@ -260,8 +326,8 @@
                                 </DataGrid.CellStyle>
 
                                 <DataGrid.Columns>
-                                    <DataGridTextColumn Header="Mã khối" Width="*" MinWidth="300"/>
-                                    <DataGridTextColumn Header="Khối" Width="*" MinWidth="300"/>
+                                    <DataGridTextColumn Header="Mã khối" Width="*" MinWidth="300" />
+                                    <DataGridTextColumn Header="Khối" Width="*" MinWidth="300" />
                                 </DataGrid.Columns>
                             </DataGrid>
                         </Border>

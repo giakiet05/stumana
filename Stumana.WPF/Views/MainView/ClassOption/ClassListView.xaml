@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d"
              d:DesignWidth="1000" d:DesignHeight="700"
              VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
@@ -23,21 +24,6 @@
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
-
-        <!--<StackPanel Grid.Row="0"
-                    Height="59"
-                    VerticalAlignment="Stretch"
-                    HorizontalAlignment="Left"
-                    Orientation="Horizontal">
-            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
-                       FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
-                       Margin="10,0,0,0"
-                       FontSize="40"
-                       Text="Lớp học"
-                       Foreground="Black"
-                       Cursor="Hand"
-                       ToolTip="Thiết lập điểm cho học sinh" />
-        </StackPanel>-->
 
         <Border Grid.Row="1" BorderThickness="1" CornerRadius="10" BorderBrush="#152259" Margin="10 10 10 0">
             <GroupBox VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
@@ -68,7 +54,7 @@
                         <TextBlock Text="Danh sách lớp"
                                    Foreground="White"
                                    FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
-                                   FontSize="16"
+                                   FontSize="20"
                                    HorizontalAlignment="Center" />
                     </Border>
                 </GroupBox.Header>
@@ -84,14 +70,21 @@
                     </Grid.RowDefinitions>
 
                     <!-- ComboBox -->
-                    <StackPanel Grid.ColumnSpan="2" Orientation="Horizontal">
-                        <TextBlock Text="Năm Học:"
+                    <Grid Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="Năm Học:"
                                    Margin="10,0,0,0"
                                    TextAlignment="Center"
                                    VerticalAlignment="Center"
                                    FontSize="20" />
 
-                        <ComboBox Background="#FFFFFF"
+                        <ComboBox Grid.Column="1" Background="#FFFFFF"
                                   Padding="10 0 10 0"
                                   Width="150" Height="30"
                                   IsEditable="False"
@@ -115,22 +108,21 @@
                             </ComboBox.ItemContainerStyle>
                         </ComboBox>
 
-                        <TextBlock Text="Khối:"
+                        <TextBlock Grid.Column="2" Text="Khối:"
                                    Margin="30,0,0,0"
                                    TextAlignment="Center"
                                    VerticalAlignment="Center"
                                    FontSize="20" />
 
-                        <ComboBox Background="#FFFFFF"
+                        <ComboBox Grid.Column="3" Background="#FFFFFF"
                                   Padding="10 0 10 0"
-                                  Width="150"
-                                  Height="30"
+                                  Width="150" Height="30"
                                   IsEditable="False"
                                   Text="Khối"
                                   Foreground="Black"
                                   FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
                                   Style="{StaticResource MaterialDesignComboBox}"
-                                  Margin="10,10,0,10"
+                                  Margin="12,0,0,0"
                                   HorizontalAlignment="Left"
                                   BorderBrush="#64748B" BorderThickness="1"
                                   ItemsSource="{Binding GradeCollection}"
@@ -145,7 +137,37 @@
                                 </Style>
                             </ComboBox.ItemContainerStyle>
                         </ComboBox>
-                    </StackPanel>
+
+                        <Border Grid.Column="4" CornerRadius="8"
+                                Margin="20,0,20,0"
+                                HorizontalAlignment="Stretch"
+                                Height="40"
+                                Background="#FCFAFA"
+                                BorderThickness="1"
+                                BorderBrush="#C4C4C4">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <materialDesign:PackIcon Grid.Column="0" Kind="Magnify"
+                                                         Width="25" Height="25"
+                                                         Margin="5"
+                                                         Foreground="#8A8A8A"
+                                                         VerticalAlignment="Center"
+                                                         HorizontalAlignment="Center" />
+
+                                <TextBox Grid.Column="1" FontSize="16"
+                                         Foreground="Black"
+                                         FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
+                                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                         materialDesign:HintAssist.Hint="Tìm kiếm lớp học"
+                                         materialDesign:TextFieldAssist.HasClearButton="True"
+                                         Padding="20,5,5,5">
+                                </TextBox>
+                            </Grid>
+                        </Border>
+                    </Grid>
                     <!-- DataGrid -->
                     <Border Grid.Row="1" Grid.Column="0" Margin="0,0,30,0" VerticalAlignment="Stretch">
                         <DataGrid Margin="10 20 0 0"
@@ -277,15 +299,15 @@
                     FontSize="18"
                     Padding="10"
                     Margin="10,15,10,15"
-                    Style="{StaticResource PrimaryButtonStyle}"/>
+                    Style="{StaticResource PrimaryButtonStyle}" />
             <Button Margin="10,15,10,15"
                     Width="220"
                     FontSize="18"
                     Content="Thêm học sinh vào lớp"
                     Padding="10"
-                    
+
                     Style="{StaticResource PrimaryButtonStyle}"
-                    Command="{Binding AddStudentToClassCommand}"/>
+                    Command="{Binding AddStudentToClassCommand}" />
             <Button Margin="10,15,10,15"
                     Width="140"
                     FontSize="18"

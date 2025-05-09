@@ -51,19 +51,23 @@
                     <TextBlock Text="Danh sách học sinh"
                                Foreground="White"
                                FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
-                               FontSize="16"
+                               FontSize="20"
                                HorizontalAlignment="Center" />
                 </Border>
             </GroupBox.Header>
 
             <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="261*"/>
+                    <ColumnDefinition Width="239*"/>
+                </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"></RowDefinition>
                     <RowDefinition Height="Auto"></RowDefinition>
                     <RowDefinition Height="*"></RowDefinition>
                 </Grid.RowDefinitions>
 
-                <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,20,0,10" HorizontalAlignment="Center">
+                <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="225,20,0,10" HorizontalAlignment="Left" Grid.ColumnSpan="2">
                     <StackPanel.Resources>
                         <Style TargetType="Border">
                             <Setter Property="Margin" Value="15,0,15,0" />
@@ -211,11 +215,11 @@
                 </StackPanel>
 
                 <Border Grid.Row="1" CornerRadius="8"
-                        HorizontalAlignment="Center"
-                        Height="50" Width="950"
+                        HorizontalAlignment="Left"
+                        Height="50" Width="1000"
                         Background="#FCFAFA"
                         BorderThickness="1"
-                        BorderBrush="#C4C4C4">
+                        BorderBrush="#C4C4C4" Grid.ColumnSpan="2">
                     <StackPanel Orientation="Horizontal"
                                 VerticalAlignment="Center"
                                 HorizontalAlignment="Stretch">
@@ -238,9 +242,7 @@
                 <ScrollViewer Grid.Row="2"
                               Margin="0,20,0,0"
                               HorizontalScrollBarVisibility="Auto"
-                              VerticalScrollBarVisibility="Disabled"
-                              HorizontalAlignment="Stretch"
-                              VerticalAlignment="Stretch">
+                              VerticalScrollBarVisibility="Disabled" Grid.ColumnSpan="2">
                     <DataGrid Margin="0 0 0 0"
                               AutoGenerateColumns="False"
                               BorderBrush="Black"

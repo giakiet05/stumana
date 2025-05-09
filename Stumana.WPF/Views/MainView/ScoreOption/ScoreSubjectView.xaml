@@ -39,7 +39,7 @@
                             </ControlTemplate>
                         </Setter.Value>
                     </Setter>
-                    <Setter Property="Background" Value="Transparent" />    
+                    <Setter Property="Background" Value="Transparent" />
                 </Style>
             </GroupBox.Style>
             <GroupBox.Header>
@@ -310,7 +310,7 @@
                     </StackPanel>
                 </Border>
 
-                <ScrollViewer Grid.Row="2" 
+                <ScrollViewer Grid.Row="2"
                               Margin="0,20,0,0"
                               HorizontalScrollBarVisibility="Auto"
                               VerticalScrollBarVisibility="Disabled"

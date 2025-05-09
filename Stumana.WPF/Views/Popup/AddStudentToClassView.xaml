@@ -3,8 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d"
-             d:DesignHeight="547" d:DesignWidth="969"
+             d:DesignHeight="800" d:DesignWidth="1200"
              Background="White">
 
     <UserControl.Resources>
@@ -16,9 +17,9 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
-
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
@@ -30,9 +31,34 @@
                    FontSize="35"
                    FontWeight="SemiBold"
                    Foreground="#333333"
-                   Margin="20,30,0,0" />
+                   Margin="20,20,0,0" />
 
-        <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+        <Border Grid.Row="1" CornerRadius="8"
+                HorizontalAlignment="Center"
+                Height="50" Width="950"
+                Background="#FCFAFA"
+                BorderThickness="1"
+                BorderBrush="#C4C4C4">
+            <StackPanel Orientation="Horizontal"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Stretch">
+                <Button Style="{StaticResource MaterialDesignIconButton}">
+                    <materialDesign:PackIcon Kind="Magnify" Width="25" Height="25" Foreground="#8A8A8A" />
+                </Button>
+
+                <TextBox FontSize="13"
+                         Foreground="Black"
+                         FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
+                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                         materialDesign:HintAssist.Hint="Tìm kiếm"
+                         materialDesign:TextFieldAssist.HasClearButton="True"
+                         HorizontalAlignment="Right" Width="900"
+                         Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}">
+                </TextBox>
+            </StackPanel>
+        </Border>
+
+        <ScrollViewer Grid.Row="2" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
             <DataGrid Margin="10 20 0 0"
                       AutoGenerateColumns="False"
                       HorizontalAlignment="Stretch"
@@ -89,21 +115,22 @@
                     <DataGridCheckBoxColumn Header="Chọn" IsReadOnly="False" Binding="{Binding IsSelected}" />
                     <DataGridTextColumn Header="Mã học sinh" Binding="{Binding StudentID}" />
                     <DataGridTextColumn Header="Họ tên" Binding="{Binding Name}" />
-                    <DataGridTextColumn Header="Ngày sinh" Binding="{Binding Birthday, StringFormat=\{0:dd/MM/yyyy\}}" />
+                    <DataGridTextColumn Header="Ngày sinh"
+                                        Binding="{Binding Birthday, StringFormat=\{0:dd/MM/yyyy\}}" />
                     <DataGridTextColumn Header="Số điện thoại" Binding="{Binding PhoneNumber}" />
                     <DataGridTextColumn Header="Email" Binding="{Binding Email}" />
                 </DataGrid.Columns>
             </DataGrid>
         </ScrollViewer>
 
-        <StackPanel Grid.Row="2" Orientation="Horizontal" FlowDirection="RightToLeft">
+        <StackPanel Grid.Row="3" Orientation="Horizontal" FlowDirection="RightToLeft">
             <Button Width="130"
                     Style="{StaticResource PrimaryButtonStyle}"
                     Content="Lưu thay đổi"
                     FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
                     Margin="20"
-                    FontSize="18" 
-                    Command="{Binding SaveChangeCommand}"/>
+                    FontSize="18"
+                    Command="{Binding SaveChangeCommand}" />
 
             <Button Width="130"
                     Style="{StaticResource PrimaryButtonStyle}"

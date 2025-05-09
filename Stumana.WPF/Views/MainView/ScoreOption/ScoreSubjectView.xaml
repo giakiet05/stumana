@@ -6,7 +6,7 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d"
-             d:DesignHeight="1000" d:DesignWidth="1000">
+             d:DesignHeight="600" d:DesignWidth="1000">
 
     <UserControl.Resources>
         <ResourceDictionary>

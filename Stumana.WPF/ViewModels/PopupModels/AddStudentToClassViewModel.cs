@@ -1,5 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Data;
+using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using Stumana.DataAccess.Services;
@@ -11,13 +13,33 @@ namespace Stumana.WPF.ViewModels.PopupModels;
 
 public class AddStudentToClassViewModel : BaseViewModel
 {
+    private List<StudentChoiceInfo> _allUnassignStudents;
     public ObservableCollection<StudentChoiceInfo> StudentChoiceTableView { get; set; }
 
     public Classroom CurClassroom { get; set; }
 
+    private string _searchText;
+
+    public string SearchText
+    {
+        get => _searchText;
+        set
+        {
+            _searchText = value;
+            OnPropertyChanged();
+            OnSearchTextChange();
+        }
+    }
+
     public ICommand CancelCommand { get; set; }
 
     public ICommand SaveChangeCommand { get; set; }
+
+    public AddStudentToClassViewModel()
+    {
+        SaveChangeCommand = new RelayCommand(SaveChange);
+        CancelCommand = new RelayCommand(() => ModalNavigationStore.Instance.Close());
+    }
 
     public AddStudentToClassViewModel(Classroom classroom)
     {
@@ -31,7 +53,6 @@ public class AddStudentToClassViewModel : BaseViewModel
 
     public async void LoadData()
     {
-        StudentChoiceTableView = new ObservableCollection<StudentChoiceInfo>();
         var studentAssignment = (await GenericDataService<StudentAssignment>.Instance.GetAllAsync()).Select(sa => sa.StudentId).Distinct().ToList();
         var unassignStudent = (await GenericDataService<Student>.Instance.GetManyAsync(s => !studentAssignment.Contains(s.Id))).ToList();
 
@@ -49,15 +70,17 @@ public class AddStudentToClassViewModel : BaseViewModel
 
             StudentChoiceTableView.Add(choice);
         }
+
+        StudentChoiceTableView = new ObservableCollection<StudentChoiceInfo>(_allUnassignStudents);
     }
 
     private async void SaveChange()
     {
-        //int maxStudentNum = (await GenericDataService<Asset>.Instance.GetOneAsync(a => a.YearId == CurClassroom.YearId)).
+        int maxStudentNum = (await GenericDataService<Asset>.Instance.GetOneAsync(a => a.YearId == CurClassroom.YearId)).MaxCapacity;
         int studentNum = (await GenericDataService<StudentAssignment>.Instance.GetManyAsync(sa => sa.ClassroomId == CurClassroom.Id)).Count();
         var studentAdded = StudentChoiceTableView.Where(s => s.IsSelected).ToList();
 
-        if (studentAdded.Count + studentNum > 40)
+        if (studentAdded.Count + studentNum > maxStudentNum)
         {
             ToastMessageViewModel.ShowErrorToast("Số lượng học sinh quá sĩ số tối đa");
             return;
@@ -88,6 +111,46 @@ public class AddStudentToClassViewModel : BaseViewModel
 
         ToastMessageViewModel.ShowSuccessToast("Thêm học sinh thành công");
         ModalNavigationStore.Instance.Close();
+    }
+
+    public void OnSearchTextChange()
+    {
+        SearchAllColumns(SearchText, false, false);
+    }
+
+
+    public void SearchAllColumns(string searchText, bool exactMatch = false, bool caseSensitive = false)
+    {
+        if (_allUnassignStudents == null)
+            return;
+
+        var culture = new CultureInfo("vi-VN");
+        var compareInfo = culture.CompareInfo;
+        var compareOptions = caseSensitive ? CompareOptions.None : CompareOptions.IgnoreCase;
+
+        IEnumerable<StudentChoiceInfo> filtered;
+
+        if (string.IsNullOrEmpty(searchText))
+            filtered = _allUnassignStudents;
+        else
+        {
+            filtered = _allUnassignStudents.Where(s =>
+            {
+                bool Match(string? value) => !string.IsNullOrEmpty(value) && (exactMatch ? compareInfo.Compare(value, searchText, compareOptions) == 0 : compareInfo.IndexOf(value, searchText, compareOptions) >= 0);
+
+                return Match(s.StudentID) ||
+                       Match(s.Name) ||
+                       Match(s.PhoneNumber) ||
+                       Match(s.Email) ||
+                       Match(s.Birthday.ToString("dd/MM/yyyy", culture));
+            });
+        }
+
+        StudentChoiceTableView.Clear();
+        foreach (var student in filtered)
+        {
+            StudentChoiceTableView.Add(student);
+        }
     }
 }
 

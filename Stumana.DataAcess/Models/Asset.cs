@@ -11,6 +11,7 @@ namespace Stumana.DataAcess.Models
         public string Id { get; set; }
         public int MinAge { get; set; }
         public int MaxAge { get; set; }
+        public int MaxCapacity { get; set; }
         public double ScoreToPass {  get; set; }
         public string YearId { get; set; }
 

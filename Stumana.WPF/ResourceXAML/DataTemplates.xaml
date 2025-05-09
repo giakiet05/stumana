@@ -87,10 +87,6 @@
         <settleOptionViews:GradeView/>
     </DataTemplate>
 
-    <DataTemplate DataType="{x:Type settleOptionViewModels:MajorViewModel}">
-        <settleOptionViews:MajorView/>
-    </DataTemplate>
-
     <DataTemplate DataType="{x:Type settleOptionViewModels:SemesterViewModel}">
         <settleOptionViews:SemesterView/>
     </DataTemplate>

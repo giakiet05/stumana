@@ -54,9 +54,6 @@
     <DataTemplate DataType="{x:Type classOptionViewModels:ClassListViewModel}">
         <classOptionViews:ClassListView />
     </DataTemplate>
-    <DataTemplate DataType="{x:Type classOptionViewModels:InsideClassViewModel}">
-        <classOptionViews:InsideClassView />
-    </DataTemplate>
     <!--#endregion-->
 
     <!--#region ReportOption-->
@@ -86,8 +83,8 @@
 
     <!--#region SettleOption-->
 
-    <DataTemplate DataType="{x:Type settleOptionViewModels:SemesterViewModel}">
-        <settleOptionViews:SemesterView />
+    <DataTemplate DataType="{x:Type settleOptionViewModels:YearViewModel}">
+        <settleOptionViews:YearView />
     </DataTemplate>
     <!--#endregion-->
 
@@ -106,7 +103,7 @@
         <subjectOptionViews:AddSubjectView_2 />
     </DataTemplate>
 
-    <DataTemplate DataType="{x:Type subjectOptionViewModels:ObjectViewModel}">
+    <DataTemplate DataType="{x:Type subjectOptionViewModels:SubjectViewModel}">
         <subjectOptionViews:SubjectView />
     </DataTemplate>
     <!--#endregion-->
@@ -140,8 +137,12 @@
         <popupViews:EditUsernameAndEmailView />
     </DataTemplate>
 
-    <DataTemplate DataType="{x:Type popupViewModels:AddSemesterViewModel}">
-        <popupViews:AddSemesterView />
+    <DataTemplate DataType="{x:Type popupViewModels:AddYearViewModel}">
+        <popupViews:AddYearView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type popupViewModels:AddGradeViewModel}">
+        <popupViews:AddGradeView />
     </DataTemplate>
 
     <!--#endregion-->

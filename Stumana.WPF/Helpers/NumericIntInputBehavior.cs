@@ -5,7 +5,7 @@ using Microsoft.Xaml.Behaviors;
 
 namespace Stumana.WPF.Helpers
 {
-    public class NumericInputBehavior : Behavior<System.Windows.Controls.TextBox>
+    public class NumericIntInputBehavior : Behavior<System.Windows.Controls.TextBox>
     {
         protected override void OnAttached()
         {

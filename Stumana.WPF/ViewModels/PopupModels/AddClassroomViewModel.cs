@@ -196,8 +196,8 @@ namespace Stumana.WPF.ViewModels.PopupModels
             var grades = await GenericDataService<Grade>.Instance.GetAllAsync();
             foreach (Grade grade in grades)
             {
-                GradeCollection.Add("Khối" + grade.Level);
-                GradeDic.Add("Khối" + grade.Level, grade);
+                GradeCollection.Add(grade.Name);
+                GradeDic.Add(grade.Name, grade);
             }
         }
     }

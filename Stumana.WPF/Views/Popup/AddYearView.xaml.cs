@@ -6,9 +6,9 @@ namespace Stumana.WPF.Views.Popup
     /// <summary>
     /// Interaction logic for AddSemesterView.xaml
     /// </summary>
-    public partial class AddSemesterView : UserControl
+    public partial class AddYearView : UserControl
     {
-        public AddSemesterView()
+        public AddYearView()
         {
             InitializeComponent();
         }

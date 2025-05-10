@@ -224,7 +224,7 @@ public class ScoreSubjectViewModel : BaseViewModel
         GradeFilter.Add(new FilterItem("All", false));
         foreach (Grade grade in grades)
         {
-            string gradeName = $"Khối {grade.Level}";
+            string gradeName = $"{grade.Name}";
             GradeFilter.Add(new FilterItem(gradeName, false));
             GradeDic.Add(gradeName, grade);
         }
@@ -244,7 +244,7 @@ public class ScoreSubjectViewModel : BaseViewModel
         SubjectDic.Clear();
         foreach (Subject subject in subjects)
         {
-            string subjectName = $"{subject.Name} khối {subject.Grade.Level}";
+            string subjectName = $"{subject.Name} {subject.Grade.Name}";
             SubjectDic.Add(subjectName, subject);
             SubjectFilter.Add(subjectName);
         }

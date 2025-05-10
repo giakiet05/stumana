@@ -13,7 +13,7 @@ namespace Stumana.WPF.ViewModels.PopupModels;
 
 public class AddStudentToClassViewModel : BaseViewModel
 {
-    private List<StudentChoiceInfo> _allUnassignStudents;
+    private List<StudentChoiceInfo> _allUnassignStudents { get; set; } = new();
     public ObservableCollection<StudentChoiceInfo> StudentChoiceTableView { get; set; }
 
     public Classroom CurClassroom { get; set; }
@@ -117,7 +117,6 @@ public class AddStudentToClassViewModel : BaseViewModel
     {
         SearchAllColumns(SearchText, false, false);
     }
-
 
     public void SearchAllColumns(string searchText, bool exactMatch = false, bool caseSensitive = false)
     {

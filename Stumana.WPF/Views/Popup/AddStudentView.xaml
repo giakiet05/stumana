@@ -47,6 +47,7 @@
                     <TextBlock Text="Mã học sinh" Style="{StaticResource LabelStyle}" />
                     <TextBox Style="{StaticResource InputFieldStyle}"
                              IsReadOnly="True"
+                             Background="#1A808080"
                              Text="{Binding StudentID, UpdateSourceTrigger=PropertyChanged}" />
                 </StackPanel>
 

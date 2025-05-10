@@ -9,8 +9,6 @@ namespace Stumana.DataAcess.Models
     public class Grade
     {
         public string Id { get; set; }
-        public string Name { get; set; } // Tên khối
-        public int Level { get; set; } // Thứ tự của khối
-    
+        public string Name { get; set; }
     }
 }

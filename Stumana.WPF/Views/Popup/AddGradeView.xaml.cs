@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Stumana.WPF.Views.MainView.SettleOption
+namespace Stumana.WPF.Views.Popup
 {
     /// <summary>
-    /// Interaction logic for SemesterView.xaml
+    /// Interaction logic for AddGradeView.xaml
     /// </summary>
-    public partial class SemesterView : UserControl
+    public partial class AddGradeView : UserControl
     {
-        public SemesterView()
+        public AddGradeView()
         {
             InitializeComponent();
         }

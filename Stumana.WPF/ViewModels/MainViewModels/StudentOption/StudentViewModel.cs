@@ -159,7 +159,7 @@ namespace Stumana.WPF.ViewModels.MainViewModels.StudentOption
             GradeFilter.Add(new FilterItem("All", false));
             foreach (Grade grade in grades)
             {
-                string gradeName = $"Khối {grade.Level}";
+                string gradeName = $"{grade.Name}";
                 GradeFilter.Add(new FilterItem(gradeName, false));
                 GradeDic.Add(gradeName, grade);
             }

@@ -33,9 +33,9 @@ namespace Stumana.WPF.ViewModels.MainViewModels
             NavigationStore.Instance.CurrentLayoutModel = new ClassListViewModel();
 
             AccountNavigateCommand = new NavigateLayoutCommand(() => new AccountOptionViewModel());
-            SubjectNavigateCommand = new NavigateLayoutCommand(() => new ObjectViewModel());
+            SubjectNavigateCommand = new NavigateLayoutCommand(() => new SubjectViewModel());
             StudentNavigateCommand = new NavigateLayoutCommand(() => new StudentViewModel());
-            SemesterNavigateCommand = new NavigateLayoutCommand(() => new SemesterViewModel());
+            SemesterNavigateCommand = new NavigateLayoutCommand(() => new YearViewModel());
             ClassNavigateCommand = new NavigateLayoutCommand(() => new ClassListViewModel());
             ScoreNavigateCommand = new NavigateLayoutCommand(() => new ScoreSubjectViewModel());
             ReportNavigateCommand = new NavigateLayoutCommand(() => new ReportMainViewModel());

@@ -7,7 +7,6 @@
     xmlns:classOptionViews="clr-namespace:Stumana.WPF.Views.MainView.ClassOption"
     xmlns:reportOptionViews="clr-namespace:Stumana.WPF.Views.MainView.ReportOptionView"
     xmlns:scoreOptionViews="clr-namespace:Stumana.WPF.Views.MainView.ScoreOption"
-    xmlns:settleOptionViews="clr-namespace:Stumana.WPF.Views.MainView.SettleOption"
     xmlns:mainView="clr-namespace:Stumana.WPF.Views.MainView"
     xmlns:studentOptionViews="clr-namespace:Stumana.WPF.Views.MainView.StudentOption"
     xmlns:subjectOptionViews="clr-namespace:Stumana.WPF.Views.MainView.SubjectOption"
@@ -25,7 +24,8 @@
 
     xmlns:authencationViewModels="clr-namespace:Stumana.WPF.ViewModels.AuthencationViewModels"
     xmlns:local="clr-namespace:Stumana.WPF"
-    xmlns:vm="clr-namespace:Stumana.WPF.ViewModels">
+    xmlns:vm="clr-namespace:Stumana.WPF.ViewModels"
+    xmlns:yearOption="clr-namespace:Stumana.WPF.Views.MainView.YearOption">
 
     <DataTemplate DataType="{x:Type vm:ToastMessageViewModel}">
         <views:ToastMessageView />
@@ -72,10 +72,6 @@
         <scoreOptionViews:EditScoreInputView />
     </DataTemplate>
 
-    <DataTemplate DataType="{x:Type scoreOptionViewModels:ScoreInputViewModel}">
-        <scoreOptionViews:ScoreInputView />
-    </DataTemplate>
-
     <DataTemplate DataType="{x:Type scoreOptionViewModels:ScoreSubjectViewModel}">
         <scoreOptionViews:ScoreSubjectView />
     </DataTemplate>
@@ -84,7 +80,7 @@
     <!--#region SettleOption-->
 
     <DataTemplate DataType="{x:Type settleOptionViewModels:YearViewModel}">
-        <settleOptionViews:YearView />
+        <yearOption:YearView />
     </DataTemplate>
     <!--#endregion-->
 
@@ -99,10 +95,6 @@
     <!--#endregion-->
 
     <!--#region SubjectOption-->
-    <DataTemplate DataType="{x:Type subjectOptionViewModels:AddSubjectViewModel_2}">
-        <subjectOptionViews:AddSubjectView_2 />
-    </DataTemplate>
-
     <DataTemplate DataType="{x:Type subjectOptionViewModels:SubjectViewModel}">
         <subjectOptionViews:SubjectView />
     </DataTemplate>

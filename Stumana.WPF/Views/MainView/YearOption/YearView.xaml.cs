@@ -13,14 +13,11 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Stumana.WPF.Views.MainView.SubjectOption
+namespace Stumana.WPF.Views.MainView.YearOption
 {
-    /// <summary>
-    /// Interaction logic for AddSubjectView_2.xaml
-    /// </summary>
-    public partial class AddSubjectView_2 : UserControl
+    public partial class YearView : UserControl
     {
-        public AddSubjectView_2()
+        public YearView()
         {
             InitializeComponent();
         }

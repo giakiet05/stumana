@@ -7,7 +7,7 @@ using Stumana.DataAcess.Models;
 using Stumana.WPF.Commands;
 using Stumana.WPF.ViewModels.PopupModels;
 
-namespace Stumana.WPF.ViewModels.MainViewModels.SettleOption
+namespace Stumana.WPF.ViewModels.MainViewModels.YearOption
 {
     public class YearViewModel : BaseViewModel
     {

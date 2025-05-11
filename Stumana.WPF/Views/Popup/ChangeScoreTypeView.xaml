@@ -63,7 +63,8 @@
                           HorizontalAlignment="Stretch"
                           VerticalAlignment="Stretch"
                           CanUserAddRows="False"
-                          ItemsSource="{Binding ScoreTypeTable}">
+                          ItemsSource="{Binding ScoreTypeTable}"
+                          SelectedItem="{Binding SelectedScoreType}">
 
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Loại điểm" Width="*" Binding="{Binding Name}"/>

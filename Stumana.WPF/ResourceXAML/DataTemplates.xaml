@@ -16,16 +16,15 @@
     xmlns:classOptionViewModels="clr-namespace:Stumana.WPF.ViewModels.MainViewModels.ClassOption"
     xmlns:reportOptionViewModels="clr-namespace:Stumana.WPF.ViewModels.MainViewModels.ReportOption"
     xmlns:scoreOptionViewModels="clr-namespace:Stumana.WPF.ViewModels.MainViewModels.ScoreOption"
-    xmlns:settleOptionViewModels="clr-namespace:Stumana.WPF.ViewModels.MainViewModels.SettleOption"
     xmlns:studentOptionViewModels="clr-namespace:Stumana.WPF.ViewModels.MainViewModels.StudentOption"
     xmlns:subjectOptionViewModels="clr-namespace:Stumana.WPF.ViewModels.MainViewModels.SubjectOption"
     xmlns:popupViewModels="clr-namespace:Stumana.WPF.ViewModels.PopupModels"
     xmlns:mainViewModels="clr-namespace:Stumana.WPF.ViewModels.MainViewModels"
 
     xmlns:authencationViewModels="clr-namespace:Stumana.WPF.ViewModels.AuthencationViewModels"
-    xmlns:local="clr-namespace:Stumana.WPF"
     xmlns:vm="clr-namespace:Stumana.WPF.ViewModels"
-    xmlns:yearOption="clr-namespace:Stumana.WPF.Views.MainView.YearOption">
+    xmlns:yearOption="clr-namespace:Stumana.WPF.Views.MainView.YearOption"
+    xmlns:yearOptionViewModels="clr-namespace:Stumana.WPF.ViewModels.MainViewModels.YearOption">
 
     <DataTemplate DataType="{x:Type vm:ToastMessageViewModel}">
         <views:ToastMessageView />
@@ -79,7 +78,7 @@
 
     <!--#region SettleOption-->
 
-    <DataTemplate DataType="{x:Type settleOptionViewModels:YearViewModel}">
+    <DataTemplate DataType="{x:Type yearOptionViewModels:YearViewModel}">
         <yearOption:YearView />
     </DataTemplate>
     <!--#endregion-->

@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:helpers="clr-namespace:Stumana.WPF.Helpers"
              mc:Ignorable="d"
              d:DesignHeight="800" d:DesignWidth="1200">
     <UserControl.Resources>
@@ -25,6 +26,7 @@
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
             </Grid.RowDefinitions>
 
             <TextBlock Grid.Row="0"
@@ -34,7 +36,19 @@
                        Margin="0,0,0,10"
                        Foreground="#333333"
                        FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium" />
-            <Grid Grid.Row="1">
+
+            <StackPanel Grid.Row="1" Margin="0,0,0,10">
+                <TextBlock Text="Năm học" Style="{StaticResource LabelStyle}" />
+                <TextBox Style="{StaticResource InputFieldStyle}"
+                         IsReadOnly="True"
+                         Background="#1A808080"
+                         Foreground="Black"
+                         HorizontalAlignment="Left"
+                         Width="265"
+                         Text="{Binding SchoolYearName, UpdateSourceTrigger=PropertyChanged}" />
+            </StackPanel>
+
+            <Grid Grid.Row="2">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"></ColumnDefinition>
                     <ColumnDefinition Width="10"></ColumnDefinition>
@@ -45,22 +59,23 @@
                     <TextBlock Text="Tên loại điểm" Style="{StaticResource LabelStyle}" />
                     <TextBox Style="{StaticResource InputFieldStyle}"
                              Foreground="Black"
-                             Text="{Binding GradeId, UpdateSourceTrigger=PropertyChanged}" />
+                             Text="{Binding ScoreTypeName, UpdateSourceTrigger=PropertyChanged}" />
                     <TextBlock Foreground="Red"
-                        Text="⚠ Tên loại điểm quá dài hoặc không hợp lệ"
-                        Visibility="{Binding IsGradeNameInvalid, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                               Text="⚠ Tên loại điểm quá dài hoặc không hợp lệ"
+                               Visibility="{Binding IsScoreTypeNameInvalid, Converter={StaticResource BooleanToVisibilityConverter}}" />
                 </StackPanel>
 
                 <StackPanel Grid.Column="2">
                     <TextBlock Text="Hệ số" Style="{StaticResource LabelStyle}" />
                     <TextBox Style="{StaticResource InputFieldStyle}"
-                             Text="{Binding GradeName, UpdateSourceTrigger=PropertyChanged}" />
+                             Text="{Binding ScoreTypeCoefficient, UpdateSourceTrigger=PropertyChanged}"
+                             helpers:TextBoxDoubleInputBehavior.IsNumeric="True" />
                     <TextBlock Foreground="Red"
-                        Text="⚠ Hệ số không hợp lệ"
-                        Visibility="{Binding IsGradeNameInvalid, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                               Text="⚠ Hệ số không hợp lệ"
+                               Visibility="{Binding IsScoreTypeCoefficientInvalid, Converter={StaticResource BooleanToVisibilityConverter}}" />
                 </StackPanel>
             </Grid>
-            <StackPanel Grid.Row="2"
+            <StackPanel Grid.Row="3"
                         Margin="0,20,0,0"
                         HorizontalAlignment="Stretch"
                         Orientation="Horizontal"
@@ -69,7 +84,7 @@
                         Padding="10"
                         Margin="0,0,10,0"
                         Style="{StaticResource PrimaryButtonStyle}"
-                        Command="{Binding AddGradeCommand}" />
+                        Command="{Binding AddScoreTypeCommand}" />
                 <Button Content="Hủy"
                         Padding="10"
                         Margin="10,0,10,0"

@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Stumana.DataAccess.Services;
 using Stumana.DataAcess.Models;
 using Stumana.WPF.Commands;
+using Stumana.WPF.Helpers;
 using Stumana.WPF.ViewModels.MainViewModels.ScoreOption;
 using Stumana.WPF.ViewModels.PopupModels;
 
@@ -252,7 +253,7 @@ namespace Stumana.WPF.ViewModels.MainViewModels.StudentOption
                 string studentEmail = studentAssignment.Student.Email;
 
                 double semester1Score = 0.0;
-                
+
 
                 StudentDataTable.Rows.Add(gradeName, className, studentName, studentGender, studentBirthday, studentAddress, studentPhoneNumber, studentEmail, 0, 0);
             }
@@ -265,13 +266,19 @@ namespace Stumana.WPF.ViewModels.MainViewModels.StudentOption
             if (string.IsNullOrEmpty(SelectedSchoolYear) || countGradeFilter == 0)
                 return;
 
-            List<Grade> grades = GradeFilter.Where(i => i.IsChecked).Select(i => GradeDic[i.Name]).ToList();
+            List<Grade> grades = new List<Grade>();
+            foreach (FilterItem item in GradeFilter)
+            {
+                if (item.IsChecked && item.Name != "All")
+                    grades.Add(GradeDic[item.Name]);
+            }
+
             await LoadClassroomFilter(SchoolYearDic[SelectedSchoolYear], grades);
 
             List<Classroom> classrooms = new List<Classroom>();
             foreach (var filterItem in ClassFilter)
             {
-                if (filterItem.IsChecked)
+                if (filterItem.IsChecked && filterItem.Name != "All")
                     classrooms.Add(ClassroomDic[filterItem.Name]);
             }
 

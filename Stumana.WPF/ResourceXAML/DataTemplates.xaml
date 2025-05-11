@@ -137,6 +137,17 @@
         <popupViews:AddGradeView />
     </DataTemplate>
 
+    <DataTemplate DataType="{x:Type popupViewModels:AddScoreTypeToSubjectViewModel}">
+        <popupViews:AddScoreTypeToSubjectView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type popupViewModels:ChangeScoreTypeViewModel}">
+        <popupViews:ChangeScoreTypeView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type popupViewModels:AddScoreTypeViewModel}">
+        <popupViews:AddScoreTypeView />
+    </DataTemplate>
     <!--#endregion-->
     <!--#region admin-->
 

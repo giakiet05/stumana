@@ -73,13 +73,22 @@ namespace Stumana.WPF.ViewModels.MainViewModels.YearOption
         public ICommand AddGradeCommand { get; set; }
         public ICommand DeleteGradeCommand { get; set; }
 
+        public EventHandler? OnTableUpdate { get; set; }
+
         public YearViewModel()
         {
-            AddYearCommand = new NavigateModalCommand(() => new AddYearViewModel());
+            OnTableUpdate += UpdateTable;
+
+            AddYearCommand = new NavigateModalCommand(() => new AddYearViewModel(OnTableUpdate));
             DeleteYearCommand = new RelayCommand(DeleteYear);
-            AddGradeCommand = new NavigateModalCommand(() => new AddGradeViewModel());
+            AddGradeCommand = new NavigateModalCommand(() => new AddGradeViewModel(OnTableUpdate));
             DeleteGradeCommand = new RelayCommand(DeleteGrade);
 
+            LoadData();
+        }
+
+        private void UpdateTable(object? sender, EventArgs e)
+        {
             LoadData();
         }
 
@@ -93,6 +102,8 @@ namespace Stumana.WPF.ViewModels.MainViewModels.YearOption
         {
             var years = (await GenericDataService<SchoolYear>.Instance.GetAllAsync()).ToList();
 
+            YearTable.Clear();
+            YearList.Clear();
             foreach (var year in years)
             {
                 var row = new YearTableRow(year.Id, $"{year.StartYear}-{year.EndYear}");
@@ -105,6 +116,8 @@ namespace Stumana.WPF.ViewModels.MainViewModels.YearOption
         {
             var grades = (await GenericDataService<Grade>.Instance.GetAllAsync());
 
+            GradeTable.Clear();
+            GradeList.Clear();
             foreach (var grade in grades)
             {
                 var row = new GradeTableRow(grade.Id, grade.Name);
@@ -121,9 +134,9 @@ namespace Stumana.WPF.ViewModels.MainViewModels.YearOption
                 return;
             }
 
+            await GenericDataService<SchoolYear>.Instance.DeleteOneAsync(sc => sc.Id == SelectedYear.YearID);
             YearTable.Remove(SelectedYear);
             YearList.Remove(SelectedYear);
-            await GenericDataService<SchoolYear>.Instance.DeleteOneAsync(sc => sc.Id == SelectedYear.YearID);
             SelectedYear = null;
         }
 
@@ -135,9 +148,9 @@ namespace Stumana.WPF.ViewModels.MainViewModels.YearOption
                 return;
             }
 
+            await GenericDataService<Grade>.Instance.DeleteOneAsync(g => g.Id == SelectedGrade.GradeID);
             GradeTable.Remove(SelectedGrade);
             GradeList.Remove(SelectedGrade);
-            await GenericDataService<Grade>.Instance.DeleteOneAsync(g => g.Id == SelectedGrade.GradeID);
             SelectedGrade = null;
         }
 
@@ -191,8 +204,8 @@ namespace Stumana.WPF.ViewModels.MainViewModels.YearOption
 
         public class YearTableRow
         {
-            public string YearID;
-            public string YearName;
+            public string YearID { get; set; }
+            public string YearName { get; set; }
 
             public YearTableRow(string yearId, string yearName)
             {
@@ -203,8 +216,8 @@ namespace Stumana.WPF.ViewModels.MainViewModels.YearOption
 
         public class GradeTableRow
         {
-            public string GradeID;
-            public string GradeName;
+            public string GradeID { get; set; }
+            public string GradeName { get; set; }
 
             public GradeTableRow(string gradeId, string gradeName)
             {

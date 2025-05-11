@@ -340,14 +340,13 @@
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Khối" Binding="{Binding [Khối]}" />
                             <DataGridTextColumn Header="Lớp" Binding="{Binding [Lớp]}" />
+                            <DataGridTextColumn Header="Mã học sinh" Binding="{Binding [Họ và tên]}" />
                             <DataGridTextColumn Header="Họ và tên" Binding="{Binding [Họ và tên]}" />
                             <DataGridTextColumn Header="Giới tính" Binding="{Binding [Giới tính]}" />
                             <DataGridTextColumn Header="Ngày sinh" Binding="{Binding [Ngày sinh]}" />
                             <DataGridTextColumn Header="Địa chỉ" Binding="{Binding [Địa chỉ]}" />
                             <DataGridTextColumn Header="Số điện thoại" Binding="{Binding [Số điện thoại]}" />
                             <DataGridTextColumn Header="Email" Binding="{Binding [Email]}" />
-                            <DataGridTextColumn Header="TB học kỳ 1" Binding="{Binding [TB học kỳ 1]}" />
-                            <DataGridTextColumn Header="TB học kỳ 2" Binding="{Binding [TB học kỳ 2]}" />
                         </DataGrid.Columns>
                     </DataGrid>
                 </ScrollViewer>

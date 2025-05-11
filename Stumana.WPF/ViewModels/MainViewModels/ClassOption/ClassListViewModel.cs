@@ -15,6 +15,7 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ClassOption
 
         public ICommand AddStudentToClassCommand { get; set; }
         public ICommand AddClassroomCommand { get; set; }
+        public ICommand DeleteClassroomCommand { get; set; }
 
         #endregion Commands
 
@@ -117,18 +118,21 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ClassOption
 
         #endregion Properties
 
+        public EventHandler? OnUpdateData;
 
         public ClassListViewModel()
         {
+            OnUpdateData += UpdateTable;
+
             LoadSchoolYearFilter();
             LoadGradeFilter();
 
             LoadClassTableColumn();
             LoadStudentTableColumn();
 
-            AddClassroomCommand = new NavigateModalCommand(() => new AddClassroomViewModel());
+            AddClassroomCommand = new NavigateModalCommand(() => new AddClassroomViewModel(OnUpdateData));
+            DeleteClassroomCommand = new RelayCommand(DeleteClassroom);
             AddStudentToClassCommand = new NavigateModalCommand(() => new AddStudentToClassViewModel(ClassroomDic[SelectedClass["Tên lớp"].ToString()]), HaveSelectClass);
-            //AddStudentToClassCommand = new NavigateModalCommand(() => new AddStudentToClassViewModel());
         }
 
         private void LoadClassTableColumn()
@@ -171,25 +175,38 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ClassOption
 
         private async void OnSelectedClassChanged()
         {
+            if (SelectedClass == null)
+                return;
+
             Classroom classroom = ClassroomDic[SelectedClass["Tên lớp"].ToString()];
             await LoadStudentData(classroom);
         }
 
         private async void OnSelectionClassroomFilterChange()
         {
-            if (string.IsNullOrEmpty(SelectedGrade) || string.IsNullOrEmpty(SelectedSchoolYear))
+            if (string.IsNullOrEmpty(SelectedSchoolYear))
             {
                 ClassDataTable.Rows.Clear();
                 return;
             }
 
+            SchoolYear schoolYear = SchoolYearsDic[SelectedSchoolYear];
+
+            Grade? grade = null;
+            if (!string.IsNullOrEmpty(SelectedGrade))
+                grade = GradeDic[SelectedGrade];
+
+            LoadClassTable(schoolYear, grade);
+        }
+
+        private async void LoadClassTable(SchoolYear schoolYear, Grade? grade)
+        {
             List<Classroom> classrooms = new List<Classroom>();
 
-            SchoolYear curSchoolYear = SchoolYearsDic[SelectedSchoolYear];
-            classrooms = (await GenericDataService<Classroom>.Instance.GetManyAsync(cl => cl.YearId == curSchoolYear.Id)).ToList();
+            classrooms = (await GenericDataService<Classroom>.Instance.GetManyAsync(cl => cl.YearId == schoolYear.Id)).ToList();
 
-            Grade curGrade = GradeDic[SelectedGrade];
-            classrooms = classrooms.Where(cl => cl.GradeId == curGrade.Id).ToList();
+            if (grade != null)
+                classrooms = classrooms.Where(cl => cl.GradeId == grade.Id).ToList();
 
             ClassDataTable.Rows.Clear();
             ClassroomDic.Clear();
@@ -222,6 +239,25 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ClassOption
                 GradeCollection.Add(grade.Name);
                 GradeDic.Add(grade.Name, grade);
             }
+        }
+
+        private async void DeleteClassroom()
+        {
+            if (SelectedClass == null)
+            {
+                ToastMessageViewModel.ShowErrorToast("Hãy chọn một lớp để xóa");
+                return;
+            }
+
+            await GenericDataService<Classroom>.Instance.DeleteOneAsync(c => c.Id == ClassroomDic[SelectedClass["Tên lớp"].ToString()].Id);
+            ClassroomDic.Remove(SelectedClass["Tên lớp"].ToString());
+            ClassDataTable.Rows.Remove(SelectedClass.Row);
+        }
+
+        private void UpdateTable(object? sender, EventArgs e)
+        {
+            OnSelectionClassroomFilterChange();
+            OnSelectedClassChanged();
         }
 
         private bool HaveSelectClass()

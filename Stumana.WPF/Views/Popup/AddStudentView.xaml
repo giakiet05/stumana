@@ -16,14 +16,15 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
-    <Border Height="470" Width="900" Background="White" Padding="20" CornerRadius="20">
+    <Border Height="Auto" Width="900" Background="White" Padding="20" CornerRadius="20" VerticalAlignment="Center"
+            HorizontalAlignment="Center">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
             <!-- Title -->
@@ -81,6 +82,9 @@
                                   IsReadOnly="True"
                                   Padding="5"
                                   Height="35">
+                            <ComboBoxItem Content="Nam" />
+                            <ComboBoxItem Content="Nữ" />
+                            <ComboBoxItem Content="Khác" />
                         </ComboBox>
                     </Border>
                 </StackPanel>
@@ -104,7 +108,7 @@
             </Grid>
 
             <!-- Third row: Email address, Phone number -->
-            <Grid Grid.Row="3" Margin="0,0,0,25">
+            <Grid Grid.Row="3" Margin="0,0,0,0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="20" />

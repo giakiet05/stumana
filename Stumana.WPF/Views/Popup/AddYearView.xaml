@@ -49,10 +49,7 @@
                              IsReadOnly="True"
                              Background="#1A808080"
                              Width="230"
-                             Text="{Binding YearId, UpdateSourceTrigger=PropertyChanged}" />
-                    <TextBlock Foreground="Red"
-                               Text="⚠ Năm học bị trùng"
-                               Visibility="{Binding IsYearIdInvalid, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                             Text="{Binding YearId, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
                 </StackPanel>
                 <StackPanel Grid.Column="2">
                     <TextBlock Text="Năm bắt đầu" Style="{StaticResource LabelStyle}" />

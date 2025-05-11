@@ -208,9 +208,10 @@ namespace Stumana.WPF.ViewModels.MainViewModels.SubjectOption
             else
             {
                 if (filterItem.IsChecked == false && filterItems[0].IsChecked)
-                {
                     filterItems[0].IsChecked = false;
-                }
+
+                if (filterItem.IsChecked && filterItems.Count(i => i.IsChecked) >= filterItems.Count - 1)
+                    filterItems[0].IsChecked = true;
             }
         }
 
@@ -266,9 +267,9 @@ namespace Stumana.WPF.ViewModels.MainViewModels.SubjectOption
                 return;
             }
 
-            SubjectTable.Remove(SelectedSubject);
-            OriginalSubjectTable.Remove(SelectedSubject);
             await GenericDataService<Subject>.Instance.DeleteOneAsync(s => s.Id == SelectedSubject.SubjectId);
+            OriginalSubjectTable.Remove(SelectedSubject);
+            SubjectTable.Remove(SelectedSubject);
             SelectedSubject = null;
         }
 

@@ -10,7 +10,7 @@ public class AddYearViewModel : BaseViewModel
 {
     private string _yearId;
 
-    private string YearId
+    public string YearId
     {
         get => _yearId;
         set
@@ -92,18 +92,6 @@ public class AddYearViewModel : BaseViewModel
         }
     }
 
-    private bool _isYearIdInvalid = false;
-
-    public bool IsYearIdInvalid
-    {
-        get => _isYearIdInvalid;
-        set
-        {
-            _isYearIdInvalid = value;
-            OnPropertyChanged();
-        }
-    }
-
     private bool _isStartYearInvalid = false;
 
     public bool IsStartYearInvalid
@@ -179,19 +167,32 @@ public class AddYearViewModel : BaseViewModel
     public ICommand AddYearCommand { get; set; }
     public ICommand CancelCommand { get; set; }
 
-    public AddYearViewModel()
+    private readonly EventHandler? _onAddSchoolYear;
+
+    public AddYearViewModel(EventHandler? updateTable)
     {
+        _onAddSchoolYear = updateTable;
+
         AddYearCommand = new RelayCommand(AddYear);
-        CancelCommand = new RelayCommand(() => ModalNavigationStore.Instance.Close());
+        CancelCommand = new RelayCommand(ModalNavigationStore.Instance.Close);
+
+        GenerateYearID();
     }
 
-    private string GenerateYearID(string? startYear, string? endYear)
+    private async void GenerateYearID()
     {
-        if (string.IsNullOrEmpty(startYear) || string.IsNullOrEmpty(endYear))
-            return String.Empty;
-
         string idPrefix = "YR";
-        return idPrefix + startYear.Substring(startYear.Length - 2) + endYear.Substring(endYear.Length - 2);
+
+        SchoolYear? lastSchoolYear = null;
+        lastSchoolYear = (await GenericDataService<SchoolYear>.Instance.GetAllAsync()).OrderByDescending(sc => int.Parse(sc.Id.Substring(idPrefix.Length))).FirstOrDefault();
+        int idCount = 1;
+        if (lastSchoolYear != null)
+        {
+            idCount = int.Parse(lastSchoolYear.Id.Substring(idPrefix.Length));
+            idCount++;
+        }
+
+        YearId = idPrefix + idCount.ToString("D3");
     }
 
     private async void AddYear()
@@ -201,15 +202,6 @@ public class AddYearViewModel : BaseViewModel
             CheckError();
             if (IsStartYearInvalid || IsEndYearInvalid || IsMinAgeInvalid || IsMaxAgeInvalid || IsMinScoreInvalid || IsMaxCapacityInvalid)
                 throw new Exception("Input không hợp lệ.");
-
-            IsYearIdInvalid = false;
-            YearId = GenerateYearID(StartYear, EndYear);
-            SchoolYear schoolYear = await GenericDataService<SchoolYear>.Instance.GetOneAsync(s => s.Id == YearId);
-            if (schoolYear != null)
-            {
-                IsYearIdInvalid = true;
-                throw new Exception("Input không hợp lệ.");
-            }
 
             SchoolYear newYear = new SchoolYear
             {
@@ -221,13 +213,17 @@ public class AddYearViewModel : BaseViewModel
 
             Asset newAsset = new Asset
             {
-                Id = YearId,
+                Id = Guid.NewGuid().ToString(),
+                YearId = YearId,
                 MinAge = int.Parse(MinAge),
                 MaxAge = int.Parse(MaxAge),
                 ScoreToPass = double.Parse(MinScore),
                 MaxCapacity = int.Parse(MaxCapacity)
             };
             await GenericDataService<Asset>.Instance.CreateOneAsync(newAsset);
+
+            _onAddSchoolYear?.Invoke(this, EventArgs.Empty);
+            ModalNavigationStore.Instance.Close();
         }
         catch (Exception e)
         {

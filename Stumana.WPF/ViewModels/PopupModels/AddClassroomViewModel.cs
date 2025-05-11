@@ -18,7 +18,6 @@ namespace Stumana.WPF.ViewModels.PopupModels
             {
                 _classroomName = value;
                 OnPropertyChanged();
-                CheckError();
             }
         }
 
@@ -56,7 +55,6 @@ namespace Stumana.WPF.ViewModels.PopupModels
             {
                 _selectedschoolyear = value;
                 OnPropertyChanged();
-                CheckError();
             }
         }
 
@@ -94,7 +92,6 @@ namespace Stumana.WPF.ViewModels.PopupModels
             {
                 _selectedgrade = value;
                 OnPropertyChanged();
-                CheckError();
             }
         }
 
@@ -113,14 +110,14 @@ namespace Stumana.WPF.ViewModels.PopupModels
         public ICommand AddClassCommand { get; set; }
         public ICommand CancelCommand { get; set; }
 
-        public AddClassroomViewModel()
+        private readonly EventHandler? _onAddClassroom;
+
+        public AddClassroomViewModel(EventHandler? onUpdateData)
         {
-            OnPropertyChanged(nameof(IsClassroomNameInvalid));
-            OnPropertyChanged(nameof(IsSchoolYearInvalid));
-            OnPropertyChanged(nameof(IsGradeInvalid));
+            _onAddClassroom = onUpdateData;
 
             AddClassCommand = new RelayCommand(AddClass);
-            CancelCommand = new RelayCommand(CancelModal);
+            CancelCommand = new RelayCommand(ModalNavigationStore.Instance.Close);
 
             LoadSelector();
         }
@@ -131,9 +128,7 @@ namespace Stumana.WPF.ViewModels.PopupModels
             {
                 CheckError();
                 if (IsClassroomNameInvalid || IsGradeInvalid || IsSchoolYearInvalid)
-                {
                     throw new Exception();
-                }
 
                 Classroom newClass = new Classroom
                 {
@@ -144,16 +139,14 @@ namespace Stumana.WPF.ViewModels.PopupModels
                 };
 
                 await GenericDataService<Classroom>.Instance.CreateOneAsync(newClass);
+                ToastMessageViewModel.ShowSuccessToast("Thêm lớp thành công.");
+                _onAddClassroom?.Invoke(this, EventArgs.Empty);
+                ModalNavigationStore.Instance.Close();
             }
             catch (Exception e)
             {
                 ToastMessageViewModel.ShowErrorToast("Thêm lớp không thành công");
             }
-        }
-
-        public void CancelModal()
-        {
-            ModalNavigationStore.Instance.Close();
         }
 
         private async void CheckError()

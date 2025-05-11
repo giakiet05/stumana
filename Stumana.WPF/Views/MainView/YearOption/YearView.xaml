@@ -20,8 +20,8 @@
 
     <Grid Background="White">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition />
-            <ColumnDefinition />
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
@@ -111,7 +111,7 @@
 
                         <Border Grid.Row="1" Margin="0,0,0,0" VerticalAlignment="Stretch">
                             <DataGrid Margin="10 10 10 0"
-                                      AutoGenerateColumns="True"
+                                      AutoGenerateColumns="False"
                                       HorizontalAlignment="Stretch"
                                       CanUserAddRows="False"
                                       IsReadOnly="True"
@@ -160,13 +160,14 @@
                                            TargetType="DataGridCell">
                                         <Setter Property="BorderThickness" Value="0" />
                                         <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+                                        <Setter Property="FontSize" Value="20"></Setter>
                                     </Style>
                                 </DataGrid.CellStyle>
 
                                 <DataGrid.Columns>
-                                    <DataGridTextColumn Header="Mã năm" Width="*" MinWidth="300"
+                                    <DataGridTextColumn Header="Mã năm" Width="Auto" MinWidth="290"
                                                         Binding="{Binding YearID}" />
-                                    <DataGridTextColumn Header="Năm học" Width="*" MinWidth="300"
+                                    <DataGridTextColumn Header="Năm học" Width="Auto" MinWidth="290"
                                                         Binding="{Binding YearName}" />
                                 </DataGrid.Columns>
                             </DataGrid>
@@ -277,7 +278,7 @@
 
                         <Border Grid.Row="1" Margin="0,0,0,0" VerticalAlignment="Stretch">
                             <DataGrid Margin="10 10 10 0"
-                                      AutoGenerateColumns="True"
+                                      AutoGenerateColumns="False"
                                       HorizontalAlignment="Stretch"
                                       CanUserAddRows="False"
                                       IsReadOnly="True"
@@ -326,13 +327,14 @@
                                            TargetType="DataGridCell">
                                         <Setter Property="BorderThickness" Value="0" />
                                         <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+                                        <Setter Property="FontSize" Value="20" />
                                     </Style>
                                 </DataGrid.CellStyle>
 
                                 <DataGrid.Columns>
-                                    <DataGridTextColumn Header="Mã khối" Width="*" MinWidth="300"
+                                    <DataGridTextColumn Header="Mã khối" Width="*" MinWidth="290"
                                                         Binding="{Binding GradeID}" />
-                                    <DataGridTextColumn Header="Khối" Width="*" MinWidth="300"
+                                    <DataGridTextColumn Header="Khối" Width="*" MinWidth="290"
                                                         Binding="{Binding GradeName}" />
                                 </DataGrid.Columns>
                             </DataGrid>

@@ -7,7 +7,6 @@ using Stumana.DataAccess.Services;
 using Stumana.DataAcess.Models;
 using Stumana.WPF.Commands;
 using Stumana.WPF.Helpers;
-using Stumana.WPF.ViewModels.MainViewModels.ScoreOption;
 using Stumana.WPF.ViewModels.PopupModels;
 
 namespace Stumana.WPF.ViewModels.MainViewModels.StudentOption
@@ -42,7 +41,7 @@ namespace Stumana.WPF.ViewModels.MainViewModels.StudentOption
 
         public Dictionary<string, SchoolYear> SchoolYearDic { get; set; } = new();
         public Dictionary<string, Grade> GradeDic { get; set; } = new();
-        public Dictionary<string, Classroom> ClassroomDic { get; set; }
+        public Dictionary<string, Classroom> ClassroomDic { get; set; } = new();
 
         private ObservableCollection<string> _schoolyearFilter = new();
 
@@ -67,6 +66,7 @@ namespace Stumana.WPF.ViewModels.MainViewModels.StudentOption
                 {
                     _selectedSchoolYear = value;
                     OnPropertyChanged();
+                    LoadClassroomFilter();
                     OnFilterChange();
                 }
             }
@@ -103,7 +103,7 @@ namespace Stumana.WPF.ViewModels.MainViewModels.StudentOption
         public StudentViewModel()
         {
             FilterGradeCommand = new RelayCommand(FilterGrade);
-            FilterClassroomCommand = new RelayCommand(FilterClassRoom);
+            FilterClassroomCommand = new RelayCommand(FilterClassroom);
             AddStudentCommand = new NavigateModalCommand(() => new AddStudentViewModel());
 
             LoadStudentTableColumn();
@@ -120,14 +120,13 @@ namespace Stumana.WPF.ViewModels.MainViewModels.StudentOption
         {
             StudentDataTable.Columns.Add("Khối", typeof(string));
             StudentDataTable.Columns.Add("Lớp", typeof(string));
+            StudentDataTable.Columns.Add("Mã học sinh", typeof(string));
             StudentDataTable.Columns.Add("Họ và tên", typeof(string));
             StudentDataTable.Columns.Add("Giới tính", typeof(string));
             StudentDataTable.Columns.Add("Ngày sinh", typeof(string));
             StudentDataTable.Columns.Add("Địa chỉ", typeof(string));
             StudentDataTable.Columns.Add("Số điện thoại", typeof(string));
             StudentDataTable.Columns.Add("Email", typeof(string));
-            StudentDataTable.Columns.Add("TB học kỳ 1", typeof(double));
-            StudentDataTable.Columns.Add("TB học kỳ 2", typeof(double));
 
             TableView = StudentDataTable.DefaultView;
         }
@@ -166,10 +165,20 @@ namespace Stumana.WPF.ViewModels.MainViewModels.StudentOption
             }
         }
 
-        public async Task LoadClassroomFilter(SchoolYear schoolYear, IEnumerable<Grade> grades)
+        public async void LoadClassroomFilter()
         {
-            ClassFilter.Clear();
+            if (SelectedSchoolYear == null || GradeFilter.Count(i => i.IsChecked) == 0)
+                return;
 
+            SchoolYear schoolYear = SchoolYearDic[SelectedSchoolYear];
+            List<Grade> grades = new List<Grade>();
+            foreach (FilterItem item in GradeFilter)
+            {
+                if (item.IsChecked && item.Name != "All")
+                    grades.Add(GradeDic[item.Name]);
+            }
+
+            ClassFilter.Clear();
             var gradeId = grades.Select(g => g.Id);
             List<Classroom> classrooms = (await GenericDataService<Classroom>.Instance.GetManyAsync(c => c.YearId == schoolYear.Id && gradeId.Contains(c.GradeId))).ToList();
 
@@ -186,14 +195,15 @@ namespace Stumana.WPF.ViewModels.MainViewModels.StudentOption
             }
         }
 
-        private void FilterGrade(object param)
+        private async void FilterGrade(object param)
         {
             FilterItem filterItem = (FilterItem)param;
             ProcessFilterItemSelection(filterItem, GradeFilter);
+            LoadClassroomFilter();
             OnFilterChange();
         }
 
-        private void FilterClassRoom(object param)
+        private void FilterClassroom(object param)
         {
             FilterItem filterItem = (FilterItem)param;
             ProcessFilterItemSelection(filterItem, ClassFilter);
@@ -225,17 +235,18 @@ namespace Stumana.WPF.ViewModels.MainViewModels.StudentOption
             else
             {
                 if (filterItem.IsChecked == false && filterItems[0].IsChecked)
-                {
                     filterItems[0].IsChecked = false;
-                }
+
+                if (filterItem.IsChecked && filterItems.Count(i => i.IsChecked) >= filterItems.Count - 1)
+                    filterItems[0].IsChecked = true;
             }
         }
 
-        private async Task LoadData(List<Classroom> classrooms)
+        private async Task LoadStudentData(List<Classroom> classrooms)
         {
             var classIds = classrooms.Select(c => c.Id).Distinct().ToList();
             List<StudentAssignment>? studentAssignments = (await GenericDataService<StudentAssignment>.Instance.GetManyAsync(sa => classIds.Contains(sa.ClassroomId),
-                                                                                                                             query => query.Include(sa => sa.Student))).ToList();
+                                                                                                                             query => query.Include(sa => sa.Student).Include(sa => sa.Classroom))).ToList();
             if (studentAssignments == null || studentAssignments.Count == 0)
                 return;
 
@@ -245,6 +256,7 @@ namespace Stumana.WPF.ViewModels.MainViewModels.StudentOption
                 string gradeName = classroom.Grade.Name;
                 string? className = classroom.Name;
 
+                string studentId = studentAssignment.StudentId;
                 string studentName = studentAssignment.Student.Name;
                 string studentGender = studentAssignment.Student.Gender;
                 string studentBirthday = studentAssignment.Student.Birthday.ToString("yyyy-MM-dd");
@@ -252,29 +264,12 @@ namespace Stumana.WPF.ViewModels.MainViewModels.StudentOption
                 string studentPhoneNumber = studentAssignment.Student.Phone;
                 string studentEmail = studentAssignment.Student.Email;
 
-                double semester1Score = 0.0;
-
-
-                StudentDataTable.Rows.Add(gradeName, className, studentName, studentGender, studentBirthday, studentAddress, studentPhoneNumber, studentEmail, 0, 0);
+                StudentDataTable.Rows.Add(gradeName, className, studentId, studentName, studentGender, studentBirthday, studentAddress, studentPhoneNumber, studentEmail);
             }
         }
 
         private async void OnFilterChange()
         {
-            var countGradeFilter = GradeFilter.Count(i => i.IsChecked);
-
-            if (string.IsNullOrEmpty(SelectedSchoolYear) || countGradeFilter == 0)
-                return;
-
-            List<Grade> grades = new List<Grade>();
-            foreach (FilterItem item in GradeFilter)
-            {
-                if (item.IsChecked && item.Name != "All")
-                    grades.Add(GradeDic[item.Name]);
-            }
-
-            await LoadClassroomFilter(SchoolYearDic[SelectedSchoolYear], grades);
-
             List<Classroom> classrooms = new List<Classroom>();
             foreach (var filterItem in ClassFilter)
             {
@@ -282,7 +277,7 @@ namespace Stumana.WPF.ViewModels.MainViewModels.StudentOption
                     classrooms.Add(ClassroomDic[filterItem.Name]);
             }
 
-            await LoadData(classrooms);
+            await LoadStudentData(classrooms);
         }
 
         public void OnSearchTextChange()

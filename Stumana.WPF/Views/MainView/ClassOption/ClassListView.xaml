@@ -220,6 +220,7 @@
                                        TargetType="DataGridCell">
                                     <Setter Property="BorderThickness" Value="0" />
                                     <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+                                    <Setter Property="FontSize" Value="18"></Setter>
                                 </Style>
                             </DataGrid.CellStyle>
 
@@ -300,14 +301,23 @@
                     Padding="10"
                     Margin="10,15,10,15"
                     Style="{StaticResource PrimaryButtonStyle}" />
+
             <Button Margin="10,15,10,15"
                     Width="220"
                     FontSize="18"
                     Content="Thêm học sinh vào lớp"
                     Padding="10"
-
                     Style="{StaticResource PrimaryButtonStyle}"
                     Command="{Binding AddStudentToClassCommand}" />
+
+            <Button Margin="10,15,10,15"
+                    Width="140"
+                    FontSize="18"
+                    Content="Xóa lớp học"
+                    Padding="10"
+                    Style="{StaticResource PrimaryButtonStyle}"
+                    Command="{Binding DeleteClassroomCommand}" />
+
             <Button Margin="10,15,10,15"
                     Width="140"
                     FontSize="18"

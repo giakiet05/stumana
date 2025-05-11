@@ -46,9 +46,12 @@ namespace Stumana.WPF.ViewModels.PopupModels
 
         public ICommand CancelCommand { get; set; }
         public ICommand AddGradeCommand { get; set; }
+        private readonly EventHandler? _onAddGrade;
 
-        public AddGradeViewModel()
+        public AddGradeViewModel(EventHandler? updateTable)
         {
+            _onAddGrade = updateTable;
+
             AddGradeCommand = new RelayCommand(AddGrade);
             CancelCommand = new RelayCommand(() => ModalNavigationStore.Instance.Close());
 
@@ -88,6 +91,7 @@ namespace Stumana.WPF.ViewModels.PopupModels
             };
             await GenericDataService<Grade>.Instance.CreateOneAsync(newGrade);
 
+            _onAddGrade?.Invoke(this, EventArgs.Empty);
             ModalNavigationStore.Instance.Close();
         }
     }

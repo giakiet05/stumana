@@ -30,7 +30,6 @@ namespace Stumana.WPF.ViewModels.PopupModels
             {
                 _name = value;
                 OnPropertyChanged();
-                CheckError();
             }
         }
 
@@ -55,7 +54,6 @@ namespace Stumana.WPF.ViewModels.PopupModels
             {
                 _email = value;
                 OnPropertyChanged();
-                CheckError();
             }
         }
 
@@ -116,7 +114,6 @@ namespace Stumana.WPF.ViewModels.PopupModels
             {
                 _phoneNumber = value;
                 OnPropertyChanged();
-                CheckError();
             }
         }
 
@@ -166,7 +163,6 @@ namespace Stumana.WPF.ViewModels.PopupModels
             return regex.IsMatch(email);
         }
 
-
         private void CheckError()
         {
             IsNameInvalid = false;
@@ -203,6 +199,8 @@ namespace Stumana.WPF.ViewModels.PopupModels
                 };
 
                 await GenericDataService<Student>.Instance.CreateOneAsync(student);
+                ToastMessageViewModel.ShowSuccessToast("Thêm học sinh thành công");
+                ModalNavigationStore.Instance.Close();
             }
             catch (Exception e)
             {

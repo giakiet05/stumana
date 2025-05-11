@@ -1,8 +1,6 @@
 ﻿using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Data;
 using System.Globalization;
-using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
 using Microsoft.EntityFrameworkCore;
@@ -49,7 +47,7 @@ public class ScoreSubjectViewModel : BaseViewModel
     public Dictionary<string, Subject> SubjectDic { get; set; } = new();
     public Dictionary<string, SchoolYear> SchoolYearDic { get; set; } = new();
     public Dictionary<string, Grade> GradeDic { get; set; } = new();
-    public Dictionary<string, Classroom> ClassroomDic { get; set; }
+    public Dictionary<string, Classroom> ClassroomDic { get; set; } = new();
     private Dictionary<string, int> SemesterDic { get; set; } = new();
     public Subject? PreviousSubject { get; set; }
     public List<Score>? PreviousScoreDetail { get; set; }
@@ -90,6 +88,7 @@ public class ScoreSubjectViewModel : BaseViewModel
             {
                 _selectedSchoolYear = value;
                 OnPropertyChanged();
+                LoadDependentFilter();
                 OnFilterChange();
             }
         }
@@ -173,18 +172,6 @@ public class ScoreSubjectViewModel : BaseViewModel
         ScoreDataTable.ColumnChanged += OnColumnChanged;
     }
 
-    private async void LoadTestTable()
-    {
-        //Testing
-        ScoreDataTable.Rows.Add("HS0033333333333331", "Nguyễn Văn An");
-        ScoreDataTable.Rows.Add("HS0011111111111", "Nguyễn Văn Aaaaaaaaaaaaaa");
-        ScoreDataTable.Rows.Add("HS0012222222222222222", "Nguyễn Văn Affffffffffff");
-        for (int i = 1; i <= 20; i++)
-        {
-            ScoreDataTable.Rows.Add("HS0012222222222222222", "Nguyễn Văn Affffffffffff");
-        }
-    }
-
     private async void LoadInitFilter()
     {
         await LoadSchoolYearFilter();
@@ -211,12 +198,6 @@ public class ScoreSubjectViewModel : BaseViewModel
     public async Task LoadGradeFilter()
     {
         GradeFilter.Clear();
-
-        //Test
-        //GradeFilter.Add(new FilterItem("All", false));
-        //GradeFilter.Add(new FilterItem("Khối 10", false));
-        //GradeFilter.Add(new FilterItem("Khối 11", false));
-        //GradeFilter.Add(new FilterItem("Khối 12", false));
 
         var grades = (await GenericDataService<Grade>.Instance.GetAllAsync()).ToList();
         if (!grades.Any())
@@ -291,18 +272,25 @@ public class ScoreSubjectViewModel : BaseViewModel
         }
     }
 
-    private async void OnFilterChange()
+    public async void LoadDependentFilter()
     {
-        var countGradeFilter = GradeFilter.Count(i => i.IsChecked);
-
-        if (string.IsNullOrEmpty(SelectedSchoolYear) || countGradeFilter == 0)
+        if (string.IsNullOrEmpty(SelectedSchoolYear) || GradeFilter.Count(i => i.IsChecked) == 0)
             return;
 
-        List<Grade> grades = GradeFilter.Where(i => i.IsChecked).Select(i => GradeDic[i.Name]).ToList();
+        List<Grade> grades = new List<Grade>();
+        foreach (var filterItem in GradeFilter)
+        {
+            if (filterItem.IsChecked && filterItem.Name != "All")
+                grades.Add(GradeDic[filterItem.Name]);
+        }
+
         await LoadSubjectFilter(SchoolYearDic[SelectedSchoolYear], grades);
         await LoadClassroomFilter(SchoolYearDic[SelectedSchoolYear], grades);
         await LoadSemesterFilter(SchoolYearDic[SelectedSchoolYear], grades);
+    }
 
+    private async void OnFilterChange()
+    {
         if (string.IsNullOrEmpty(SelectedSubject))
             return;
 
@@ -449,6 +437,7 @@ public class ScoreSubjectViewModel : BaseViewModel
     {
         FilterItem filterItem = (FilterItem)param;
         ProcessFilterItemSelection(filterItem, GradeFilter);
+        LoadDependentFilter();
         OnFilterChange();
     }
 
@@ -491,9 +480,10 @@ public class ScoreSubjectViewModel : BaseViewModel
         else
         {
             if (filterItem.IsChecked == false && filterItems[0].IsChecked)
-            {
                 filterItems[0].IsChecked = false;
-            }
+
+            if (filterItem.IsChecked && filterItems.Count(i => i.IsChecked) >= filterItems.Count - 1)
+                filterItems[0].IsChecked = true;
         }
     }
 

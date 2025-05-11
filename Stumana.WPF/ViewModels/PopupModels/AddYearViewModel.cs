@@ -199,8 +199,17 @@ public class AddYearViewModel : BaseViewModel
         try
         {
             CheckError();
-            if (IsYearIdInvalid || IsStartYearInvalid || IsEndYearInvalid || IsMinAgeInvalid || IsMaxAgeInvalid || IsMinScoreInvalid || IsMaxCapacityInvalid)
+            if (IsStartYearInvalid || IsEndYearInvalid || IsMinAgeInvalid || IsMaxAgeInvalid || IsMinScoreInvalid || IsMaxCapacityInvalid)
                 throw new Exception("Input không hợp lệ.");
+
+            IsYearIdInvalid = false;
+            YearId = GenerateYearID(StartYear, EndYear);
+            SchoolYear schoolYear = await GenericDataService<SchoolYear>.Instance.GetOneAsync(s => s.Id == YearId);
+            if (schoolYear != null)
+            {
+                IsYearIdInvalid = true;
+                throw new Exception("Input không hợp lệ.");
+            }
 
             SchoolYear newYear = new SchoolYear
             {
@@ -228,7 +237,6 @@ public class AddYearViewModel : BaseViewModel
 
     private async void CheckError()
     {
-        IsYearIdInvalid = false;
         IsStartYearInvalid = false;
         IsEndYearInvalid = false;
         IsMinAgeInvalid = false;
@@ -236,13 +244,10 @@ public class AddYearViewModel : BaseViewModel
         IsMinScoreInvalid = false;
         IsMaxCapacityInvalid = false;
 
-        if (string.IsNullOrEmpty(YearId))
-            IsYearIdInvalid = true;
-
-        if (string.IsNullOrEmpty(StartYear) || int.Parse(StartYear) <= 0)
+        if (string.IsNullOrEmpty(StartYear) || int.Parse(StartYear) <= 1900)
             IsStartYearInvalid = true;
 
-        if (string.IsNullOrEmpty(EndYear) || int.Parse(EndYear) <= 0)
+        if (string.IsNullOrEmpty(EndYear) || int.Parse(EndYear) <= 1900)
             IsEndYearInvalid = true;
 
         if (string.IsNullOrEmpty(MinAge) || int.Parse(MinAge) <= 0)

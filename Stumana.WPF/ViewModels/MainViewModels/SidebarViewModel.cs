@@ -5,9 +5,9 @@ using System.Windows.Input;
 using Stumana.WPF.Commands;
 using Stumana.WPF.ViewModels.MainViewModels.ReportOption;
 using Stumana.WPF.ViewModels.MainViewModels.ScoreOption;
-using Stumana.WPF.ViewModels.MainViewModels.SettleOption;
 using Stumana.WPF.ViewModels.MainViewModels.StudentOption;
 using Stumana.WPF.ViewModels.MainViewModels.SubjectOption;
+using Stumana.WPF.ViewModels.MainViewModels.YearOption;
 
 namespace Stumana.WPF.ViewModels.MainViewModels
 {

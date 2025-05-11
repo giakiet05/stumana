@@ -16,8 +16,7 @@ namespace Stumana.DataAcess.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "TEXT", maxLength: 191, nullable: false),
-                    Name = table.Column<string>(type: "TEXT", nullable: false),
-                    Level = table.Column<int>(type: "INTEGER", nullable: false)
+                    Name = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -75,6 +74,7 @@ namespace Stumana.DataAcess.Migrations
                     Id = table.Column<string>(type: "TEXT", nullable: false),
                     MinAge = table.Column<int>(type: "INTEGER", nullable: false),
                     MaxAge = table.Column<int>(type: "INTEGER", nullable: false),
+                    MaxCapacity = table.Column<int>(type: "INTEGER", nullable: false),
                     ScoreToPass = table.Column<double>(type: "REAL", nullable: false),
                     YearId = table.Column<string>(type: "TEXT", nullable: false)
                 },
@@ -94,7 +94,7 @@ namespace Stumana.DataAcess.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "TEXT", maxLength: 191, nullable: false),
-                    Name = table.Column<string>(type: "TEXT", nullable: false),
+                    Name = table.Column<string>(type: "TEXT", nullable: true),
                     GradeId = table.Column<string>(type: "TEXT", nullable: false),
                     YearId = table.Column<string>(type: "TEXT", nullable: false)
                 },

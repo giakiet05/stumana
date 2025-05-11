@@ -11,7 +11,7 @@ using Stumana.DataAcess.Data;
 namespace Stumana.DataAcess.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250421224722_Init")]
+    [Migration("20250511065522_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -26,6 +26,9 @@ namespace Stumana.DataAcess.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<int>("MaxAge")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("MaxCapacity")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("MinAge")
@@ -56,7 +59,6 @@ namespace Stumana.DataAcess.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("YearId")
@@ -77,9 +79,6 @@ namespace Stumana.DataAcess.Migrations
                     b.Property<string>("Id")
                         .HasMaxLength(191)
                         .HasColumnType("TEXT");
-
-                    b.Property<int>("Level")
-                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
                         .IsRequired()

@@ -97,15 +97,6 @@
                                   BorderBrush="#64748B" BorderThickness="1"
                                   ItemsSource="{Binding SchoolYearCollection}"
                                   SelectedItem="{Binding SelectedSchoolYear}">
-                            <ComboBox.ItemContainerStyle>
-                                <Style TargetType="ComboBoxItem">
-                                    <Style.Triggers>
-                                        <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter Property="Background" Value="Green" />
-                                        </Trigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </ComboBox.ItemContainerStyle>
                         </ComboBox>
 
                         <TextBlock Grid.Column="2" Text="Khối:"
@@ -202,7 +193,8 @@
                                          Style="{StaticResource MaterialDesignOutlinedTextBox}"
                                          materialDesign:HintAssist.Hint="Tìm kiếm môn học"
                                          materialDesign:TextFieldAssist.HasClearButton="True"
-                                         Padding="20,5,5,5">
+                                         Padding="20,5,5,5"
+                                         Text="{Binding SearchText}">
                                 </TextBox>
                             </Grid>
                         </Border>
@@ -214,14 +206,14 @@
                                   Width="490"
                                   HorizontalAlignment="Stretch"
                                   CanUserAddRows="False"
-                                  ItemsSource="{Binding ClassTableView}"
-                                  SelectedItem="{Binding SelectedClass, Mode=TwoWay}">
-
+                                  ItemsSource="{Binding SubjectTable}"
+                                  SelectedItem="{Binding SelectedSubject, Mode=TwoWay}">
 
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Khối" Width="*" IsReadOnly="True" />
-                                <DataGridTextColumn Header="Tên môn học" Width="*" />
-                                <DataGridTextColumn Header="Điểm đạt" Width="*" />
+                                <DataGridTextColumn Header="Khối" Width="*" IsReadOnly="True"
+                                                    Binding="{Binding GradeName}" />
+                                <DataGridTextColumn Header="Tên môn học" Width="*" Binding="{Binding SubjectName}" />
+                                <DataGridTextColumn Header="Điểm đạt" Width="*" Binding="{Binding PassScore}" />
                             </DataGrid.Columns>
 
                             <!-- Tạo Style cho Header với góc bo tròn -->
@@ -278,13 +270,17 @@
                                       AutoGenerateColumns="False"
                                       HorizontalAlignment="Stretch"
                                       CanUserAddRows="False"
-                                      IsReadOnly="True">
+                                      IsReadOnly="True"
+                                      ItemsSource="{Binding ScoreTypeTable}"
+                                      SelectedItem="{Binding SelectedScoreType}">
 
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="Tên loại điểm" Width="*" MinWidth="200"
-                                                        IsReadOnly="True" />
-                                    <DataGridTextColumn Header="Hệ số" Width="*" MinWidth="200" IsReadOnly="True" />
-                                    <DataGridTextColumn Header="Số lượng điểm" Width="*" MinWidth="200" />
+                                                        IsReadOnly="True" Binding="{Binding ScoreTypeName}" />
+                                    <DataGridTextColumn Header="Hệ số" Width="*" MinWidth="200" IsReadOnly="True"
+                                                        Binding="{Binding Coefficient}" />
+                                    <DataGridTextColumn Header="Số lượng điểm" Width="*" MinWidth="200"
+                                                        Binding="{Binding Amount}" />
                                 </DataGrid.Columns>
 
                                 <!-- Tạo Style cho Header với góc bo tròn -->
@@ -345,23 +341,29 @@
                     FontSize="18"
                     Content="Thêm loại điểm vào môn"
                     Padding="10"
-
                     Style="{StaticResource PrimaryButtonStyle}"
-                    Command="{Binding AddStudentToClassCommand}" />
+                    Command="{Binding AddScoreTypeCommand}" />
             <Button Margin="10,15,10,15"
                     Width="200"
                     FontSize="18"
                     Content="Chỉnh sửa loại điểm"
                     Padding="10"
                     Style="{StaticResource PrimaryButtonStyle}"
-                    Command="{Binding AddClassroomCommand}" />
+                    Command="{Binding ChangeScoreTypeCommand}" />
+            <Button Margin="10,15,10,15"
+                    Width="150"
+                    FontSize="18"
+                    Content="Xóa môn học"
+                    Padding="10"
+                    Style="{StaticResource PrimaryButtonStyle}"
+                    Command="{Binding DeleteSubjectCommand}" />
             <Button Margin="10,15,10,15"
                     Width="150"
                     FontSize="18"
                     Content="Thêm môn học"
                     Padding="10"
                     Style="{StaticResource PrimaryButtonStyle}"
-                    Command="{Binding AddClassroomCommand}" />
+                    Command="{Binding AddSubjectCommand}" />
         </StackPanel>
     </Grid>
 </UserControl>

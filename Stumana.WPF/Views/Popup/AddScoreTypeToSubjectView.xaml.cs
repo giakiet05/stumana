@@ -13,16 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Stumana.WPF.Views.MainView.ScoreOption
+namespace Stumana.WPF.Views.Popup
 {
     /// <summary>
-    /// Interaction logic for ScoretInputView.xaml
+    /// Interaction logic for AddScoreTypeView.xaml
     /// </summary>
-    public partial class ScoretInputView : UserControl
+    public partial class AddScoreTypeToSubjectView : UserControl
     {
-        public ScoretInputView()
+        public AddScoreTypeToSubjectView()
         {
-            
+            InitializeComponent();
         }
     }
 }

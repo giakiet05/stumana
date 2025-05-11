@@ -13,11 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Stumana.WPF.Views.MainView.SettleOption
+namespace Stumana.WPF.Views.Popup
 {
-    public partial class YearView : UserControl
+    /// <summary>
+    /// Interaction logic for AddScoreTypeView.xaml
+    /// </summary>
+    public partial class AddScoreTypeView : UserControl
     {
-        public YearView()
+        public AddScoreTypeView()
         {
             InitializeComponent();
         }

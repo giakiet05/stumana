@@ -1,5 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using System.Data;
 using System.Globalization;
 using System.Reflection;
 using System.Windows.Input;
@@ -102,13 +101,20 @@ namespace Stumana.WPF.ViewModels.MainViewModels.StudentOption
         public ICommand FilterClassroomCommand { get; set; }
         public ICommand AddStudentCommand { get; set; }
         public ICommand DeleteStudentCommand { get; set; }
+        public ICommand EditStudentCommand { get; set; }
+
+        public EventHandler? OnStudentDataChanged { get; set; }
 
         public StudentViewModel()
         {
+            OnStudentDataChanged += UpdateStudentTable;
+
             FilterGradeCommand = new RelayCommand(FilterGrade);
             FilterClassroomCommand = new RelayCommand(FilterClassroom);
-            AddStudentCommand = new NavigateModalCommand(() => new AddStudentViewModel());
+            AddStudentCommand = new NavigateModalCommand(() => new AddStudentViewModel(OnStudentDataChanged));
             DeleteStudentCommand = new RelayCommand(DeleteStudent);
+            EditStudentCommand = new NavigateModalCommand(() => new EditStudentViewModel(SelectedStudent, OnStudentDataChanged),
+                                                          () => SelectedStudent != null, "Hãy chọn một học sinh để chỉnh sửa.");
 
             LoadInitFilter();
         }
@@ -232,6 +238,11 @@ namespace Stumana.WPF.ViewModels.MainViewModels.StudentOption
             }
         }
 
+        private void UpdateStudentTable(object? sender, EventArgs e)
+        {
+            OnFilterChange();
+        }
+
         private async void OnFilterChange()
         {
             List<Classroom> classrooms = new List<Classroom>();
@@ -253,7 +264,7 @@ namespace Stumana.WPF.ViewModels.MainViewModels.StudentOption
 
         private async Task LoadStudentData(List<Classroom> classrooms, bool haveNoClassStudent)
         {
-            if (classrooms.Count == 0 && !haveNoClassStudent) 
+            if (classrooms.Count == 0 && !haveNoClassStudent)
                 return;
 
             var classIds = classrooms.Select(c => c.Id).Distinct().ToList();

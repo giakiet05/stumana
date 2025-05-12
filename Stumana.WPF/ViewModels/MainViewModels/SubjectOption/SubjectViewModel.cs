@@ -130,7 +130,8 @@ namespace Stumana.WPF.ViewModels.MainViewModels.SubjectOption
             AddSubjectCommand = new NavigateModalCommand(() => new AddSubjectViewModel(OnSubjectDataChanged));
             DeleteSubjectCommand = new RelayCommand(DeleteSubjectRow);
             EditScoreTypeCommand = new NavigateModalCommand(() => new EditScoreTypeViewModel());
-            AddSubjectScoreTypeCommand = new NavigateModalCommand(() => new AddSubjectScoreTypeViewModel(SelectedSubject.MySubject, OnSubjectScoreTypeDataChanged), HaveSubject);
+            AddSubjectScoreTypeCommand = new NavigateModalCommand(() => new AddSubjectScoreTypeViewModel(SelectedSubject.MySubject, OnSubjectScoreTypeDataChanged),
+                                                                  () => SelectedSubject != null, "Hãy chọn một môn học");
             DeleteSubjectScoreTypeCommand = new RelayCommand(DeleteSubjectScoreType);
 
             FilterGradeCommand = new RelayCommand(FilterGrade);
@@ -394,17 +395,6 @@ namespace Stumana.WPF.ViewModels.MainViewModels.SubjectOption
             {
                 table.Add(row);
             }
-        }
-
-        private bool HaveSubject()
-        {
-            if (SelectedSubject == null)
-            {
-                ToastMessageViewModel.ShowErrorToast("Hãy chọn một môn học");
-                return false;
-            }
-
-            return true;
         }
 
         public class SubjectTableRow : INotifyPropertyChanged

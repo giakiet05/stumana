@@ -1,5 +1,8 @@
 ﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Globalization;
+using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using Stumana.DataAccess.Services;
 using Stumana.DataAcess.Models;
@@ -10,8 +13,8 @@ namespace Stumana.WPF.ViewModels.PopupModels;
 
 public class AddStudentToClassViewModel : BaseViewModel
 {
-    private List<StudentChoiceInfo> _allUnassignStudents { get; set; } = new();
-    public ObservableCollection<StudentChoiceInfo> StudentChoiceTableView { get; set; } = new();
+    private List<StudentChoiceInfo> UnassignStudents { get; set; } = new();
+    public ObservableCollection<StudentChoiceInfo> StudentChoiceTable { get; set; } = new();
 
     public Classroom CurClassroom { get; set; }
 
@@ -31,18 +34,15 @@ public class AddStudentToClassViewModel : BaseViewModel
     public ICommand CancelCommand { get; set; }
     public ICommand SaveChangeCommand { get; set; }
 
-    public AddStudentToClassViewModel()
-    {
-        SaveChangeCommand = new RelayCommand(SaveChange);
-        CancelCommand = new RelayCommand(() => ModalNavigationStore.Instance.Close());
-    }
+    private readonly EventHandler? OnUpdateData;
 
-    public AddStudentToClassViewModel(Classroom classroom)
+    public AddStudentToClassViewModel(Classroom classroom, EventHandler? onStudentDataChanged)
     {
         CurClassroom = classroom;
+        OnUpdateData = onStudentDataChanged;
 
         SaveChangeCommand = new RelayCommand(SaveChange);
-        CancelCommand = new RelayCommand(() => ModalNavigationStore.Instance.Close());
+        CancelCommand = new RelayCommand(ModalNavigationStore.Instance.Close);
 
         LoadData();
     }
@@ -64,17 +64,16 @@ public class AddStudentToClassViewModel : BaseViewModel
                 PhoneNumber = student.Phone
             };
 
-            StudentChoiceTableView.Add(choice);
+            StudentChoiceTable.Add(choice);
+            UnassignStudents.Add(choice);
         }
-
-        StudentChoiceTableView = new ObservableCollection<StudentChoiceInfo>(_allUnassignStudents);
     }
 
     private async void SaveChange()
     {
         int maxStudentNum = (await GenericDataService<Asset>.Instance.GetOneAsync(a => a.YearId == CurClassroom.YearId)).MaxCapacity;
         int studentNum = (await GenericDataService<StudentAssignment>.Instance.GetManyAsync(sa => sa.ClassroomId == CurClassroom.Id)).Count();
-        var studentAdded = StudentChoiceTableView.Where(s => s.IsSelected).ToList();
+        var studentAdded = StudentChoiceTable.Where(s => s.IsSelected).ToList();
 
         if (studentAdded.Count + studentNum > maxStudentNum)
         {
@@ -87,6 +86,7 @@ public class AddStudentToClassViewModel : BaseViewModel
             List<StudentAssignment> newStudentAssignments = new();
             newStudentAssignments.Add(new StudentAssignment
             {
+                Id = Guid.NewGuid().ToString(),
                 Semester = 1,
                 Conduct = String.Empty,
                 Absence = 0,
@@ -95,6 +95,7 @@ public class AddStudentToClassViewModel : BaseViewModel
             });
             newStudentAssignments.Add(new StudentAssignment
             {
+                Id = Guid.NewGuid().ToString(),
                 Semester = 2,
                 Conduct = String.Empty,
                 Absence = 0,
@@ -106,55 +107,82 @@ public class AddStudentToClassViewModel : BaseViewModel
         }
 
         ToastMessageViewModel.ShowSuccessToast("Thêm học sinh thành công");
+        OnUpdateData?.Invoke(this, EventArgs.Empty);
         ModalNavigationStore.Instance.Close();
     }
 
     public void OnSearchTextChange()
     {
-        SearchAllColumns(SearchText, false, false);
+        SearchAllColumns(UnassignStudents, StudentChoiceTable, SearchText, false, false);
     }
 
-    public void SearchAllColumns(string searchText, bool exactMatch = false, bool caseSensitive = false)
+    public void SearchAllColumns<T>(List<T> originalList, ObservableCollection<T> table, string searchText, bool exactMatch = false, bool caseSensitive = false)
     {
-        if (_allUnassignStudents == null)
+        if (originalList == null)
             return;
 
         var culture = new CultureInfo("vi-VN");
         var compareInfo = culture.CompareInfo;
         var compareOptions = caseSensitive ? CompareOptions.None : CompareOptions.IgnoreCase;
 
-        IEnumerable<StudentChoiceInfo> filtered;
+        IEnumerable<T> filtered;
 
         if (string.IsNullOrEmpty(searchText))
-            filtered = _allUnassignStudents;
+            filtered = originalList;
         else
         {
-            filtered = _allUnassignStudents.Where(s =>
+            filtered = originalList.Where(s =>
             {
                 bool Match(string? value) => !string.IsNullOrEmpty(value) && (exactMatch ? compareInfo.Compare(value, searchText, compareOptions) == 0 : compareInfo.IndexOf(value, searchText, compareOptions) >= 0);
+                PropertyInfo[] properties = typeof(T).GetProperties();
+                bool IsMatch = false;
 
-                return Match(s.StudentID) ||
-                       Match(s.Name) ||
-                       Match(s.PhoneNumber) ||
-                       Match(s.Email) ||
-                       Match(s.Birthday.ToString("dd/MM/yyyy", culture));
+                foreach (var property in properties)
+                {
+                    var rawValue = property.GetValue(s);
+                    if (rawValue == null)
+                        continue;
+
+                    string? stringValue = rawValue is DateTime dt ? dt.ToString("dd/MM/yyyy", culture) : rawValue.ToString();
+                    IsMatch = IsMatch || Match(stringValue);
+                }
+
+                return IsMatch;
             });
         }
 
-        StudentChoiceTableView.Clear();
-        foreach (var student in filtered)
+        table.Clear();
+        foreach (var row in filtered)
         {
-            StudentChoiceTableView.Add(student);
+            table.Add(row);
         }
     }
 
-    public sealed class StudentChoiceInfo
+    public sealed class StudentChoiceInfo : INotifyPropertyChanged
     {
-        public bool IsSelected { get; set; }
+        private bool _isSelected;
+
+        public bool IsSelected
+        {
+            get => _isSelected;
+            set
+            {
+                _isSelected = value;
+                OnPropertyChanged();
+            }
+        }
         public string StudentID { get; set; }
         public string Name { get; set; }
         public DateTime Birthday { get; set; }
         public string PhoneNumber { get; set; }
         public string Email { get; set; }
+
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        private void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }

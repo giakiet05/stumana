@@ -14,6 +14,7 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ClassOption
         #region Commands
 
         public ICommand AddStudentToClassCommand { get; set; }
+        public ICommand DeleteStudentCommand { get; set; }
         public ICommand AddClassroomCommand { get; set; }
         public ICommand DeleteClassroomCommand { get; set; }
 
@@ -103,36 +104,40 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ClassOption
             }
         }
 
-        public DataTable StudentDataTable { get; set; } = new DataTable();
-        private DataView _studentTableView;
+        public ObservableCollection<Student> StudentTable { get; set; } = new();
 
-        public DataView StudentTableView
+        private Student? _selectedStudent;
+
+        public Student? SelectedStudent
         {
-            get => _studentTableView;
+            get => _selectedStudent;
             set
             {
-                _studentTableView = value;
+                _selectedStudent = value;
                 OnPropertyChanged();
             }
         }
 
         #endregion Properties
 
-        public EventHandler? OnUpdateData;
+        public EventHandler? OnClassDataChanged { get; set; }
+        public EventHandler? OnStudentDataChanged { get; set; }
 
         public ClassListViewModel()
         {
-            OnUpdateData += UpdateTable;
+            OnClassDataChanged += UpdateClassTable;
+            OnStudentDataChanged += UpdateStudentTable;
 
             LoadSchoolYearFilter();
             LoadGradeFilter();
 
             LoadClassTableColumn();
-            LoadStudentTableColumn();
 
-            AddClassroomCommand = new NavigateModalCommand(() => new AddClassroomViewModel(OnUpdateData));
+            AddClassroomCommand = new NavigateModalCommand(() => new AddClassroomViewModel(OnClassDataChanged));
             DeleteClassroomCommand = new RelayCommand(DeleteClassroom);
-            AddStudentToClassCommand = new NavigateModalCommand(() => new AddStudentToClassViewModel(ClassroomDic[SelectedClass["Tên lớp"].ToString()]), HaveSelectClass);
+            AddStudentToClassCommand = new NavigateModalCommand(() => new AddStudentToClassViewModel(ClassroomDic[SelectedClass["Tên lớp"].ToString()], OnStudentDataChanged),
+                                                                () => SelectedClass != null, "Hãy chọn một lớp để thêm");
+            DeleteStudentCommand = new RelayCommand(DeleteStudent);
         }
 
         private void LoadClassTableColumn()
@@ -143,40 +148,25 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ClassOption
             ClassTableView = ClassDataTable.DefaultView;
         }
 
-        private void LoadStudentTableColumn()
-        {
-            StudentDataTable.Columns.Add("Mã học sinh", typeof(string));
-            StudentDataTable.Columns.Add("Họ tên", typeof(string));
-            StudentDataTable.Columns.Add("Giới tính", typeof(string));
-            StudentDataTable.Columns.Add("Năm sinh", typeof(string));
-            StudentDataTable.Columns.Add("Địa chỉ", typeof(string));
-
-            StudentTableView = StudentDataTable.DefaultView;
-        }
-
         private async Task LoadStudentData(Classroom classroom)
         {
             var studentAssignments = await GenericDataService<StudentAssignment>.Instance.GetManyAsync(sa => sa.ClassroomId == classroom.Id,
                                                                                                        query => query.Include(sa => sa.Student));
-            StudentDataTable.Rows.Clear();
-            foreach (var studentAssignment in studentAssignments)
+            List<Student> students = studentAssignments.GroupBy(sa => sa.StudentId).Select(g => g.First().Student).Where(s => s != null).ToList();
+            StudentTable.Clear();
+            foreach (var student in students)
             {
-                DataRow newRow = StudentDataTable.NewRow();
-
-                newRow["Mã học sinh"] = studentAssignment.StudentId;
-                newRow["Họ tên"] = studentAssignment.Student.Name;
-                newRow["Giới tính"] = studentAssignment.Student.Gender;
-                newRow["Năm sinh"] = studentAssignment.Student.Birthday.Year;
-                newRow["Địa chỉ"] = studentAssignment.Student.Address;
-
-                StudentDataTable.Rows.Add(newRow);
+                StudentTable.Add(student);
             }
         }
 
         private async void OnSelectedClassChanged()
         {
             if (SelectedClass == null)
+            {
+                StudentTable.Clear();
                 return;
+            }
 
             Classroom classroom = ClassroomDic[SelectedClass["Tên lớp"].ToString()];
             await LoadStudentData(classroom);
@@ -212,8 +202,10 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ClassOption
             ClassroomDic.Clear();
             foreach (var classroom in classrooms)
             {
-                var studentAssignment = await GenericDataService<StudentAssignment>.Instance.GetManyAsync(sa => sa.ClassroomId == classroom.Id);
-                ClassDataTable.Rows.Add(classroom.Name, studentAssignment.Count());
+                var studentAssignments = await GenericDataService<StudentAssignment>.Instance.GetManyAsync(sa => sa.ClassroomId == classroom.Id,
+                                                                                                           query => query.Include(sa => sa.Student));
+                List<Student> students = studentAssignments.GroupBy(sa => sa.StudentId).Select(g => g.First().Student).Where(s => s != null).ToList();
+                ClassDataTable.Rows.Add(classroom.Name, students.Count());
                 ClassroomDic[classroom.Name] = classroom;
             }
         }
@@ -248,27 +240,35 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ClassOption
                 ToastMessageViewModel.ShowErrorToast("Hãy chọn một lớp để xóa");
                 return;
             }
-
-            await GenericDataService<Classroom>.Instance.DeleteOneAsync(c => c.Id == ClassroomDic[SelectedClass["Tên lớp"].ToString()].Id);
-            ClassroomDic.Remove(SelectedClass["Tên lớp"].ToString());
+                
+            Classroom classroom = ClassroomDic[SelectedClass["Tên lớp"].ToString()];
+            await GenericDataService<Classroom>.Instance.DeleteOneAsync(c => c.Id == classroom.Id);
+            ClassroomDic.Remove(classroom.Name);
             ClassDataTable.Rows.Remove(SelectedClass.Row);
         }
 
-        private void UpdateTable(object? sender, EventArgs e)
+        private async void DeleteStudent()
         {
-            OnSelectionClassroomFilterChange();
-            OnSelectedClassChanged();
-        }
-
-        private bool HaveSelectClass()
-        {
-            if (SelectedClass == null)
+            if (SelectedStudent == null)
             {
-                ToastMessageViewModel.ShowErrorToast("Chưa chọn lớp");
-                return false;
+                ToastMessageViewModel.ShowErrorToast("Hãy chọn một học sinh để xóa khỏi lớp");
+                return;
             }
 
-            return true;
+            var studentAssignmentIds = (await GenericDataService<StudentAssignment>.Instance.GetManyAsync(sa => sa.StudentId == SelectedStudent.Id)).Select(sa => sa.Id);
+            await GenericDataService<StudentAssignment>.Instance.DeleteManyAsync(sa => studentAssignmentIds.Contains(sa.Id));
+            ToastMessageViewModel.ShowSuccessToast("Xóa học sinh khỏi lớp thành công");
+            StudentTable.Remove(SelectedStudent);
+        }
+
+        private void UpdateClassTable(object? sender, EventArgs e)
+        {
+            OnSelectionClassroomFilterChange();
+        }
+
+        private void UpdateStudentTable(object? sender, EventArgs e)
+        {
+            OnSelectedClassChanged();
         }
     }
 }

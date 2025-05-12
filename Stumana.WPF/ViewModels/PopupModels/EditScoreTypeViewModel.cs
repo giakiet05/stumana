@@ -52,14 +52,15 @@ namespace Stumana.WPF.ViewModels.PopupModels
         public ICommand AddScoreTypeCommand { get; set; }
         public ICommand DeleteScoreTypeCommand { get; set; }
         public ICommand CancelCommand { get; set; }
-        
+
         public EventHandler? OnAddedScoreType { get; set; }
 
         public EditScoreTypeViewModel()
         {
             OnAddedScoreType += UpdateData;
 
-            AddScoreTypeCommand = new NavigateModalCommand(() => new AddScoreTypeViewModel(SchoolYearsDic[SelectedSchoolYear], OnAddedScoreType), CanAddScore);
+            AddScoreTypeCommand = new NavigateModalCommand(() => new AddScoreTypeViewModel(SchoolYearsDic[SelectedSchoolYear], OnAddedScoreType),
+                                                           () => SelectedSchoolYear != null, "Hãy chọn một năm học để thêm");
             DeleteScoreTypeCommand = new RelayCommand(DeleteScoreType);
             CancelCommand = new RelayCommand(ModalNavigationStore.Instance.Close);
 
@@ -111,17 +112,6 @@ namespace Stumana.WPF.ViewModels.PopupModels
             ScoreTypeTable.Remove(SelectedScoreType);
             await GenericDataService<ScoreType>.Instance.DeleteOneAsync(st => st.Id == SelectedScoreType.Id);
             SelectedScoreType = null;
-        }
-
-        private bool CanAddScore()
-        {
-            if (SelectedSchoolYear == null)
-            {
-                ToastMessageViewModel.ShowErrorToast("Hãy chọn năm học để thêm");
-                return false;
-            }
-
-            return true;
         }
     }
 }

@@ -15,8 +15,8 @@ public class ScoreSubjectViewModel : BaseViewModel
 {
     #region Properties
 
-    public Dictionary<DataRow, Dictionary<string, Tuple<double, double?>>> ChangedData = new();
-    public Dictionary<string, SubjectScoreType> ScoreTypeDetailDic { get; set; } = new();
+    public Dictionary<DataRow, Dictionary<string, Tuple<double, double?>>> ChangedData { get; set; } = new();
+    public Dictionary<string, SubjectScoreType> SubjectScoreTypeDic { get; set; } = new();
 
     private DataTable ScoreDataTable { get; set; } = new DataTable();
     private DataView _tableView;
@@ -44,10 +44,10 @@ public class ScoreSubjectViewModel : BaseViewModel
         }
     }
 
-    public Dictionary<string, Subject> SubjectDic { get; set; } = new();
-    public Dictionary<string, SchoolYear> SchoolYearDic { get; set; } = new();
-    public Dictionary<string, Grade> GradeDic { get; set; } = new();
-    public Dictionary<string, Classroom> ClassroomDic { get; set; } = new();
+    private Dictionary<string, Subject> SubjectDic { get; set; } = new();
+    private Dictionary<string, SchoolYear> SchoolYearDic { get; set; } = new();
+    private Dictionary<string, Grade> GradeDic { get; set; } = new();
+    private Dictionary<string, Classroom> ClassroomDic { get; set; } = new();
     private Dictionary<string, int> SemesterDic { get; set; } = new();
 
     private ObservableCollection<FilterItem> _gradeFilter = new();
@@ -166,7 +166,6 @@ public class ScoreSubjectViewModel : BaseViewModel
         FilterSemesterCommand = new RelayCommand(FilterSemester);
 
         LoadInitFilter();
-        ScoreDataTable.ColumnChanged += OnColumnChanged;
     }
 
     private async void LoadInitFilter()
@@ -240,16 +239,16 @@ public class ScoreSubjectViewModel : BaseViewModel
             return;
 
         ClassroomDic.Clear();
-        ClassFilter.Add(new FilterItem("All", false));
+        ClassFilter.Add(new FilterItem("All", true));
         foreach (Classroom classroom in classrooms)
         {
             string className = $"Lớp {classroom.Name}";
-            ClassFilter.Add(new FilterItem(className, false));
+            ClassFilter.Add(new FilterItem(className, true));
             ClassroomDic[className] = classroom;
         }
     }
 
-    public async Task LoadSemesterFilter(SchoolYear schoolYear, IEnumerable<Grade> grades)
+    public async Task LoadSemesterFilter(SchoolYear schoolYear, IEnumerable<Grade> grades)  
     {
         SemesterFilter.Clear();
         var gradeId = grades.Select(g => g.Id);
@@ -263,7 +262,7 @@ public class ScoreSubjectViewModel : BaseViewModel
         SemesterFilter.Add(new FilterItem("All", false));
         foreach (int semester in semesters)
         {
-            string semesterName = $"HK {semester}";
+            string semesterName = semester.ToString();
             SemesterFilter.Add(new FilterItem(semesterName, false));
             SemesterDic[semesterName] = semester;
         }
@@ -283,9 +282,11 @@ public class ScoreSubjectViewModel : BaseViewModel
                 grades.Add(GradeDic[filterItem.Name]);
         }
 
-        await LoadSubjectFilter(schoolYear, grades);
         await LoadClassroomFilter(schoolYear, grades);
+        await LoadSubjectFilter(schoolYear, grades);
         await LoadSemesterFilter(schoolYear, grades);
+
+        OnFilterChange();
     }
 
     private async void OnFilterChange()
@@ -311,41 +312,47 @@ public class ScoreSubjectViewModel : BaseViewModel
         }
 
         await LoadData(subject, classrooms, semesters);
+        ScoreDataTable.ColumnChanged += OnColumnChanged;
     }
 
     private async Task LoadTableColumn(Subject curSubject)
     {
         ScoreDataTable = new DataTable();
+        SubjectScoreTypeDic.Clear();
         ScoreDataTable.Columns.Add("Học kì", typeof(string));
-        ScoreDataTable.Columns.Add("Khối", typeof(string));
         ScoreDataTable.Columns.Add("Môn học", typeof(string));
         ScoreDataTable.Columns.Add("Lớp", typeof(string));
         ScoreDataTable.Columns.Add("Mã học sinh", typeof(string));
         ScoreDataTable.Columns.Add("Tên học sinh", typeof(string));
         ScoreDataTable.Columns["Học kì"].ReadOnly = true;
-        ScoreDataTable.Columns["Khối"].ReadOnly = true;
         ScoreDataTable.Columns["Môn học"].ReadOnly = true;
         ScoreDataTable.Columns["Lớp"].ReadOnly = true;
         ScoreDataTable.Columns["Mã học sinh"].ReadOnly = true;
         ScoreDataTable.Columns["Tên học sinh"].ReadOnly = true;
-        TableView = ScoreDataTable.DefaultView;
 
         if (curSubject == null)
             return;
 
-        var scoreSheet = await GenericDataService<SubjectScoreType>.Instance.GetManyAsync(sc => sc.SubjectId == curSubject.Id,
-                                                                                          score => score.Include(sc => sc.ScoreType));
-        if (!scoreSheet.Any())
+        var subjectScoreTypes = await GenericDataService<SubjectScoreType>.Instance.GetManyAsync(sc => sc.SubjectId == curSubject.Id,
+                                                                                                score => score.Include(sc => sc.ScoreType));
+        if (!subjectScoreTypes.Any())
             return;
 
-        foreach (SubjectScoreType scoreTypeDetail in scoreSheet)
+        foreach (SubjectScoreType subjectScoreType in subjectScoreTypes)
         {
-            string header = scoreTypeDetail.ScoreType.Name;
+            string header = subjectScoreType.ScoreType.Name;
 
-            for (int i = 1; i <= scoreTypeDetail.Amount; i++)
+            if (subjectScoreType.Amount == 1)
             {
-                string columnName = $"{header} {i}";
-                ScoreTypeDetailDic[columnName] = scoreTypeDetail;
+                SubjectScoreTypeDic[header] = subjectScoreType;
+                ScoreDataTable.Columns.Add(header, typeof(double));
+                continue;
+            }
+
+            for (int i = 1; i <= subjectScoreType.Amount; i++)
+            {
+                string columnName = $"{header} lần {i}";
+                SubjectScoreTypeDic[columnName] = subjectScoreType;
                 ScoreDataTable.Columns.Add(columnName, typeof(double));
             }
         }
@@ -361,53 +368,66 @@ public class ScoreSubjectViewModel : BaseViewModel
         if (ScoreDataTable.Columns.Count == 0)
             return;
 
-        var scoreSheet = await GenericDataService<SubjectScoreType>.Instance.GetManyAsync(sc => sc.SubjectId == curSubject.Id,
-                                                                                          score => score.Include(sc => sc.ScoreType));
-        var scoreTypeIds = scoreSheet.Select(ss => ss.Id).ToList();
-        var scoreDetails = (await GenericDataService<Score>.Instance.GetManyAsync(score => scoreTypeIds.Contains(score.SubjectScoreTypeId),
-                                                                                  query => query.Include(s => s.StudentAssignment).ThenInclude(sa => sa.Student)
-                                                                                      .Include(s => s.StudentAssignment).ThenInclude(sa => sa.Classroom))).ToList();
+        var subjectScoreTypes = (await GenericDataService<SubjectScoreType>.Instance.GetManyAsync(sc => sc.SubjectId == curSubject.Id,
+                                                                                                  score => score.Include(sc => sc.ScoreType))).ToList();
 
+        if (subjectScoreTypes.Count == 0)
+            return;
+
+        List<StudentAssignment> studentAssignments = new List<StudentAssignment>();
         if (classrooms != null && classrooms.Count > 0)
         {
             var classroomId = classrooms.Select(c => c.Id);
-            scoreDetails = scoreDetails.Where(s => classroomId.Contains(s.StudentAssignment.ClassroomId)).ToList();
+            studentAssignments = (await GenericDataService<StudentAssignment>.Instance.GetManyAsync(sa => classroomId.Contains(sa.ClassroomId),
+                                                                                                    query => query.Include(sa => sa.Student)
+                                                                                                       .Include(sa => sa.Classroom))).ToList();
         }
 
         if (semesters != null && semesters.Count > 0)
-            scoreDetails = scoreDetails.Where(s => semesters.Contains(s.StudentAssignment.Semester)).ToList();
+            studentAssignments = studentAssignments.Where(sa => semesters.Contains(sa.Semester)).ToList();
 
-        var studentIDList = scoreDetails.Select(score => score.StudentAssignment.StudentId).Distinct().ToList();
-
-        ScoreDataTable.Rows.Clear();
-        foreach (var studentId in studentIDList)
+        ScoreDataTable.Clear();
+        foreach (var studentAssignment in studentAssignments)
         {
             DataRow dataRow = ScoreDataTable.NewRow();
+            dataRow["Học kì"] = studentAssignment.Semester;
+            dataRow["Môn học"] = $"{curSubject.Name} {curSubject.Grade.Name}";
+            dataRow["Lớp"] = studentAssignment.Classroom.Name;
+            dataRow["Mã học sinh"] = studentAssignment.StudentId;
+            dataRow["Tên học sinh"] = studentAssignment.Student.Name;
 
             double sumScore = 0;
             double sumCoefficient = 0;
+            double maxSumCoefficient = 0;
 
-            var studentScore = scoreDetails.Where(score => score.StudentAssignment.StudentId == studentId).ToList();
-            StudentAssignment studentAssignment = scoreDetails.FirstOrDefault(s => s.StudentAssignment.StudentId == studentId).StudentAssignment;
-
-            dataRow["Học kì"] = studentAssignment.Semester;
-            dataRow["Khối"] = curSubject.Grade.Name;
-            dataRow["Môn học"] = curSubject.Name;
-            dataRow["Lớp"] = studentAssignment.Classroom.Name;
-            dataRow["Mã học sinh"] = studentId;
-            dataRow["Tên học sinh"] = studentScore[0].StudentAssignment.Student.Name;
-
-            foreach (SubjectScoreType subjectScoreType in scoreSheet)
+            foreach (var subjectScoreType in subjectScoreTypes)
             {
-                List<Score> scores = studentScore.Where(score => score.SubjectScoreTypeId == subjectScoreType.Id).ToList();
+                maxSumCoefficient += subjectScoreType.Amount * subjectScoreType.ScoreType.Coefficient;
+
+                var studentScores = (await GenericDataService<Score>.Instance.GetManyAsync(sc => sc.StudentAssignmentId == studentAssignment.Id
+                                                                                                 && sc.SubjectScoreTypeId == subjectScoreType.Id)).ToList();
+
+                if (subjectScoreType.Amount <= 1)
+                {
+                    string columnName = subjectScoreType.ScoreType.Name;
+                    if (studentScores.Count > 0)
+                    {
+                        dataRow[columnName] = studentScores[0].Value;
+                        sumScore += studentScores[0].Value * subjectScoreType.ScoreType.Coefficient;
+                        sumCoefficient += subjectScoreType.ScoreType.Coefficient;
+                    }
+                    else
+                        dataRow[columnName] = DBNull.Value;
+                    continue;
+                }
 
                 for (int i = 1; i <= subjectScoreType.Amount; i++)
                 {
-                    string columnName = $"{subjectScoreType.ScoreType.Name} {i}";
-                    if (i <= scores.Count)
+                    string columnName = $"{subjectScoreType.ScoreType.Name} lần {i}";
+                    if (i <= studentScores.Count)
                     {
-                        dataRow[columnName] = scores[i - 1].Value;
-                        sumScore += scores[i - 1].Value * subjectScoreType.ScoreType.Coefficient;
+                        dataRow[columnName] = studentScores[i - 1].Value;
+                        sumScore += studentScores[i - 1].Value * subjectScoreType.ScoreType.Coefficient;
                         sumCoefficient += subjectScoreType.ScoreType.Coefficient;
                     }
                     else
@@ -415,7 +435,10 @@ public class ScoreSubjectViewModel : BaseViewModel
                 }
             }
 
-            dataRow["Điểm TB"] = sumScore / sumCoefficient;
+            if (sumCoefficient != 0 && sumCoefficient >= maxSumCoefficient)
+                dataRow["Điểm TB"] = sumScore / sumCoefficient;
+            else
+                dataRow["Điểm TB"] = DBNull.Value;
 
             ScoreDataTable.Rows.Add(dataRow);
         }
@@ -475,44 +498,48 @@ public class ScoreSubjectViewModel : BaseViewModel
         }
     }
 
+    private bool isUpdating = false;
     public async void OnColumnChanged(object sender, DataColumnChangeEventArgs e)
     {
+        if (isUpdating) 
+            return;
+        isUpdating = true;
+
         string columnName = e.Column.ColumnName;
 
-        //object originalObj = e.Row[columnName, DataRowVersion.Original];
-        //double originalValue = originalObj == DBNull.Value ? -1 : (double)originalObj;
-
         double originalValue = 0;
-        if (ChangedData.TryGetValue(e.Row, out var dictionary))
-            originalValue = dictionary[columnName].Item1;
+        if (ChangedData.TryGetValue(e.Row, out var dictionary) && dictionary.TryGetValue(columnName, out var myTuple))
+            originalValue = myTuple.Item1;
         else
-            originalValue = (await GenericDataService<Score>.Instance.GetOneAsync(s => s.SubjectScoreTypeId == ScoreTypeDetailDic[columnName].Id &&
-                                                                                       s.StudentAssignment.StudentId == e.Row["Mã học sinh"].ToString(),
-                                                                                  query => query.Include(s => s.StudentAssignment))).Value;
+        {
+            Score? score = await GenericDataService<Score>.Instance.GetOneAsync(s => s.SubjectScoreTypeId == SubjectScoreTypeDic[columnName].Id &&
+                                                                                     s.StudentAssignment.StudentId == e.Row["Mã học sinh"].ToString(),
+                                                                                query => query.Include(s => s.StudentAssignment));
+            if (score == null)
+                originalValue = -1;
+            else
+                originalValue = score.Value;
+        }
 
         object? newObj = e.ProposedValue;
         double? newValue = null;
 
-        //if (!string.IsNullOrEmpty(Convert.ToString(newObj)))
-        if (newObj != null || newObj != DBNull.Value)
+        if (newObj != null && newObj != DBNull.Value)
         {
             try
             {
                 double parsedValue = Convert.ToDouble(newObj);
 
                 if (parsedValue < 0 || parsedValue > 10)
-                {
-                    ToastMessageViewModel.ShowErrorToast("Điểm không hợp lệ");
-                    e.Row[columnName] = originalValue;
-                    return;
-                }
+                    throw new Exception();
 
                 newValue = parsedValue;
             }
             catch
             {
                 ToastMessageViewModel.ShowErrorToast("Điểm không hợp lệ");
-                e.Row[columnName] = originalValue;
+                e.Row[columnName] = originalValue < 0 ? DBNull.Value : originalValue;
+                isUpdating = false;
                 return;
             }
         }
@@ -521,6 +548,7 @@ public class ScoreSubjectViewModel : BaseViewModel
         {
             if (ChangedData.TryGetValue(e.Row, out var columnChanges))
                 columnChanges.Remove(columnName);
+            isUpdating = false;
             return;
         }
 
@@ -528,15 +556,10 @@ public class ScoreSubjectViewModel : BaseViewModel
             ChangedData[e.Row] = new Dictionary<string, Tuple<double, double?>>();
 
         ChangedData[e.Row][columnName] = Tuple.Create(originalValue, newValue);
+        isUpdating = false;
     }
 
     public async void SaveChange()
-    {
-        await SaveChangeAsync();
-        ToastMessageViewModel.ShowSuccessToast("Lưu thay đổi thành công");
-    }
-
-    public async Task SaveChangeAsync()
     {
         try
         {
@@ -554,10 +577,10 @@ public class ScoreSubjectViewModel : BaseViewModel
                     double oldValue = columnEntry.Value.Item1;
                     double? newValue = columnEntry.Value.Item2;
 
-                    string scoreTypeName = columnName.Substring(0, columnName.LastIndexOf(' '));
+                    string scoreTypeId = SubjectScoreTypeDic[columnName].ScoreTypeId;
 
                     var studentAssignment = await GenericDataService<StudentAssignment>.Instance.GetOneAsync(sa => sa.StudentId == studentId && sa.Semester == semester);
-                    var scoreType = await GenericDataService<SubjectScoreType>.Instance.GetOneAsync(sst => sst.ScoreType.Name == scoreTypeName,
+                    var scoreType = await GenericDataService<SubjectScoreType>.Instance.GetOneAsync(sst => sst.ScoreType.Id == scoreTypeId,
                                                                                                     query => query.Include(sst => sst.ScoreType));
                     if (newValue == null)
                     {
@@ -589,6 +612,8 @@ public class ScoreSubjectViewModel : BaseViewModel
                     }
                 }
             }
+            ToastMessageViewModel.ShowSuccessToast("Lưu thay đổi thành công");
+            ChangedData.Clear();
         }
         catch (Exception e)
         {

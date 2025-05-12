@@ -151,5 +151,9 @@
     <DataTemplate DataType="{x:Type popupViewModels:AddSubjectScoreTypeViewModel}">
         <popupViews:AddSubjectScoreTypeView />
     </DataTemplate>
+
+    <DataTemplate DataType="{x:Type popupViewModels:EditStudentViewModel}">
+        <popupViews:EditStudentView />
+    </DataTemplate>
     <!--#endregion-->
 </ResourceDictionary>

@@ -115,60 +115,39 @@
                                       HorizontalAlignment="Stretch"
                                       CanUserAddRows="False"
                                       IsReadOnly="True"
+                                      FontSize="20"
+                                      CellStyle="{StaticResource DataGridCellStyle}"
+                                      RowStyle="{StaticResource DataGridRowStyle}"
                                       ItemsSource="{Binding YearTable}"
                                       SelectedItem="{Binding SelectedYear, UpdateSourceTrigger=PropertyChanged}">
 
-                                <!-- Tạo Style cho Header với góc bo tròn -->
                                 <DataGrid.Resources>
-                                    <Style TargetType="DataGridColumnHeader">
-                                        <Setter Property="Template">
-                                            <Setter.Value>
-                                                <ControlTemplate TargetType="DataGridColumnHeader">
-                                                    <Border Background="#152259"
-                                                            BorderBrush="Transparent"
-                                                            BorderThickness="0"
-                                                            Height="34"
-                                                            Padding="10,0,10,0"
-                                                            CornerRadius="10,10,0,0">
-                                                        <ContentPresenter ContentSource="Content"
-                                                                          HorizontalAlignment="Center"
-                                                                          VerticalAlignment="Center" />
-                                                    </Border>
-                                                </ControlTemplate>
-                                            </Setter.Value>
-                                        </Setter>
-                                        <Setter Property="Foreground" Value="White" />
-                                        <Setter Property="FontSize" Value="16" />
-                                        <Setter Property="FontFamily"
-                                                Value="pack://application:,,,/Resource/Font/#Poppins Medium" />
-                                        <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                    <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource {x:Type DataGridColumnHeader}}">
+                                        <Setter Property="HorizontalContentAlignment" Value="Center"/>
                                     </Style>
                                 </DataGrid.Resources>
 
-                                <DataGrid.Style>
-                                    <Style TargetType="DataGrid">
-                                        <Setter Property="Background" Value="#F5F5F5" />
-                                        <!-- Đổi màu nền -->
-                                        <Setter Property="BorderBrush" Value="#152259" />
-                                        <!-- Đổi màu viền -->
-                                        <Setter Property="BorderThickness" Value="0" />
-                                    </Style>
-                                </DataGrid.Style>
-
-                                <DataGrid.CellStyle>
-                                    <Style BasedOn="{StaticResource MaterialDesignDataGridCell}"
-                                           TargetType="DataGridCell">
-                                        <Setter Property="BorderThickness" Value="0" />
-                                        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
-                                        <Setter Property="FontSize" Value="20"></Setter>
-                                    </Style>
-                                </DataGrid.CellStyle>
-
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="Mã năm" Width="Auto" MinWidth="290"
-                                                        Binding="{Binding YearID}" />
+                                                        Binding="{Binding YearID}">
+                                        <DataGridTextColumn.ElementStyle>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="TextAlignment" Value="Center"/>
+                                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                                            </Style>
+                                        </DataGridTextColumn.ElementStyle>
+                                    </DataGridTextColumn>
                                     <DataGridTextColumn Header="Năm học" Width="Auto" MinWidth="290"
-                                                        Binding="{Binding YearName}" />
+                                                        Binding="{Binding YearName}">
+                                        <DataGridTextColumn.ElementStyle>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="TextAlignment" Value="Center"/>
+                                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                                            </Style>
+                                        </DataGridTextColumn.ElementStyle>
+                                    </DataGridTextColumn>
                                 </DataGrid.Columns>
                             </DataGrid>
                         </Border>
@@ -282,60 +261,39 @@
                                       HorizontalAlignment="Stretch"
                                       CanUserAddRows="False"
                                       IsReadOnly="True"
+                                      FontSize="20"
+                                      CellStyle="{StaticResource DataGridCellStyle}"
+                                      RowStyle="{StaticResource DataGridRowStyle}"
                                       ItemsSource="{Binding GradeTable}"
                                       SelectedItem="{Binding SelectedGrade, UpdateSourceTrigger=PropertyChanged}">
 
-                                <!-- Tạo Style cho Header với góc bo tròn -->
                                 <DataGrid.Resources>
-                                    <Style TargetType="DataGridColumnHeader">
-                                        <Setter Property="Template">
-                                            <Setter.Value>
-                                                <ControlTemplate TargetType="DataGridColumnHeader">
-                                                    <Border Background="#152259"
-                                                            BorderBrush="Transparent"
-                                                            BorderThickness="0"
-                                                            Height="34"
-                                                            Padding="10,0,10,0"
-                                                            CornerRadius="10,10,0,0">
-                                                        <ContentPresenter ContentSource="Content"
-                                                                          HorizontalAlignment="Center"
-                                                                          VerticalAlignment="Center" />
-                                                    </Border>
-                                                </ControlTemplate>
-                                            </Setter.Value>
-                                        </Setter>
-                                        <Setter Property="Foreground" Value="White" />
-                                        <Setter Property="FontSize" Value="16" />
-                                        <Setter Property="FontFamily"
-                                                Value="pack://application:,,,/Resource/Font/#Poppins Medium" />
-                                        <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                    <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource {x:Type DataGridColumnHeader}}">
+                                        <Setter Property="HorizontalContentAlignment" Value="Center"/>
                                     </Style>
                                 </DataGrid.Resources>
 
-                                <DataGrid.Style>
-                                    <Style TargetType="DataGrid">
-                                        <Setter Property="Background" Value="#F5F5F5" />
-                                        <!-- Đổi màu nền -->
-                                        <Setter Property="BorderBrush" Value="#152259" />
-                                        <!-- Đổi màu viền -->
-                                        <Setter Property="BorderThickness" Value="0" />
-                                    </Style>
-                                </DataGrid.Style>
-
-                                <DataGrid.CellStyle>
-                                    <Style BasedOn="{StaticResource MaterialDesignDataGridCell}"
-                                           TargetType="DataGridCell">
-                                        <Setter Property="BorderThickness" Value="0" />
-                                        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
-                                        <Setter Property="FontSize" Value="20" />
-                                    </Style>
-                                </DataGrid.CellStyle>
-
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="Mã khối" Width="*" MinWidth="290"
-                                                        Binding="{Binding GradeID}" />
+                                                        Binding="{Binding GradeID}">
+                                        <DataGridTextColumn.ElementStyle>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="TextAlignment" Value="Center"/>
+                                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                                            </Style>
+                                        </DataGridTextColumn.ElementStyle>
+                                    </DataGridTextColumn>
                                     <DataGridTextColumn Header="Khối" Width="*" MinWidth="290"
-                                                        Binding="{Binding GradeName}" />
+                                                        Binding="{Binding GradeName}">
+                                        <DataGridTextColumn.ElementStyle>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="TextAlignment" Value="Center"/>
+                                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                                            </Style>
+                                        </DataGridTextColumn.ElementStyle>
+                                    </DataGridTextColumn>
                                 </DataGrid.Columns>
                             </DataGrid>
                         </Border>

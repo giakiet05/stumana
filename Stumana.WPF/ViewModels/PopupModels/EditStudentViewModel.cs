@@ -1,13 +1,13 @@
-﻿using System.Text.RegularExpressions;
-using System.Windows.Input;
-using Stumana.DataAccess.Services;
+﻿using Stumana.DataAccess.Services;
 using Stumana.DataAcess.Models;
 using Stumana.WPF.Commands;
 using Stumana.WPF.Stores;
+using System.Text.RegularExpressions;
+using System.Windows.Input;
 
 namespace Stumana.WPF.ViewModels.PopupModels
 {
-    public class AddStudentViewModel : BaseViewModel
+    public class EditStudentViewModel : BaseViewModel
     {
         private string _studentID = String.Empty;
 
@@ -131,36 +131,30 @@ namespace Stumana.WPF.ViewModels.PopupModels
             }
         }
 
-
-        public ICommand AddStudentCommand { get; set; }
+        public ICommand SaveChangeCommand { get; set; }
         public ICommand CancelCommand { get; set; }
 
-        private readonly EventHandler? OnAddedStudent;
+        private readonly EventHandler? OnUpdateStudentData;
 
-        public AddStudentViewModel(EventHandler? onStudentDataChanged)
+        public EditStudentViewModel(Student student, EventHandler? onStudentDataChanged)
         {
-            OnAddedStudent = onStudentDataChanged;
+            OnUpdateStudentData = onStudentDataChanged;
 
-            AddStudentCommand = new RelayCommand(AddStudent);
-            CancelCommand = new RelayCommand(() => ModalNavigationStore.Instance.Close());
+            LoadData(student);
 
-            GenerateStudentID();
+            SaveChangeCommand = new RelayCommand(SaveChange);
+            CancelCommand = new RelayCommand(ModalNavigationStore.Instance.Close);
         }
 
-        private async void GenerateStudentID()
+        private void LoadData(Student student)
         {
-            string idPrefix = "STU";
-
-            Student? lastStudent = null;
-            lastStudent = (await GenericDataService<Student>.Instance.GetAllAsync()).OrderByDescending(s => int.Parse(s.Id.Substring(idPrefix.Length))).FirstOrDefault();
-            int idCount = 1;
-            if (lastStudent != null)
-            {
-                idCount = int.Parse(lastStudent.Id.Substring(idPrefix.Length));
-                idCount++;
-            }
-
-            StudentID = idPrefix + idCount.ToString("D5");
+            StudentID = student.Id;
+            Name = student.Name;
+            SelectedGender = student.Gender;
+            DateOfBirth = student.Birthday;
+            Address = student.Address;
+            PhoneNumber = student.Phone;
+            Email = student.Email;
         }
 
         private bool CheckEmail(string email)
@@ -186,7 +180,7 @@ namespace Stumana.WPF.ViewModels.PopupModels
                 IsPhoneNumberInvalid = true;
         }
 
-        private async void AddStudent()
+        private async void SaveChange()
         {
             try
             {
@@ -205,14 +199,14 @@ namespace Stumana.WPF.ViewModels.PopupModels
                     Address = this.Address,
                 };
 
-                await GenericDataService<Student>.Instance.CreateOneAsync(student);
-                ToastMessageViewModel.ShowSuccessToast("Thêm học sinh thành công");
-                OnAddedStudent?.Invoke(this, EventArgs.Empty);
+                await GenericDataService<Student>.Instance.UpdateOneAsync(student, s => s.Id == student.Id);
+                ToastMessageViewModel.ShowSuccessToast("Chỉnh sửa thông tin học sinh thành công");
+                OnUpdateStudentData?.Invoke(this, EventArgs.Empty);
                 ModalNavigationStore.Instance.Close();
             }
             catch (Exception e)
             {
-                ToastMessageViewModel.ShowErrorToast($"Không thể thêm học sinh. Đã có lỗi xảy ra. {e.Message}");
+                ToastMessageViewModel.ShowErrorToast($"Chỉnh sửa thông tin học sinh không thành công.\n {e.Message}");
             }
         }
     }

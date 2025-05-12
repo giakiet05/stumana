@@ -244,7 +244,7 @@
                 <ScrollViewer Grid.Row="2"
                               Margin="0,20,0,0"
                               HorizontalScrollBarVisibility="Auto"
-                              VerticalScrollBarVisibility="Disabled" Grid.ColumnSpan="2" Grid.Column="0">
+                              VerticalScrollBarVisibility="Disabled" Grid.Column="0">
                     <DataGrid Margin="0 0 0 0"
                               AutoGenerateColumns="False"
                               HorizontalAlignment="Stretch"
@@ -278,7 +278,7 @@
                     FontSize="18" Width="180"
                     Style="{StaticResource PrimaryButtonStyle}"
                     materialDesign:ButtonAssist.CornerRadius="20"
-                    Command="{Binding DeleteStudentCommand}"/>
+                    Command="{Binding EditStudentCommand}"/>
             <Button Margin="10"
                     VerticalAlignment="Center"
                     Content="Xóa học sinh"

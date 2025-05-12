@@ -4,6 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:sys="clr-namespace:System;assembly=System.Runtime"
+             xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:helpers="clr-namespace:Stumana.WPF.Helpers"
              mc:Ignorable="d"
              d:DesignHeight="800" d:DesignWidth="1200">
 
@@ -81,10 +83,8 @@
                                   SelectedItem="{Binding SelectedGender}"
                                   IsReadOnly="True"
                                   Padding="5"
-                                  Height="35">
-                            <ComboBoxItem Content="Nam" />
-                            <ComboBoxItem Content="Nữ" />
-                            <ComboBoxItem Content="Khác" />
+                                  Height="35"
+                                  ItemsSource="{Binding GenderOptions}">
                         </ComboBox>
                     </Border>
                 </StackPanel>
@@ -132,7 +132,11 @@
                     <TextBlock Text="Số điện thoại không hợp lệ"
                                Style="{StaticResource LabelStyle}"
                                Foreground="Red"
-                               Visibility="{Binding IsPhoneNumberInvalid, Converter={StaticResource BooleanToVisibilityConverter}, UpdateSourceTrigger=PropertyChanged}" />
+                               Visibility="{Binding IsPhoneNumberInvalid, Converter={StaticResource BooleanToVisibilityConverter}, UpdateSourceTrigger=PropertyChanged}">
+                        <b:Interaction.Behaviors>
+                            <helpers:NumericIntInputBehavior />
+                        </b:Interaction.Behaviors>
+                    </TextBlock>
                 </StackPanel>
             </Grid>
 

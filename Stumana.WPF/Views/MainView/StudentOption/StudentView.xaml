@@ -247,105 +247,24 @@
                               VerticalScrollBarVisibility="Disabled" Grid.ColumnSpan="2" Grid.Column="0">
                     <DataGrid Margin="0 0 0 0"
                               AutoGenerateColumns="False"
-                              BorderBrush="Black"
-                              BorderThickness="1"
                               HorizontalAlignment="Stretch"
                               VerticalAlignment="Stretch"
                               CanUserAddRows="False"
-                              ItemsSource="{Binding TableView}">
-
-                        <DataGrid.Resources>
-                            <Style TargetType="DataGridColumnHeader">
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate TargetType="DataGridColumnHeader">
-                                            <Border Background="#152259"
-                                                    BorderBrush="Transparent"
-                                                    BorderThickness="1"
-                                                    Padding="10">
-                                                <Grid>
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="*" />
-                                                        <ColumnDefinition Width="Auto" />
-                                                    </Grid.ColumnDefinitions>
-
-                                                    <!-- Header Text -->
-                                                    <ContentPresenter
-                                                        Grid.Column="0"
-                                                        HorizontalAlignment="Center"
-                                                        VerticalAlignment="Center"
-                                                        RecognizesAccessKey="True" />
-
-                                                    <!-- Sort Arrow -->
-                                                    <Path x:Name="SortArrow"
-                                                          Grid.Column="1"
-                                                          Data="M 0 0 L 8 0 L 4 4 Z"
-                                                          Fill="White"
-                                                          Width="8"
-                                                          Height="4"
-                                                          VerticalAlignment="Center"
-                                                          Margin="5,0,0,0"
-                                                          Visibility="Collapsed" />
-                                                </Grid>
-                                            </Border>
-
-                                            <ControlTemplate.Triggers>
-                                                <Trigger Property="SortDirection" Value="Ascending">
-                                                    <Setter TargetName="SortArrow" Property="Visibility"
-                                                            Value="Visible" />
-                                                    <Setter TargetName="SortArrow" Property="RenderTransform">
-                                                        <Setter.Value>
-                                                            <RotateTransform Angle="180" CenterX="4" CenterY="2" />
-                                                        </Setter.Value>
-                                                    </Setter>
-                                                </Trigger>
-                                                <Trigger Property="SortDirection" Value="Descending">
-                                                    <Setter TargetName="SortArrow" Property="Visibility"
-                                                            Value="Visible" />
-                                                    <Setter TargetName="SortArrow" Property="RenderTransform">
-                                                        <Setter.Value>
-                                                            <RotateTransform Angle="0" />
-                                                        </Setter.Value>
-                                                    </Setter>
-                                                </Trigger>
-                                            </ControlTemplate.Triggers>
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                                <Setter Property="Foreground" Value="White" />
-                                <Setter Property="FontSize" Value="16" />
-                                <Setter Property="FontFamily"
-                                        Value="pack://application:,,,/Resource/Font/#Poppins Medium" />
-                                <Setter Property="HorizontalContentAlignment" Value="Center" />
-                            </Style>
-
-                        </DataGrid.Resources>
-                        <DataGrid.Style>
-                            <Style TargetType="DataGrid">
-                                <Setter Property="Background" Value="#F5F5F5" />
-                                <!-- Đổi màu nền -->
-                                <Setter Property="BorderBrush" Value="#152259" />
-                                <!-- Đổi màu viền -->
-                                <Setter Property="BorderThickness" Value="0" />
-                            </Style>
-                        </DataGrid.Style>
-                        <DataGrid.CellStyle>
-                            <Style BasedOn="{StaticResource MaterialDesignDataGridCell}"
-                                   TargetType="DataGridCell">
-                                <Setter Property="BorderThickness" Value="0" />
-                                <Setter Property="FocusVisualStyle" Value="{x:Null}" />
-                                <Setter Property="FontSize" Value="16"></Setter>
-                            </Style>
-                        </DataGrid.CellStyle>
+                              FontSize="16"
+                              IsReadOnly="True"
+                              CellStyle="{StaticResource DataGridCellStyle}"
+                              RowStyle="{StaticResource DataGridRowStyle}"
+                              ItemsSource="{Binding StudentTable}"
+                              SelectedItem="{Binding SelectedStudent}">
 
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Mã học sinh" Binding="{Binding [Họ và tên]}" />
-                            <DataGridTextColumn Header="Họ và tên" Binding="{Binding [Họ và tên]}" />
-                            <DataGridTextColumn Header="Giới tính" Binding="{Binding [Giới tính]}" />
-                            <DataGridTextColumn Header="Ngày sinh" Binding="{Binding [Ngày sinh]}" />
-                            <DataGridTextColumn Header="Địa chỉ" Binding="{Binding [Địa chỉ]}" />
-                            <DataGridTextColumn Header="Số điện thoại" Binding="{Binding [Số điện thoại]}" />
-                            <DataGridTextColumn Header="Email" Binding="{Binding [Email]}" />
+                            <DataGridTextColumn Header="Mã học sinh" Binding="{Binding Id}"/>
+                            <DataGridTextColumn Header="Họ và tên" Binding="{Binding Name}" />
+                            <DataGridTextColumn Header="Giới tính" Binding="{Binding Gender}"/>
+                            <DataGridTextColumn Header="Ngày sinh" Binding="{Binding Birthday, StringFormat='{}{0:dd/MM/yyyy}'}" />
+                            <DataGridTextColumn Header="Địa chỉ" Binding="{Binding Address}"/>
+                            <DataGridTextColumn Header="Số điện thoại" Binding="{Binding Phone}"/>
+                            <DataGridTextColumn Header="Email" Binding="{Binding Email}"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </ScrollViewer>
@@ -355,12 +274,25 @@
         <StackPanel Grid.Row="1" Orientation="Horizontal" FlowDirection="RightToLeft">
             <Button Margin="10"
                     VerticalAlignment="Center"
+                    Content="Sửa thông tin"
+                    FontSize="18" Width="180"
+                    Style="{StaticResource PrimaryButtonStyle}"
+                    materialDesign:ButtonAssist.CornerRadius="20"
+                    Command="{Binding DeleteStudentCommand}"/>
+            <Button Margin="10"
+                    VerticalAlignment="Center"
+                    Content="Xóa học sinh"
+                    FontSize="18" Width="180"
+                    Style="{StaticResource PrimaryButtonStyle}"
+                    materialDesign:ButtonAssist.CornerRadius="20"
+                    Command="{Binding DeleteStudentCommand}"/>
+            <Button Margin="10"
+                    VerticalAlignment="Center"
                     Content="Thêm học sinh"
                     FontSize="18" Width="180"
                     Style="{StaticResource PrimaryButtonStyle}"
                     materialDesign:ButtonAssist.CornerRadius="20"
-                    Command="{Binding AddStudentCommand}">
-            </Button>
+                    Command="{Binding AddStudentCommand}"/>
         </StackPanel>
     </Grid>
 </UserControl>

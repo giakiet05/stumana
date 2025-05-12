@@ -54,27 +54,15 @@
                                Visibility="{Binding IsClassroomNameInvalid, Converter={StaticResource BooleanToVisibilityConverter}}">
                     </TextBlock>
                 </StackPanel>
-
-                <!--<StackPanel Grid.Column="2">
-                    <TextBlock Text="Số lượng" Style="{StaticResource LabelStyle}" />
-                    <TextBox Style="{StaticResource InputFieldStyle}"
-                             Text="{Binding Quantity, UpdateSourceTrigger=PropertyChanged}">
-                        <b:Interaction.Behaviors>
-                            <helpers:NumericInputBehavior />
-                        </b:Interaction.Behaviors>
-                    </TextBox>
-                    <TextBlock Foreground="Red"
-                               Text="⚠ Số lượng học sinh không hợp lệ" />
-                </StackPanel>-->
             </Grid>
+
             <Grid Grid.Row="2" Margin="0,0,0,25">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="20" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-
-                <StackPanel>
+                <StackPanel Grid.Column="0">
                     <TextBlock Text="Năm học" Style="{StaticResource LabelStyle}" />
                     <Border BorderBrush="#E0E0E0"
                             BorderThickness="1"
@@ -91,10 +79,9 @@
                         </ComboBox>
                     </Border>
                     <TextBlock Foreground="Red"
-                        Text="⚠ Năm học không hợp lệ"
-                        Visibility="{Binding IsSchoolYearInvalid, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                               Text="⚠ Năm học không hợp lệ"
+                               Visibility="{Binding IsSchoolYearInvalid, Converter={StaticResource BooleanToVisibilityConverter}}" />
                 </StackPanel>
-
                 <StackPanel Grid.Column="2">
                     <TextBlock Text="Khối lớp" Style="{StaticResource LabelStyle}" />
                     <Border BorderBrush="#E0E0E0"
@@ -111,8 +98,8 @@
                         </ComboBox>
                     </Border>
                     <TextBlock Foreground="Red"
-                        Text="⚠ Khối lớp học không hợp lệ"
-                        Visibility="{Binding IsGradeInvalid, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                               Text="⚠ Khối lớp học không hợp lệ"
+                               Visibility="{Binding IsGradeInvalid, Converter={StaticResource BooleanToVisibilityConverter}}" />
                 </StackPanel>
             </Grid>
 

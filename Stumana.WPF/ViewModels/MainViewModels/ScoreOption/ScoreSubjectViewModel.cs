@@ -49,9 +49,6 @@ public class ScoreSubjectViewModel : BaseViewModel
     public Dictionary<string, Grade> GradeDic { get; set; } = new();
     public Dictionary<string, Classroom> ClassroomDic { get; set; } = new();
     private Dictionary<string, int> SemesterDic { get; set; } = new();
-    public Subject? PreviousSubject { get; set; }
-    public List<Score>? PreviousScoreDetail { get; set; }
-
 
     private ObservableCollection<FilterItem> _gradeFilter = new();
 
@@ -277,6 +274,8 @@ public class ScoreSubjectViewModel : BaseViewModel
         if (string.IsNullOrEmpty(SelectedSchoolYear) || GradeFilter.Count(i => i.IsChecked) == 0)
             return;
 
+        SchoolYear schoolYear = SchoolYearDic[SelectedSchoolYear];
+
         List<Grade> grades = new List<Grade>();
         foreach (var filterItem in GradeFilter)
         {
@@ -284,9 +283,9 @@ public class ScoreSubjectViewModel : BaseViewModel
                 grades.Add(GradeDic[filterItem.Name]);
         }
 
-        await LoadSubjectFilter(SchoolYearDic[SelectedSchoolYear], grades);
-        await LoadClassroomFilter(SchoolYearDic[SelectedSchoolYear], grades);
-        await LoadSemesterFilter(SchoolYearDic[SelectedSchoolYear], grades);
+        await LoadSubjectFilter(schoolYear, grades);
+        await LoadClassroomFilter(schoolYear, grades);
+        await LoadSemesterFilter(schoolYear, grades);
     }
 
     private async void OnFilterChange()
@@ -295,23 +294,19 @@ public class ScoreSubjectViewModel : BaseViewModel
             return;
 
         Subject subject = SubjectDic[SelectedSubject];
-        if (PreviousSubject == null || subject.Id != PreviousSubject.Id)
-        {
-            PreviousSubject = subject;
-            await LoadTableColumn(subject);
-        }
+        await LoadTableColumn(subject);
 
         List<Classroom> classrooms = new List<Classroom>();
         foreach (var filterItem in ClassFilter)
         {
-            if (filterItem.IsChecked)
+            if (filterItem.IsChecked && filterItem.Name != "All")
                 classrooms.Add(ClassroomDic[filterItem.Name]);
         }
 
         List<int> semesters = new List<int>();
         foreach (var filterItem in SemesterFilter)
         {
-            if (filterItem.IsChecked)
+            if (filterItem.IsChecked && filterItem.Name != "All")
                 semesters.Add(SemesterDic[filterItem.Name]);
         }
 
@@ -368,17 +363,10 @@ public class ScoreSubjectViewModel : BaseViewModel
 
         var scoreSheet = await GenericDataService<SubjectScoreType>.Instance.GetManyAsync(sc => sc.SubjectId == curSubject.Id,
                                                                                           score => score.Include(sc => sc.ScoreType));
-        List<Score> scoreDetails;
-        if (PreviousSubject == null || PreviousSubject.Id != curSubject.Id)
-        {
-            var scoreTypeIds = scoreSheet.Select(ss => ss.Id).ToList();
-            scoreDetails = (await GenericDataService<Score>.Instance.GetManyAsync(score => scoreTypeIds.Contains(score.SubjectScoreTypeId),
+        var scoreTypeIds = scoreSheet.Select(ss => ss.Id).ToList();
+        var scoreDetails = (await GenericDataService<Score>.Instance.GetManyAsync(score => scoreTypeIds.Contains(score.SubjectScoreTypeId),
                                                                                   query => query.Include(s => s.StudentAssignment).ThenInclude(sa => sa.Student)
                                                                                       .Include(s => s.StudentAssignment).ThenInclude(sa => sa.Classroom))).ToList();
-            PreviousScoreDetail = scoreDetails;
-        }
-        else
-            scoreDetails = PreviousScoreDetail;
 
         if (classrooms != null && classrooms.Count > 0)
         {

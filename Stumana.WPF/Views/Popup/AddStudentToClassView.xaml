@@ -130,7 +130,7 @@
                     FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
                     Margin="20"
                     FontSize="18"
-                    Command="{Binding SaveChangeCommand}" />
+                    Command="{Binding AddSubjectScoreTypeCommand}" />
 
             <Button Width="130"
                     Style="{StaticResource PrimaryButtonStyle}"

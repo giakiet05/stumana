@@ -15,7 +15,7 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <Border Background="White" CornerRadius="20" 
+    <Border Background="White" CornerRadius="20"
             HorizontalAlignment="Center" VerticalAlignment="Center">
         <Grid>
             <Grid.RowDefinitions>
@@ -34,18 +34,19 @@
 
             <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
                 <DataGrid Margin="10 20 10 0"
-                          Width="600" Height="300"
+                          Width="700" Height="300"
                           AutoGenerateColumns="False"
                           HorizontalAlignment="Stretch"
                           VerticalAlignment="Stretch"
                           CanUserAddRows="False"
                           IsReadOnly="True"
-                          ItemsSource="{Binding StudentChoiceTableView}">
+                          ItemsSource="{Binding SubjectScoreTypeTable}"
+                          SelectedItem="{Binding SelectedSubjectScoreType}">
 
                     <DataGrid.Columns>
-                        <DataGridCheckBoxColumn Header="Chọn" Width="100" IsReadOnly="False" Binding="{Binding IsSelected}"/>
-                        <DataGridTextColumn Header="Loại điểm" Width="3*"/>
-                        <DataGridTextColumn Header="Hệ số" Width="*"/>
+                        <DataGridTextColumn Header="Loại điểm" Width="2*" Binding="{Binding ScoreTypeName}" />
+                        <DataGridTextColumn Header="Hệ số" Width="*" Binding="{Binding Coefficient}" />
+                        <DataGridTextColumn Header="Số lượng" Width="*" IsReadOnly="False" Binding="{Binding Amount}" />
                     </DataGrid.Columns>
 
                     <DataGrid.Resources>
@@ -88,28 +89,46 @@
                                TargetType="DataGridCell">
                             <Setter Property="BorderThickness" Value="0" />
                             <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+                            <Setter Property="FontSize" Value="20"></Setter>
                         </Style>
                     </DataGrid.CellStyle>
                 </DataGrid>
             </ScrollViewer>
 
-            <StackPanel Grid.Row="2" Orientation="Horizontal" FlowDirection="LeftToRight">
-                <Button Width="130"
-                        Style="{StaticResource PrimaryButtonStyle}"
-                        Content="Lưu thay đổi"
-                        FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
-                        Margin="20"
-                        FontSize="18"
-                        Command="{Binding SaveChangeCommand}" />
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
 
-                <Button Width="130"
-                        Style="{StaticResource PrimaryButtonStyle}"
-                        Content="Hủy"
-                        FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
-                        Command="{Binding CancelCommand}"
-                        Margin="20"
-                        FontSize="18" />
-            </StackPanel>
+                <StackPanel Grid.Column="0" Orientation="Horizontal" FlowDirection="LeftToRight">
+                    <Button Width="130"
+                            Style="{StaticResource PrimaryButtonStyle}"
+                            Content="Hủy"
+                            FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
+                            Command="{Binding CancelCommand}"
+                            Margin="20"
+                            FontSize="18" />
+                </StackPanel>
+
+                <StackPanel Grid.Column="1" Orientation="Horizontal" FlowDirection="RightToLeft">
+                    <Button Width="150"
+                            Style="{StaticResource PrimaryButtonStyle}"
+                            Content="Xóa loại điểm"
+                            FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
+                            Command="{Binding DeleteSubjectScoreTypeCommand}"
+                            Margin="10"
+                            FontSize="18" />
+
+                    <Button Width="150"
+                            Style="{StaticResource PrimaryButtonStyle}"
+                            Content="Thêm loại điểm"
+                            FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
+                            Command="{Binding AddSubjectScoreTypeCommand}"
+                            Margin="10"
+                            FontSize="18" />
+                </StackPanel>
+            </Grid>
         </Grid>
     </Border>
 </UserControl>

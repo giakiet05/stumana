@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Stumana.WPF.Views.Popup.ChangeScoreTypeView"
+﻿<UserControl x:Class="Stumana.WPF.Views.Popup.EditScoreTypeView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -111,6 +111,7 @@
                                TargetType="DataGridCell">
                             <Setter Property="BorderThickness" Value="0" />
                             <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+                            <Setter Property="FontSize" Value="20"></Setter>
                         </Style>
                     </DataGrid.CellStyle>
                 </DataGrid>
@@ -138,13 +139,13 @@
                             FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
                             Margin="10"
                             FontSize="18"
-                            Command="{Binding SaveChangeCommand}" />
+                            Command="{Binding DeleteScoreTypeCommand}" />
 
                     <Button Width="130"
                             Style="{StaticResource PrimaryButtonStyle}"
                             Content="Thêm"
                             FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
-                            Command="{Binding CancelCommand}"
+                            Command="{Binding AddScoreTypeCommand}"
                             Margin="10"
                             FontSize="18" />
                 </StackPanel>

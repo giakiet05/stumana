@@ -160,7 +160,6 @@
 
   <ItemGroup>
     <Folder Include="Resource\Icon\" />
-    <Folder Include="ResourceXAML\" />
   </ItemGroup>
 
   <ItemGroup>

@@ -194,7 +194,7 @@
                                          materialDesign:HintAssist.Hint="Tìm kiếm môn học"
                                          materialDesign:TextFieldAssist.HasClearButton="True"
                                          Padding="20,5,5,5"
-                                         Text="{Binding SearchText}">
+                                         Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}">
                                 </TextBox>
                             </Grid>
                         </Border>
@@ -257,6 +257,7 @@
                                        TargetType="DataGridCell">
                                     <Setter Property="BorderThickness" Value="0" />
                                     <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+                                    <Setter Property="FontSize" Value="16"></Setter>
                                 </Style>
                             </DataGrid.CellStyle>
                         </DataGrid>
@@ -271,15 +272,15 @@
                                       HorizontalAlignment="Stretch"
                                       CanUserAddRows="False"
                                       IsReadOnly="True"
-                                      ItemsSource="{Binding ScoreTypeTable}"
-                                      SelectedItem="{Binding SelectedScoreType}">
+                                      ItemsSource="{Binding SubjectScoreTypeTable}"
+                                      SelectedItem="{Binding SelectedSubjectScoreType}">
 
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="Tên loại điểm" Width="*" MinWidth="200"
                                                         IsReadOnly="True" Binding="{Binding ScoreTypeName}" />
-                                    <DataGridTextColumn Header="Hệ số" Width="*" MinWidth="200" IsReadOnly="True"
+                                    <DataGridTextColumn Header="Hệ số" Width="*" MinWidth="200"
                                                         Binding="{Binding Coefficient}" />
-                                    <DataGridTextColumn Header="Số lượng điểm" Width="*" MinWidth="200"
+                                    <DataGridTextColumn Header="Số lượng điểm" Width="*" MinWidth="200" IsReadOnly="False"
                                                         Binding="{Binding Amount}" />
                                 </DataGrid.Columns>
 
@@ -324,6 +325,7 @@
                                            TargetType="DataGridCell">
                                         <Setter Property="BorderThickness" Value="0" />
                                         <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+                                        <Setter Property="FontSize" Value="16"></Setter>
                                     </Style>
                                 </DataGrid.CellStyle>
                             </DataGrid>
@@ -336,20 +338,28 @@
         <StackPanel Grid.Row="2"
                     Orientation="Horizontal"
                     FlowDirection="RightToLeft">
-            <Button Margin="10,15,10,15"
-                    Width="230"
-                    FontSize="18"
-                    Content="Thêm loại điểm vào môn"
-                    Padding="10"
-                    Style="{StaticResource PrimaryButtonStyle}"
-                    Command="{Binding AddScoreTypeCommand}" />
+
             <Button Margin="10,15,10,15"
                     Width="200"
                     FontSize="18"
                     Content="Chỉnh sửa loại điểm"
                     Padding="10"
                     Style="{StaticResource PrimaryButtonStyle}"
-                    Command="{Binding ChangeScoreTypeCommand}" />
+                    Command="{Binding EditScoreTypeCommand}" />
+            <Button Width="150"
+                    Style="{StaticResource PrimaryButtonStyle}"
+                    Content="Xóa loại điểm"
+                    FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
+                    Command="{Binding DeleteSubjectScoreTypeCommand}"
+                    Margin="10"
+                    FontSize="18" />
+            <Button Width="150"
+                    Style="{StaticResource PrimaryButtonStyle}"
+                    Content="Thêm loại điểm"
+                    FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
+                    Command="{Binding AddSubjectScoreTypeCommand}"
+                    Margin="10"
+                    FontSize="18" />
             <Button Margin="10,15,10,15"
                     Width="150"
                     FontSize="18"

@@ -1,4 +1,5 @@
 ﻿using System.Windows.Input;
+using Stumana.DataAccess.Services;
 using Stumana.DataAcess.Models;
 using Stumana.WPF.Commands;
 using Stumana.WPF.Stores;
@@ -72,8 +73,12 @@ namespace Stumana.WPF.ViewModels.PopupModels
         public ICommand AddScoreTypeCommand { get; set; }
         public ICommand CancelCommand { get; set; }
 
-        public AddScoreTypeViewModel(SchoolYear schoolYear)
+        private readonly EventHandler? OnAddedScoreType;
+
+        public AddScoreTypeViewModel(SchoolYear schoolYear, EventHandler? onAddedScoreType)
         {
+            OnAddedScoreType = onAddedScoreType;
+
             CurSchoolYear = schoolYear;
             SchoolYearName = $"{CurSchoolYear.StartYear} - {CurSchoolYear.EndYear}";
 
@@ -83,28 +88,40 @@ namespace Stumana.WPF.ViewModels.PopupModels
 
         public async void AddScoreType()
         {
-            IsScoreTypeNameInvalid = false;
-            IsScoreTypeCoefficientInvalid = false;
-
-            if (string.IsNullOrEmpty(ScoreTypeName) || ScoreTypeName.Length > 40)
-                IsScoreTypeNameInvalid = true;
-
-            if (string.IsNullOrEmpty(ScoreTypeCoefficient) || !double.TryParse(ScoreTypeCoefficient, out double coefficient) || coefficient <= 0)
-                IsScoreTypeCoefficientInvalid = true;
-
-            if (IsScoreTypeNameInvalid || IsScoreTypeCoefficientInvalid)
+            try
             {
-                ToastMessageViewModel.ShowErrorToast("Thêm năm học không thành công.\nInput không hợp lệ");
+                IsScoreTypeNameInvalid = false;
+                IsScoreTypeCoefficientInvalid = false;
+
+                if (string.IsNullOrEmpty(ScoreTypeName) || ScoreTypeName.Length > 40)
+                    IsScoreTypeNameInvalid = true;
+
+                if (string.IsNullOrEmpty(ScoreTypeCoefficient) || !double.TryParse(ScoreTypeCoefficient, out double coefficient) || coefficient <= 0)
+                    IsScoreTypeCoefficientInvalid = true;
+
+                if (IsScoreTypeNameInvalid || IsScoreTypeCoefficientInvalid)
+                {
+                    throw new Exception("Input không hợp lệ");
+                }
+
+                ScoreType newScoreType = new ScoreType
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    YearId = CurSchoolYear.Id,
+                    Name = ScoreTypeName,
+                    Coefficient = double.Parse(ScoreTypeCoefficient)
+                };
+
+                await GenericDataService<ScoreType>.Instance.CreateOneAsync(newScoreType);
+                ToastMessageViewModel.ShowSuccessToast("Thêm loại điểm thành công");
+                OnAddedScoreType?.Invoke(this, EventArgs.Empty);
+                ModalNavigationStore.Instance.Close();
+            }
+            catch (Exception e)
+            {
+                ToastMessageViewModel.ShowErrorToast("Thêm năm học không thành công.\n" + e.Message);
                 return;
             }
-
-            ScoreType newScoreType = new ScoreType
-            {
-                Id = Guid.NewGuid().ToString(),
-                YearId = CurSchoolYear.Id,
-                Name = ScoreTypeName,
-                Coefficient = double.Parse(ScoreTypeCoefficient)
-            };
         }
     }
 }

@@ -431,7 +431,7 @@
                     Content="Lưu thay đổi"
                     Style="{StaticResource PrimaryButtonStyle}"
                     materialDesign:ButtonAssist.CornerRadius="20"
-                    Command="{Binding SaveChangeCommand}">
+                    Command="{Binding AddSubjectScoreTypeCommand}">
             </Button>
         </StackPanel>
     </Grid>

@@ -31,8 +31,8 @@ namespace Stumana.WPF.Stores
             set
             {
                 _currentModalViewModel = value;
-                if (value != null)
-                    ViewModels.Add(value);
+                if (value != null && !ViewModels.Contains(value))
+{                    ViewModels.Add(value);}
                 OnCurrentViewModelChanged();
             }
         }

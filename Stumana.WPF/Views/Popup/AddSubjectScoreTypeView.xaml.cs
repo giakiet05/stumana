@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace Stumana.WPF.Views.Popup
 {
     /// <summary>
-    /// Interaction logic for ChangeScoreTypeView.xaml
+    /// Interaction logic for AddSubjectScoreTypeView.xaml
     /// </summary>
-    public partial class ChangeScoreTypeView : UserControl
+    public partial class AddSubjectScoreTypeView : UserControl
     {
-        public ChangeScoreTypeView()
+        public AddSubjectScoreTypeView()
         {
             InitializeComponent();
         }

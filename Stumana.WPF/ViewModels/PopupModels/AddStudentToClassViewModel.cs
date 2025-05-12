@@ -1,8 +1,5 @@
 ﻿using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Data;
 using System.Globalization;
-using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using Stumana.DataAccess.Services;
 using Stumana.DataAcess.Models;
@@ -14,7 +11,7 @@ namespace Stumana.WPF.ViewModels.PopupModels;
 public class AddStudentToClassViewModel : BaseViewModel
 {
     private List<StudentChoiceInfo> _allUnassignStudents { get; set; } = new();
-    public ObservableCollection<StudentChoiceInfo> StudentChoiceTableView { get; set; }
+    public ObservableCollection<StudentChoiceInfo> StudentChoiceTableView { get; set; } = new();
 
     public Classroom CurClassroom { get; set; }
 
@@ -32,7 +29,6 @@ public class AddStudentToClassViewModel : BaseViewModel
     }
 
     public ICommand CancelCommand { get; set; }
-
     public ICommand SaveChangeCommand { get; set; }
 
     public AddStudentToClassViewModel()
@@ -151,38 +147,14 @@ public class AddStudentToClassViewModel : BaseViewModel
             StudentChoiceTableView.Add(student);
         }
     }
-}
 
-public class StudentChoiceInfo : INotifyPropertyChanged
-{
-    private bool _isSelected;
-
-    public bool IsSelected
+    public sealed class StudentChoiceInfo
     {
-        get => _isSelected;
-        set
-        {
-            if (_isSelected != value)
-            {
-                _isSelected = value;
-                OnPropertyChanged();
-                //OnSelectedChanged?.Invoke(this, EventArgs.Empty);
-            }
-        }
-    }
-
-    //public event EventHandler? OnSelectedChanged;
-
-    public string StudentID { get; set; }
-    public string Name { get; set; }
-    public DateTime Birthday { get; set; }
-    public string PhoneNumber { get; set; }
-    public string Email { get; set; }
-
-    public event PropertyChangedEventHandler? PropertyChanged;
-
-    protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        public bool IsSelected { get; set; }
+        public string StudentID { get; set; }
+        public string Name { get; set; }
+        public DateTime Birthday { get; set; }
+        public string PhoneNumber { get; set; }
+        public string Email { get; set; }
     }
 }

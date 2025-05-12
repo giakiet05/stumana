@@ -1,6 +1,8 @@
 ﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Globalization;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using Microsoft.EntityFrameworkCore;
 using Stumana.DataAccess.Services;
@@ -92,42 +94,59 @@ namespace Stumana.WPF.ViewModels.MainViewModels.SubjectOption
                 {
                     _selectedSubject = value;
                     OnPropertyChanged();
-                    if (_selectedSubject != null)
-                        LoadScoreTypeData(_selectedSubject.SubjectId);
+                    LoadSubjectScoreTypeData(_selectedSubject);
                 }
             }
         }
 
-        public ObservableCollection<ScoreTypeTableRow> ScoreTypeTable { get; set; } = new();
+        public ObservableCollection<SubjectScoreTypeTableRow> SubjectScoreTypeTable { get; set; } = new();
 
-        private SubjectTableRow _selectedScoreType;
+        private SubjectScoreTypeTableRow? _selectedSubjectScoreType;
 
-        public SubjectTableRow SelectedScoreType
+        public SubjectScoreTypeTableRow? SelectedSubjectScoreType
         {
-            get => _selectedScoreType;
+            get => _selectedSubjectScoreType;
             set
             {
-                _selectedScoreType = value;
+                _selectedSubjectScoreType = value;
                 OnPropertyChanged();
             }
         }
 
         public ICommand AddSubjectCommand { get; set; }
         public ICommand DeleteSubjectCommand { get; set; }
-        public ICommand ChangeScoreTypeCommand { get; set; }
-        public ICommand AddScoreTypeCommand { get; set; }
+        public ICommand EditScoreTypeCommand { get; set; }
+        public ICommand AddSubjectScoreTypeCommand { get; set; }
+        public ICommand DeleteSubjectScoreTypeCommand { get; set; }
         public ICommand FilterGradeCommand { get; set; }
+        public EventHandler? OnSubjectDataChanged { get; set; }
+        public EventHandler? OnSubjectScoreTypeDataChanged { get; set; }
 
         public SubjectViewModel()
         {
-            AddSubjectCommand = new NavigateModalCommand(() => new AddSubjectViewModel());
+            OnSubjectDataChanged += UpdateSubjectData;
+            OnSubjectScoreTypeDataChanged += UpdateSubjectScoreTypeData;
+
+            AddSubjectCommand = new NavigateModalCommand(() => new AddSubjectViewModel(OnSubjectDataChanged));
             DeleteSubjectCommand = new RelayCommand(DeleteSubjectRow);
-            ChangeScoreTypeCommand = new NavigateModalCommand(() => new ChangeScoreTypeViewModel());
-            AddScoreTypeCommand = new NavigateModalCommand(() => new AddScoreTypeToSubjectViewModel());
+            EditScoreTypeCommand = new NavigateModalCommand(() => new EditScoreTypeViewModel());
+            AddSubjectScoreTypeCommand = new NavigateModalCommand(() => new AddSubjectScoreTypeViewModel(SelectedSubject.MySubject, OnSubjectScoreTypeDataChanged), HaveSubject);
+            DeleteSubjectScoreTypeCommand = new RelayCommand(DeleteSubjectScoreType);
+
             FilterGradeCommand = new RelayCommand(FilterGrade);
 
             LoadSchoolYearFilter();
             LoadGradeFilter();
+        }
+
+        private async void UpdateSubjectData(object? sender, EventArgs e)
+        {
+            OnSelectionSubjectFilterChange();
+        }
+
+        private void UpdateSubjectScoreTypeData(object? sender, EventArgs e)
+        {
+            LoadSubjectScoreTypeData(SelectedSubject);
         }
 
         private async void OnSelectionSubjectFilterChange()
@@ -222,41 +241,86 @@ namespace Stumana.WPF.ViewModels.MainViewModels.SubjectOption
                                                                                     query => query.Include(s => s.Grade)));
 
             SubjectTable.Clear();
+            OriginalSubjectTable.Clear();
             foreach (var subject in subjects)
             {
                 SubjectTableRow newRow = new SubjectTableRow
                 {
+                    MySubject = subject,
                     SubjectId = subject.Id,
                     GradeId = subject.GradeId,
                     GradeName = subject.Grade.Name,
                     PassScore = subject.ScoreToPass,
                     SubjectName = subject.Name
                 };
+                newRow.PropertyChanged += OnSubjectRowPropertyChanged;
 
                 SubjectTable.Add(newRow);
                 OriginalSubjectTable.Add(newRow);
             }
         }
 
-        private async void LoadScoreTypeData(string subjectId)
+        private async void OnSubjectRowPropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
-            var scoreTypes = (await GenericDataService<SubjectScoreType>.Instance.GetManyAsync(sst => sst.SubjectId == subjectId,
-                                                                                               query => query.Include(sst => sst.ScoreType))).ToList();
+            if (sender == null)
+                return;
 
-            ScoreTypeTable.Clear();
-            foreach (var scoreType in scoreTypes)
+            var row = (SubjectTableRow)sender;
+            Subject subject = new Subject
             {
-                ScoreTypeTableRow newRow = new ScoreTypeTableRow
-                {
-                    SubjectId = subjectId,
-                    ScoreTypeId = scoreType.Id,
-                    ScoreTypeName = scoreType.ScoreType.Name,
-                    Coefficient = scoreType.ScoreType.Coefficient,
-                    Amount = scoreType.Amount
-                };
+                Id = row.SubjectId,
+                Name = row.SubjectName,
+                ScoreToPass = row.PassScore,
+                GradeId = row.GradeId,
+                YearId = SchoolYearsDic[SelectedSchoolYear].Id
+            };
 
-                ScoreTypeTable.Add(newRow);
+            await GenericDataService<Subject>.Instance.UpdateOneAsync(subject, s => s.Id == subject.Id);
+            ToastMessageViewModel.ShowSuccessToast("Chỉnh sửa điểm đạt môn thành công");
+        }
+
+        private async void LoadSubjectScoreTypeData(SubjectTableRow? subjectRow)
+        {
+            SubjectScoreTypeTable.Clear();
+            if (subjectRow == null)
+                return;
+
+            var subjectScoreTypes = (await GenericDataService<SubjectScoreType>.Instance.GetManyAsync(sst => sst.SubjectId == subjectRow.SubjectId,
+                                                                                                      query => query.Include(sst => sst.ScoreType))).ToList();
+
+            foreach (var subjectScoreType in subjectScoreTypes)
+            {
+                SubjectScoreTypeTableRow newRow = new SubjectScoreTypeTableRow
+                {
+                    SubjectScoreTypeId = subjectScoreType.Id,
+                    SubjectId = subjectRow.SubjectId,
+                    ScoreTypeId = subjectScoreType.ScoreTypeId,
+                    ScoreTypeName = subjectScoreType.ScoreType.Name,
+                    Coefficient = subjectScoreType.ScoreType.Coefficient,
+                    Amount = subjectScoreType.Amount
+                };
+                newRow.PropertyChanged += OnSubjectScoreTypeRowPropertyChanged;
+
+                SubjectScoreTypeTable.Add(newRow);
             }
+        }
+
+        private async void OnSubjectScoreTypeRowPropertyChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            if (sender == null)
+                return;
+
+            var row = (SubjectScoreTypeTableRow)sender;
+            SubjectScoreType subjectScoreType = new SubjectScoreType
+            {
+                Id = row.SubjectScoreTypeId,
+                Amount = row.Amount,
+                ScoreTypeId = row.ScoreTypeId,
+                SubjectId = row.SubjectId
+            };
+
+            await GenericDataService<SubjectScoreType>.Instance.UpdateOneAsync(subjectScoreType, sst => sst.Id == subjectScoreType.Id);
+            ToastMessageViewModel.ShowSuccessToast("Chỉnh sửa số lượng thành công");
         }
 
         private async void DeleteSubjectRow()
@@ -271,6 +335,18 @@ namespace Stumana.WPF.ViewModels.MainViewModels.SubjectOption
             OriginalSubjectTable.Remove(SelectedSubject);
             SubjectTable.Remove(SelectedSubject);
             SelectedSubject = null;
+        }
+
+        private async void DeleteSubjectScoreType()
+        {
+            if (SelectedSubjectScoreType == null)
+            {
+                ToastMessageViewModel.ShowErrorToast("Hãy chọn loại điểm để xóa");
+                return;
+            }
+
+            await GenericDataService<SubjectScoreType>.Instance.DeleteOneAsync(sst => sst.Id == SelectedSubjectScoreType.SubjectScoreTypeId);
+            SubjectScoreTypeTable.Remove(SelectedSubjectScoreType);
         }
 
         public void OnSearchTextChange()
@@ -320,22 +396,69 @@ namespace Stumana.WPF.ViewModels.MainViewModels.SubjectOption
             }
         }
 
-        public class SubjectTableRow
+        private bool HaveSubject()
         {
+            if (SelectedSubject == null)
+            {
+                ToastMessageViewModel.ShowErrorToast("Hãy chọn một môn học");
+                return false;
+            }
+
+            return true;
+        }
+
+        public class SubjectTableRow : INotifyPropertyChanged
+        {
+            public Subject MySubject { get; set; }
             public string SubjectId { get; set; }
             public string GradeId { get; set; }
             public string GradeName { get; set; }
             public string SubjectName { get; set; }
-            public double PassScore { get; set; }
+            private double _passScore;
+
+            public double PassScore
+            {
+                get => _passScore;
+                set
+                {
+                    _passScore = value;
+                    OnPropertyChanged();
+                }
+            }
+
+            public event PropertyChangedEventHandler? PropertyChanged;
+
+            protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+            {
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            }
         }
 
-        public class ScoreTypeTableRow
+        public class SubjectScoreTypeTableRow : INotifyPropertyChanged
         {
+            public string SubjectScoreTypeId { get; set; }
             public string SubjectId { get; set; }
             public string ScoreTypeId { get; set; }
             public string ScoreTypeName { get; set; }
             public double Coefficient { get; set; }
-            public int Amount { get; set; }
+            private int _amount;
+
+            public int Amount
+            {
+                get => _amount;
+                set
+                {
+                    _amount = value;
+                    OnPropertyChanged();
+                }
+            }
+
+            public event PropertyChangedEventHandler? PropertyChanged;
+
+            protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+            {
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            }
         }
     }
 }

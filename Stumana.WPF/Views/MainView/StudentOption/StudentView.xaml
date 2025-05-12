@@ -334,12 +334,11 @@
                                    TargetType="DataGridCell">
                                 <Setter Property="BorderThickness" Value="0" />
                                 <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+                                <Setter Property="FontSize" Value="16"></Setter>
                             </Style>
                         </DataGrid.CellStyle>
 
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Khối" Binding="{Binding [Khối]}" />
-                            <DataGridTextColumn Header="Lớp" Binding="{Binding [Lớp]}" />
                             <DataGridTextColumn Header="Mã học sinh" Binding="{Binding [Họ và tên]}" />
                             <DataGridTextColumn Header="Họ và tên" Binding="{Binding [Họ và tên]}" />
                             <DataGridTextColumn Header="Giới tính" Binding="{Binding [Giới tính]}" />

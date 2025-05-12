@@ -140,15 +140,16 @@
         <popupViews:AddScoreTypeToSubjectView />
     </DataTemplate>
 
-    <DataTemplate DataType="{x:Type popupViewModels:ChangeScoreTypeViewModel}">
-        <popupViews:ChangeScoreTypeView />
+    <DataTemplate DataType="{x:Type popupViewModels:EditScoreTypeViewModel}">
+        <popupViews:EditScoreTypeView />
     </DataTemplate>
 
     <DataTemplate DataType="{x:Type popupViewModels:AddScoreTypeViewModel}">
         <popupViews:AddScoreTypeView />
     </DataTemplate>
-    <!--#endregion-->
-    <!--#region admin-->
 
+    <DataTemplate DataType="{x:Type popupViewModels:AddSubjectScoreTypeViewModel}">
+        <popupViews:AddSubjectScoreTypeView />
+    </DataTemplate>
     <!--#endregion-->
 </ResourceDictionary>

@@ -187,12 +187,15 @@ namespace Stumana.WPF.ViewModels.MainViewModels.StudentOption
 
             ClassroomDic.Clear();
             ClassFilter.Add(new FilterItem("All", false));
+            classrooms = classrooms.OrderByDescending(c => c.Name).ToList();
             foreach (Classroom classroom in classrooms)
             {
                 string className = $"Lớp {classroom.Name}";
                 ClassFilter.Add(new FilterItem(className, false));
                 ClassroomDic[className] = classroom;
             }
+
+            ClassFilter.Add(new FilterItem("Chưa có lớp", false));
         }
 
         private async void FilterGrade(object param)
@@ -242,42 +245,55 @@ namespace Stumana.WPF.ViewModels.MainViewModels.StudentOption
             }
         }
 
-        private async Task LoadStudentData(List<Classroom> classrooms)
-        {
-            var classIds = classrooms.Select(c => c.Id).Distinct().ToList();
-            List<StudentAssignment>? studentAssignments = (await GenericDataService<StudentAssignment>.Instance.GetManyAsync(sa => classIds.Contains(sa.ClassroomId),
-                                                                                                                             query => query.Include(sa => sa.Student).Include(sa => sa.Classroom))).ToList();
-            if (studentAssignments == null || studentAssignments.Count == 0)
-                return;
-
-            foreach (var studentAssignment in studentAssignments)
-            {
-                Classroom classroom = classrooms.First(c => c.Id == studentAssignment.ClassroomId);
-                string gradeName = classroom.Grade.Name;
-                string? className = classroom.Name;
-
-                string studentId = studentAssignment.StudentId;
-                string studentName = studentAssignment.Student.Name;
-                string studentGender = studentAssignment.Student.Gender;
-                string studentBirthday = studentAssignment.Student.Birthday.ToString("yyyy-MM-dd");
-                string studentAddress = studentAssignment.Student.Address;
-                string studentPhoneNumber = studentAssignment.Student.Phone;
-                string studentEmail = studentAssignment.Student.Email;
-
-                StudentDataTable.Rows.Add(gradeName, className, studentId, studentName, studentGender, studentBirthday, studentAddress, studentPhoneNumber, studentEmail);
-            }
-        }
-
         private async void OnFilterChange()
         {
             List<Classroom> classrooms = new List<Classroom>();
+            bool haveNoClassStudent = false;
             foreach (var filterItem in ClassFilter)
             {
+                if (filterItem.IsChecked && filterItem.Name == "Chưa có lớp")
+                {
+                    haveNoClassStudent = true;
+                    continue;
+                }
+
                 if (filterItem.IsChecked && filterItem.Name != "All")
                     classrooms.Add(ClassroomDic[filterItem.Name]);
             }
 
-            await LoadStudentData(classrooms);
+            await LoadStudentData(classrooms, haveNoClassStudent);
+        }
+
+        private async Task LoadStudentData(List<Classroom> classrooms, bool haveNoClassStudent)
+        {
+            var classIds = classrooms.Select(c => c.Id).Distinct().ToList();
+            List<StudentAssignment> studentAssignments = (await GenericDataService<StudentAssignment>.Instance.GetManyAsync(sa => classIds.Contains(sa.ClassroomId),
+                                                                                                                            query => query.Include(sa => sa.Student))).ToList();
+
+            List<Student> studentsWithClass = studentAssignments.GroupBy(sa => sa.StudentId).Select(g => g.First().Student).Where(s => s != null).ToList();
+
+
+            List<Student> studentsWithNoClass = new List<Student>();
+            if (haveNoClassStudent)
+            {
+                var studentWithClassId = studentsWithClass.Select(s => s.Id).Distinct();
+                studentsWithNoClass = (await GenericDataService<Student>.Instance.GetManyAsync(s => !studentWithClassId.Contains(s.Id))).ToList();
+            }
+
+            List<Student> students = new List<Student>(studentsWithClass);
+            students.AddRange(studentsWithNoClass);
+            foreach (var student in students)
+            {
+                string studentId = student.Id;
+                string studentName = student.Name;
+                string studentGender = student.Gender;
+                string studentBirthday = student.Birthday.ToString("yyyy-MM-dd");
+                string studentAddress = student.Address;
+                string studentPhoneNumber = student.Phone;
+                string studentEmail = student.Email;
+
+                StudentDataTable.Rows.Add(studentId, studentName, studentGender, studentBirthday, studentAddress, studentPhoneNumber, studentEmail);
+            }
         }
 
         public void OnSearchTextChange()

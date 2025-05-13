@@ -125,6 +125,7 @@
                                                    VerticalAlignment="Center"
                                                    FontSize="13"
                                                    Width="150"
+                                                   Text="{Binding DataContext.DisplayGradeFilterText, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                                    Foreground="Black"
                                                    FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium" />
                                         <TextBlock Text="▼"
@@ -260,7 +261,7 @@
                                       AutoGenerateColumns="False"
                                       HorizontalAlignment="Stretch"
                                       CanUserAddRows="False"
-                                      IsReadOnly="True"
+                                      IsReadOnly="False"
                                       FontSize="18"
                                       CellStyle="{StaticResource DataGridCellStyle}"
                                       RowStyle="{StaticResource DataGridRowStyle}"
@@ -279,30 +280,29 @@
                                                         IsReadOnly="True" Binding="{Binding ScoreTypeName}">
                                         <DataGridTextColumn.ElementStyle>
                                             <Style TargetType="TextBlock">
-                                                <Setter Property="TextAlignment" Value="Center"/>
-                                                <Setter Property="VerticalAlignment" Value="Center"/>
-                                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                                                <Setter Property="TextAlignment" Value="Center" />
+                                                <Setter Property="VerticalAlignment" Value="Center" />
+                                                <Setter Property="HorizontalAlignment" Value="Center" />
                                             </Style>
                                         </DataGridTextColumn.ElementStyle>
                                     </DataGridTextColumn>
-                                    <DataGridTextColumn Header="Hệ số" Width="*" MinWidth="200"
-                                                        Binding="{Binding Coefficient}">
+                                    <DataGridTextColumn Header="Hệ số" Width="*" MinWidth="200" 
+                                                        IsReadOnly="True" Binding="{Binding Coefficient}">
                                         <DataGridTextColumn.ElementStyle>
                                             <Style TargetType="TextBlock">
-                                                <Setter Property="TextAlignment" Value="Center"/>
-                                                <Setter Property="VerticalAlignment" Value="Center"/>
-                                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                                                <Setter Property="TextAlignment" Value="Center" />
+                                                <Setter Property="VerticalAlignment" Value="Center" />
+                                                <Setter Property="HorizontalAlignment" Value="Center" />
                                             </Style>
                                         </DataGridTextColumn.ElementStyle>
                                     </DataGridTextColumn>
                                     <DataGridTextColumn Header="Số lượng điểm" Width="*" MinWidth="200"
-                                                        IsReadOnly="False"
-                                                        Binding="{Binding Amount}">
+                                                        IsReadOnly="False" Binding="{Binding Amount}">
                                         <DataGridTextColumn.ElementStyle>
                                             <Style TargetType="TextBlock">
-                                                <Setter Property="TextAlignment" Value="Center"/>
-                                                <Setter Property="VerticalAlignment" Value="Center"/>
-                                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                                                <Setter Property="TextAlignment" Value="Center" />
+                                                <Setter Property="VerticalAlignment" Value="Center" />
+                                                <Setter Property="HorizontalAlignment" Value="Center" />
                                             </Style>
                                         </DataGridTextColumn.ElementStyle>
                                     </DataGridTextColumn>

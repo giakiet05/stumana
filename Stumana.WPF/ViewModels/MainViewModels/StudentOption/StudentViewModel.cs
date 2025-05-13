@@ -26,6 +26,8 @@ namespace Stumana.WPF.ViewModels.MainViewModels.StudentOption
             }
         }
 
+        private bool IsProcessingFilter { get; set; } = false;
+
         public Dictionary<string, SchoolYear> SchoolYearDic { get; set; } = new();
         public Dictionary<string, Grade> GradeDic { get; set; } = new();
         public Dictionary<string, Classroom> ClassroomDic { get; set; } = new();
@@ -85,6 +87,18 @@ namespace Stumana.WPF.ViewModels.MainViewModels.StudentOption
             }
         }
 
+        private string _displayGradeFilterText = String.Empty;
+
+        public string DisplayGradeFilterText
+        {
+            get => _displayGradeFilterText;
+            set
+            {
+                _displayGradeFilterText = value;
+                OnPropertyChanged();
+            }
+        }
+
         private ObservableCollection<FilterItem> _classFilter = new();
 
         public ObservableCollection<FilterItem> ClassFilter
@@ -93,6 +107,18 @@ namespace Stumana.WPF.ViewModels.MainViewModels.StudentOption
             set
             {
                 _classFilter = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string _displayClassFilterText = String.Empty;
+
+        public string DisplayClassFilterText
+        {
+            get => _displayClassFilterText;
+            set
+            {
+                _displayClassFilterText = value;
                 OnPropertyChanged();
             }
         }
@@ -123,6 +149,11 @@ namespace Stumana.WPF.ViewModels.MainViewModels.StudentOption
         {
             await LoadSchoolYearFilter();
             await LoadGradeFilter();
+            LoadClassroomFilter();
+            DisplayGradeFilterText = ProcessDisplayText(GradeFilter, "Khối*");
+
+            OnFilterChange();
+            DisplayClassFilterText = ProcessDisplayText(ClassFilter);
         }
 
         private async Task LoadSchoolYearFilter()
@@ -140,6 +171,7 @@ namespace Stumana.WPF.ViewModels.MainViewModels.StudentOption
                 SchoolYearFilter.Add(schoolyearName);
                 SchoolYearDic.Add(schoolyearName, schoolYear);
             }
+            SelectedSchoolYear = SchoolYearFilter[0];
         }
 
         public async Task LoadGradeFilter()
@@ -150,11 +182,11 @@ namespace Stumana.WPF.ViewModels.MainViewModels.StudentOption
             if (!grades.Any())
                 return;
 
-            GradeFilter.Add(new FilterItem("All", false));
+            GradeFilter.Add(new FilterItem("All", true));
             foreach (Grade grade in grades)
             {
                 string gradeName = $"{grade.Name}";
-                GradeFilter.Add(new FilterItem(gradeName, false));
+                GradeFilter.Add(new FilterItem(gradeName, true));
                 GradeDic.Add(gradeName, grade);
             }
         }
@@ -180,30 +212,68 @@ namespace Stumana.WPF.ViewModels.MainViewModels.StudentOption
                 return;
 
             ClassroomDic.Clear();
-            ClassFilter.Add(new FilterItem("All", false));
+            ClassFilter.Add(new FilterItem("All", true));
             classrooms = classrooms.OrderByDescending(c => c.Name).ToList();
             foreach (Classroom classroom in classrooms)
             {
                 string className = $"Lớp {classroom.Name}";
-                ClassFilter.Add(new FilterItem(className, false));
+                ClassFilter.Add(new FilterItem(className, true));
                 ClassroomDic[className] = classroom;
             }
 
-            ClassFilter.Add(new FilterItem("Chưa có lớp", false));
+            ClassFilter.Add(new FilterItem("Chưa có lớp", true));
         }
 
         private async void FilterGrade(object param)
         {
-            FilterItem filterItem = (FilterItem)param;
-            ProcessFilterItemSelection(filterItem, GradeFilter);
-            LoadClassroomFilter();
+            if (IsProcessingFilter) 
+                return;
+
+            try
+            {
+                IsProcessingFilter = true;
+                FilterItem filterItem = (FilterItem)param;
+                ProcessFilterItemSelection(filterItem, GradeFilter);
+                DisplayGradeFilterText = ProcessDisplayText(GradeFilter, "Khối*");
+                LoadClassroomFilter();
+            }
+            finally
+            {
+                IsProcessingFilter = false;
+            }
         }
 
         private void FilterClassroom(object param)
         {
-            FilterItem filterItem = (FilterItem)param;
-            ProcessFilterItemSelection(filterItem, ClassFilter);
-            OnFilterChange();
+            if (IsProcessingFilter) 
+                return;
+    
+            try
+            {
+                IsProcessingFilter = true;
+                FilterItem filterItem = (FilterItem)param;
+                ProcessFilterItemSelection(filterItem, ClassFilter);
+                DisplayClassFilterText = ProcessDisplayText(ClassFilter, "Lớp");
+                OnFilterChange();
+            }
+            finally
+            {
+                IsProcessingFilter = false;
+            }
+        }
+
+        private string ProcessDisplayText(ObservableCollection<FilterItem> filterItems, string defaultText = "")
+        {
+            int selectionCount = filterItems.Count(i => i.IsChecked);
+            if (selectionCount == 0)
+                return defaultText;
+
+            string displayText;
+            if (selectionCount < filterItems.Count - 1)
+                displayText = $"{selectionCount} được chọn";
+            else
+                displayText = "Tất cả";
+            return displayText;
         }
 
         private void ProcessFilterItemSelection(FilterItem filterItem, ObservableCollection<FilterItem> filterItems)

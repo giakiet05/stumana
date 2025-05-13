@@ -115,7 +115,6 @@ namespace Stumana.WPF.ViewModels.MainViewModels.YearOption
         private async Task LoadGradeTable()
         {
             var grades = (await GenericDataService<Grade>.Instance.GetAllAsync());
-
             GradeTable.Clear();
             GradeList.Clear();
             foreach (var grade in grades)

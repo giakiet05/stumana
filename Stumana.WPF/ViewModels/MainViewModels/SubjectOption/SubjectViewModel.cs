@@ -67,16 +67,15 @@ namespace Stumana.WPF.ViewModels.MainViewModels.SubjectOption
             }
         }
 
-        private string _selectedgrade;
+        private string _displayGradeFilterText = String.Empty;
 
-        public string SelectedGrade
+        public string DisplayGradeFilterText
         {
-            get => _selectedgrade;
+            get => _displayGradeFilterText;
             set
             {
-                _selectedgrade = value;
+                _displayGradeFilterText = value;
                 OnPropertyChanged();
-                OnSelectionSubjectFilterChange();
             }
         }
 
@@ -133,11 +132,17 @@ namespace Stumana.WPF.ViewModels.MainViewModels.SubjectOption
             AddSubjectScoreTypeCommand = new NavigateModalCommand(() => new AddSubjectScoreTypeViewModel(SelectedSubject.MySubject, OnSubjectScoreTypeDataChanged),
                                                                   () => SelectedSubject != null, "Hãy chọn một môn học");
             DeleteSubjectScoreTypeCommand = new RelayCommand(DeleteSubjectScoreType);
-
             FilterGradeCommand = new RelayCommand(FilterGrade);
 
+            LoadFilter();
+        }
+
+        private void LoadFilter()
+        {
             LoadSchoolYearFilter();
             LoadGradeFilter();
+            DisplayGradeFilterText = ProcessDisplayText(GradeFilter);
+            OnSelectionSubjectFilterChange();
         }
 
         private async void UpdateSubjectData(object? sender, EventArgs e)
@@ -177,6 +182,8 @@ namespace Stumana.WPF.ViewModels.MainViewModels.SubjectOption
                 SchoolYearCollection.Add(schoolyearstr);
                 SchoolYearsDic.Add(schoolyearstr, schoolYear);
             }
+
+            SelectedSchoolYear = SchoolYearCollection[0];
         }
 
         public async void LoadGradeFilter()
@@ -187,11 +194,11 @@ namespace Stumana.WPF.ViewModels.MainViewModels.SubjectOption
             if (!grades.Any())
                 return;
 
-            GradeFilter.Add(new FilterItem("All", false));
+            GradeFilter.Add(new FilterItem("All", true));
             foreach (Grade grade in grades)
             {
                 string gradeName = $"{grade.Name}";
-                GradeFilter.Add(new FilterItem(gradeName, false));
+                GradeFilter.Add(new FilterItem(gradeName, true));
                 GradeDic.Add(gradeName, grade);
             }
         }
@@ -200,7 +207,19 @@ namespace Stumana.WPF.ViewModels.MainViewModels.SubjectOption
         {
             FilterItem filterItem = (FilterItem)param;
             ProcessFilterItemSelection(filterItem, GradeFilter);
+            DisplayGradeFilterText = ProcessDisplayText(GradeFilter);
             OnSelectionSubjectFilterChange();
+        }
+
+        private string ProcessDisplayText(ObservableCollection<FilterItem> filterItems)
+        {
+            string displayText;
+            int selectionCount = filterItems.Count(i => i.IsChecked);
+            if (selectionCount < filterItems.Count - 1)
+                displayText = $"{selectionCount} được chọn";
+            else
+                displayText = "Tất cả";
+            return displayText;
         }
 
         private void ProcessFilterItemSelection(FilterItem filterItem, ObservableCollection<FilterItem> filterItems)

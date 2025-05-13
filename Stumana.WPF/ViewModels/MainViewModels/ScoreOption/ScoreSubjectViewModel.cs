@@ -18,7 +18,18 @@ public class ScoreSubjectViewModel : BaseViewModel
     public Dictionary<DataRow, Dictionary<string, Tuple<double, double?>>> ChangedData { get; set; } = new();
     public Dictionary<string, SubjectScoreType> SubjectScoreTypeDic { get; set; } = new();
 
-    private DataTable ScoreDataTable { get; set; } = new DataTable();
+    private DataTable _scoreDataTable = new DataTable();
+
+    public DataTable ScoreDataTable
+    {
+        get => _scoreDataTable;
+        set
+        {
+            _scoreDataTable = value;
+            OnPropertyChanged();
+        }
+    }
+
     private DataView _tableView;
 
     public DataView TableView
@@ -27,7 +38,7 @@ public class ScoreSubjectViewModel : BaseViewModel
         set
         {
             _tableView = value;
-            OnPropertyChanged();
+            OnPropertyChanged(nameof(TableView));
         }
     }
 
@@ -49,6 +60,7 @@ public class ScoreSubjectViewModel : BaseViewModel
     private Dictionary<string, Grade> GradeDic { get; set; } = new();
     private Dictionary<string, Classroom> ClassroomDic { get; set; } = new();
     private Dictionary<string, int> SemesterDic { get; set; } = new();
+    private bool IsProcessingFilter { get; set; } = false;
 
     private ObservableCollection<FilterItem> _gradeFilter = new();
 
@@ -63,6 +75,18 @@ public class ScoreSubjectViewModel : BaseViewModel
     }
 
     private ObservableCollection<string> _schoolyearFilter = new();
+
+    private string _displayGradeFilterText = String.Empty;
+
+    public string DisplayGradeFilterText
+    {
+        get => _displayGradeFilterText;
+        set
+        {
+            _displayGradeFilterText = value;
+            OnPropertyChanged();
+        }
+    }
 
     public ObservableCollection<string> SchoolYearFilter
     {
@@ -131,6 +155,18 @@ public class ScoreSubjectViewModel : BaseViewModel
         }
     }
 
+    private string _displayClassFilterText = String.Empty;
+
+    public string DisplayClassFilterText
+    {
+        get => _displayClassFilterText;
+        set
+        {
+            _displayClassFilterText = value;
+            OnPropertyChanged();
+        }
+    }
+
     private ObservableCollection<FilterItem> _semesterFilter = new();
 
     public ObservableCollection<FilterItem> SemesterFilter
@@ -139,6 +175,18 @@ public class ScoreSubjectViewModel : BaseViewModel
         set
         {
             _semesterFilter = value;
+            OnPropertyChanged();
+        }
+    }
+
+    private string _displaySemesterFilterText;
+
+    public string DisplaySemesterFilterText
+    {
+        get => _displaySemesterFilterText;
+        set
+        {
+            _displaySemesterFilterText = value;
             OnPropertyChanged();
         }
     }
@@ -172,6 +220,11 @@ public class ScoreSubjectViewModel : BaseViewModel
     {
         await LoadSchoolYearFilter();
         await LoadGradeFilter();
+        DisplayGradeFilterText = ProcessDisplayText(GradeFilter);
+
+        LoadDependentFilter();
+        DisplayClassFilterText = ProcessDisplayText(ClassFilter, "Lớp");
+        DisplaySemesterFilterText = ProcessDisplayText(SemesterFilter, "Học kì");
     }
 
     private async Task LoadSchoolYearFilter()
@@ -189,6 +242,8 @@ public class ScoreSubjectViewModel : BaseViewModel
             SchoolYearFilter.Add(schoolyearName);
             SchoolYearDic.Add(schoolyearName, schoolYear);
         }
+
+        SelectedSchoolYear = SchoolYearFilter[0];
     }
 
     public async Task LoadGradeFilter()
@@ -199,18 +254,22 @@ public class ScoreSubjectViewModel : BaseViewModel
         if (!grades.Any())
             return;
 
-        GradeFilter.Add(new FilterItem("All", false));
+        GradeFilter.Add(new FilterItem("All", true));
         foreach (Grade grade in grades)
         {
             string gradeName = $"{grade.Name}";
-            GradeFilter.Add(new FilterItem(gradeName, false));
+            GradeFilter.Add(new FilterItem(gradeName, true));
             GradeDic.Add(gradeName, grade);
         }
+
+        DisplayGradeFilterText = ProcessDisplayText(GradeFilter, "Khối*");
     }
 
-    public async Task LoadSubjectFilter(SchoolYear schoolYear, IEnumerable<Grade> grades)
+    public async Task LoadSubjectFilter(SchoolYear? schoolYear, List<Grade> grades)
     {
         SubjectFilter.Clear();
+        if (schoolYear == null)
+            return;
 
         var gradeId = grades.Select(g => g.Id);
         List<Subject> subjects = (await GenericDataService<Subject>.Instance.GetManyAsync(s => s.YearId == schoolYear.Id && gradeId.Contains(s.GradeId),
@@ -226,11 +285,15 @@ public class ScoreSubjectViewModel : BaseViewModel
             SubjectDic.Add(subjectName, subject);
             SubjectFilter.Add(subjectName);
         }
+
+        SelectedSubject = SubjectFilter[0];
     }
 
-    public async Task LoadClassroomFilter(SchoolYear schoolYear, IEnumerable<Grade> grades)
+    public async Task LoadClassroomFilter(SchoolYear? schoolYear, List<Grade> grades)
     {
         ClassFilter.Clear();
+        if (schoolYear == null)
+            return;
 
         var gradeId = grades.Select(g => g.Id);
         List<Classroom> classrooms = (await GenericDataService<Classroom>.Instance.GetManyAsync(c => c.YearId == schoolYear.Id && gradeId.Contains(c.GradeId))).ToList();
@@ -248,9 +311,12 @@ public class ScoreSubjectViewModel : BaseViewModel
         }
     }
 
-    public async Task LoadSemesterFilter(SchoolYear schoolYear, IEnumerable<Grade> grades)  
+    public async Task LoadSemesterFilter(SchoolYear? schoolYear, List<Grade> grades)
     {
         SemesterFilter.Clear();
+        if (schoolYear == null)
+            return;
+
         var gradeId = grades.Select(g => g.Id);
         List<int> semesters = (await GenericDataService<StudentAssignment>.Instance.GetManyAsync(sa => sa.Classroom.YearId == schoolYear.Id && gradeId.Contains(sa.Classroom.GradeId),
                                                                                                  query => query.Include(sa => sa.Classroom))).Select(sa => sa.Semester).Distinct().ToList();
@@ -259,20 +325,17 @@ public class ScoreSubjectViewModel : BaseViewModel
             return;
 
         SemesterDic.Clear();
-        SemesterFilter.Add(new FilterItem("All", false));
+        SemesterFilter.Add(new FilterItem("All", true));
         foreach (int semester in semesters)
         {
             string semesterName = semester.ToString();
-            SemesterFilter.Add(new FilterItem(semesterName, false));
+            SemesterFilter.Add(new FilterItem(semesterName, true));
             SemesterDic[semesterName] = semester;
         }
     }
 
     public async void LoadDependentFilter()
     {
-        if (string.IsNullOrEmpty(SelectedSchoolYear) || GradeFilter.Count(i => i.IsChecked) == 0)
-            return;
-
         SchoolYear schoolYear = SchoolYearDic[SelectedSchoolYear];
 
         List<Grade> grades = new List<Grade>();
@@ -285,14 +348,19 @@ public class ScoreSubjectViewModel : BaseViewModel
         await LoadClassroomFilter(schoolYear, grades);
         await LoadSubjectFilter(schoolYear, grades);
         await LoadSemesterFilter(schoolYear, grades);
+        DisplayClassFilterText = ProcessDisplayText(ClassFilter, "Lớp");
+        DisplaySemesterFilterText = ProcessDisplayText(SemesterFilter, "Học kì");
 
         OnFilterChange();
     }
 
     private async void OnFilterChange()
     {
-        if (string.IsNullOrEmpty(SelectedSubject))
+        if (SelectedSchoolYear == null || GradeFilter.Count(i => i.IsChecked) == 0 || string.IsNullOrEmpty(SelectedSubject))
+        {
+            TableView = null;
             return;
+        }
 
         Subject subject = SubjectDic[SelectedSubject];
         await LoadTableColumn(subject);
@@ -315,7 +383,7 @@ public class ScoreSubjectViewModel : BaseViewModel
         ScoreDataTable.ColumnChanged += OnColumnChanged;
     }
 
-    private async Task LoadTableColumn(Subject curSubject)
+    private async Task LoadTableColumn(Subject? curSubject)
     {
         ScoreDataTable = new DataTable();
         SubjectScoreTypeDic.Clear();
@@ -334,9 +402,7 @@ public class ScoreSubjectViewModel : BaseViewModel
             return;
 
         var subjectScoreTypes = await GenericDataService<SubjectScoreType>.Instance.GetManyAsync(sc => sc.SubjectId == curSubject.Id,
-                                                                                                score => score.Include(sc => sc.ScoreType));
-        if (!subjectScoreTypes.Any())
-            return;
+                                                                                                 score => score.Include(sc => sc.ScoreType));
 
         foreach (SubjectScoreType subjectScoreType in subjectScoreTypes)
         {
@@ -380,7 +446,7 @@ public class ScoreSubjectViewModel : BaseViewModel
             var classroomId = classrooms.Select(c => c.Id);
             studentAssignments = (await GenericDataService<StudentAssignment>.Instance.GetManyAsync(sa => classroomId.Contains(sa.ClassroomId),
                                                                                                     query => query.Include(sa => sa.Student)
-                                                                                                       .Include(sa => sa.Classroom))).ToList();
+                                                                                                        .Include(sa => sa.Classroom))).ToList();
         }
 
         if (semesters != null && semesters.Count > 0)
@@ -418,6 +484,7 @@ public class ScoreSubjectViewModel : BaseViewModel
                     }
                     else
                         dataRow[columnName] = DBNull.Value;
+
                     continue;
                 }
 
@@ -446,24 +513,73 @@ public class ScoreSubjectViewModel : BaseViewModel
 
     private void FilterGrade(object param)
     {
-        FilterItem filterItem = (FilterItem)param;
-        ProcessFilterItemSelection(filterItem, GradeFilter);
-        LoadDependentFilter();
-        OnFilterChange();
+        if (IsProcessingFilter)
+            return;
+
+        try
+        {
+            IsProcessingFilter = true;
+            FilterItem filterItem = (FilterItem)param;
+            ProcessFilterItemSelection(filterItem, GradeFilter);
+            DisplayGradeFilterText = ProcessDisplayText(GradeFilter, "Khối*");
+            LoadDependentFilter();
+        }
+        finally
+        {
+            IsProcessingFilter = false;
+        }
     }
 
     private void FilterClassRoom(object param)
     {
-        FilterItem filterItem = (FilterItem)param;
-        ProcessFilterItemSelection(filterItem, ClassFilter);
-        OnFilterChange();
+        if (IsProcessingFilter)
+            return;
+
+        try
+        {
+            IsProcessingFilter = true;
+            FilterItem filterItem = (FilterItem)param;
+            ProcessFilterItemSelection(filterItem, ClassFilter);
+            DisplayClassFilterText = ProcessDisplayText(ClassFilter, "Lớp");
+            OnFilterChange();
+        }
+        finally
+        {
+            IsProcessingFilter = false;
+        }
     }
 
     private void FilterSemester(object param)
     {
-        FilterItem filterItem = (FilterItem)param;
-        ProcessFilterItemSelection(filterItem, SemesterFilter);
-        OnFilterChange();
+        if (IsProcessingFilter)
+            return;
+
+        try
+        {
+            IsProcessingFilter = true;
+            FilterItem filterItem = (FilterItem)param;
+            ProcessFilterItemSelection(filterItem, SemesterFilter);
+            DisplaySemesterFilterText = ProcessDisplayText(SemesterFilter, "Học kì");
+            OnFilterChange();
+        }
+        finally
+        {
+            IsProcessingFilter = false;
+        }
+    }
+
+    private string ProcessDisplayText(ObservableCollection<FilterItem> filterItems, string defaultText = "")
+    {
+        int selectionCount = filterItems.Count(i => i.IsChecked);
+        if (selectionCount == 0)
+            return defaultText;
+
+        string displayText;
+        if (selectionCount < filterItems.Count - 1)
+            displayText = $"{selectionCount} được chọn";
+        else
+            displayText = "Tất cả";
+        return displayText;
     }
 
     private void ProcessFilterItemSelection(FilterItem filterItem, ObservableCollection<FilterItem> filterItems)
@@ -498,12 +614,13 @@ public class ScoreSubjectViewModel : BaseViewModel
         }
     }
 
-    private bool isUpdating = false;
+    private bool _isUpdating = false;
+
     public async void OnColumnChanged(object sender, DataColumnChangeEventArgs e)
     {
-        if (isUpdating) 
+        if (_isUpdating)
             return;
-        isUpdating = true;
+        _isUpdating = true;
 
         string columnName = e.Column.ColumnName;
 
@@ -513,7 +630,8 @@ public class ScoreSubjectViewModel : BaseViewModel
         else
         {
             Score? score = await GenericDataService<Score>.Instance.GetOneAsync(s => s.SubjectScoreTypeId == SubjectScoreTypeDic[columnName].Id &&
-                                                                                     s.StudentAssignment.StudentId == e.Row["Mã học sinh"].ToString(),
+                                                                                     s.StudentAssignment.StudentId == e.Row["Mã học sinh"].ToString() &&
+                                                                                     s.StudentAssignment.Semester == int.Parse(e.Row["Học kì"].ToString()),
                                                                                 query => query.Include(s => s.StudentAssignment));
             if (score == null)
                 originalValue = -1;
@@ -539,7 +657,7 @@ public class ScoreSubjectViewModel : BaseViewModel
             {
                 ToastMessageViewModel.ShowErrorToast("Điểm không hợp lệ");
                 e.Row[columnName] = originalValue < 0 ? DBNull.Value : originalValue;
-                isUpdating = false;
+                _isUpdating = false;
                 return;
             }
         }
@@ -548,7 +666,7 @@ public class ScoreSubjectViewModel : BaseViewModel
         {
             if (ChangedData.TryGetValue(e.Row, out var columnChanges))
                 columnChanges.Remove(columnName);
-            isUpdating = false;
+            _isUpdating = false;
             return;
         }
 
@@ -556,7 +674,7 @@ public class ScoreSubjectViewModel : BaseViewModel
             ChangedData[e.Row] = new Dictionary<string, Tuple<double, double?>>();
 
         ChangedData[e.Row][columnName] = Tuple.Create(originalValue, newValue);
-        isUpdating = false;
+        _isUpdating = false;
     }
 
     public async void SaveChange()
@@ -588,10 +706,10 @@ public class ScoreSubjectViewModel : BaseViewModel
                                                                                                    s.SubjectScoreTypeId == scoreType.Id);
 
                         await GenericDataService<Score>.Instance.DeleteOneAsync(s => s.Id == oldScore.Id);
-                        return;
+                        continue;
                     }
 
-                    if (oldValue < 0)
+                    if (oldValue < 0) //old score not exist
                     {
                         Score score = new Score
                         {
@@ -612,7 +730,9 @@ public class ScoreSubjectViewModel : BaseViewModel
                     }
                 }
             }
+
             ToastMessageViewModel.ShowSuccessToast("Lưu thay đổi thành công");
+            OnFilterChange();
             ChangedData.Clear();
         }
         catch (Exception e)

@@ -1,10 +1,12 @@
 ﻿using System.Collections.ObjectModel;
 using System.Data;
+using System.Diagnostics;
 using System.Windows.Input;
 using Microsoft.EntityFrameworkCore;
 using Stumana.DataAccess.Services;
 using Stumana.DataAcess.Models;
 using Stumana.WPF.Commands;
+using Stumana.WPF.Helpers;
 using Stumana.WPF.ViewModels.PopupModels;
 
 namespace Stumana.WPF.ViewModels.MainViewModels.ClassOption
@@ -12,7 +14,7 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ClassOption
     public class ClassListViewModel : BaseViewModel
     {
         #region Commands
-
+        public ICommand FilterGradeCommand { get; set; }
         public ICommand AddStudentToClassCommand { get; set; }
         public ICommand DeleteStudentCommand { get; set; }
         public ICommand AddClassroomCommand { get; set; }
@@ -49,28 +51,27 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ClassOption
         }
 
         private Dictionary<string, Grade> GradeDic { get; set; } = new Dictionary<string, Grade>();
-        private ObservableCollection<string> _gradeCollection;
+        private ObservableCollection<FilterItem> _gradeFilter = new();
 
-        public ObservableCollection<string> GradeCollection
+        public ObservableCollection<FilterItem> GradeFilter
         {
-            get => _gradeCollection;
+            get => _gradeFilter;
             set
             {
-                _gradeCollection = value;
+                _gradeFilter = value;
                 OnPropertyChanged();
             }
         }
 
-        private string _selectedgrade;
+        private string _displayGradeFilterText = String.Empty;
 
-        public string SelectedGrade
+        public string DisplayGradeFilterText
         {
-            get => _selectedgrade;
+            get => _displayGradeFilterText;
             set
             {
-                _selectedgrade = value;
+                _displayGradeFilterText = value;
                 OnPropertyChanged();
-                OnSelectionClassroomFilterChange();
             }
         }
 
@@ -128,16 +129,23 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ClassOption
             OnClassDataChanged += UpdateClassTable;
             OnStudentDataChanged += UpdateStudentTable;
 
-            LoadSchoolYearFilter();
-            LoadGradeFilter();
-
             LoadClassTableColumn();
+            LoadFilter();
 
+            FilterGradeCommand = new RelayCommand(FilterGrade);
             AddClassroomCommand = new NavigateModalCommand(() => new AddClassroomViewModel(OnClassDataChanged));
             DeleteClassroomCommand = new RelayCommand(DeleteClassroom);
             AddStudentToClassCommand = new NavigateModalCommand(() => new AddStudentToClassViewModel(ClassroomDic[SelectedClass["Tên lớp"].ToString()], OnStudentDataChanged),
                                                                 () => SelectedClass != null, "Hãy chọn một lớp để thêm");
             DeleteStudentCommand = new RelayCommand(DeleteStudent);
+        }
+
+        private void LoadFilter()
+        {
+            LoadSchoolYearFilter();
+            LoadGradeFilter();
+            DisplayGradeFilterText = ProcessDisplayText(GradeFilter);
+            OnSelectionClassroomFilterChange();
         }
 
         private void LoadClassTableColumn()
@@ -182,21 +190,21 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ClassOption
 
             SchoolYear schoolYear = SchoolYearsDic[SelectedSchoolYear];
 
-            Grade? grade = null;
-            if (!string.IsNullOrEmpty(SelectedGrade))
-                grade = GradeDic[SelectedGrade];
+            List<Grade> grades = new List<Grade>();
+            foreach (FilterItem item in GradeFilter)
+            {
+                if (item.IsChecked && item.Name != "All")
+                    grades.Add(GradeDic[item.Name]);
+            }
 
-            LoadClassTable(schoolYear, grade);
+            LoadClassTable(schoolYear, grades);
         }
 
-        private async void LoadClassTable(SchoolYear schoolYear, Grade? grade)
+        private async void LoadClassTable(SchoolYear schoolYear, List<Grade> grades)
         {
             List<Classroom> classrooms = new List<Classroom>();
-
-            classrooms = (await GenericDataService<Classroom>.Instance.GetManyAsync(cl => cl.YearId == schoolYear.Id)).ToList();
-
-            if (grade != null)
-                classrooms = classrooms.Where(cl => cl.GradeId == grade.Id).ToList();
+            var gradeIds = grades.Select(g => g.Id).Distinct();
+            classrooms = (await GenericDataService<Classroom>.Instance.GetManyAsync(cl => cl.YearId == schoolYear.Id && gradeIds.Contains(cl.GradeId))).ToList();
 
             ClassDataTable.Rows.Clear();
             ClassroomDic.Clear();
@@ -205,7 +213,10 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ClassOption
                 var studentAssignments = await GenericDataService<StudentAssignment>.Instance.GetManyAsync(sa => sa.ClassroomId == classroom.Id,
                                                                                                            query => query.Include(sa => sa.Student));
                 List<Student> students = studentAssignments.GroupBy(sa => sa.StudentId).Select(g => g.First().Student).Where(s => s != null).ToList();
-                ClassDataTable.Rows.Add(classroom.Name, students.Count());
+                DataRow dataRow = ClassDataTable.NewRow();
+                dataRow["Tên lớp"] = classroom.Name;
+                dataRow["Sĩ số"] = students.Count;
+                ClassDataTable.Rows.Add(dataRow);
                 ClassroomDic[classroom.Name] = classroom;
             }
         }
@@ -220,16 +231,75 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ClassOption
                 SchoolYearCollection.Add(schoolyearstr);
                 SchoolYearsDic.Add(schoolyearstr, schoolYear);
             }
+
+            SelectedSchoolYear = SchoolYearCollection[0];
         }
 
-        private async void LoadGradeFilter()
+        public async void LoadGradeFilter()
         {
-            GradeCollection = new ObservableCollection<string>();
-            var grades = await GenericDataService<Grade>.Instance.GetAllAsync();
+            GradeFilter.Clear();
+
+            var grades = (await GenericDataService<Grade>.Instance.GetAllAsync()).ToList();
+            if (!grades.Any())
+                return;
+
+            GradeFilter.Add(new FilterItem("All", true));
             foreach (Grade grade in grades)
             {
-                GradeCollection.Add(grade.Name);
-                GradeDic.Add(grade.Name, grade);
+                string gradeName = $"{grade.Name}";
+                GradeFilter.Add(new FilterItem(gradeName, true));
+                GradeDic.Add(gradeName, grade);
+            }
+        }
+
+        private void FilterGrade(object param)
+        {
+            FilterItem filterItem = (FilterItem)param;
+            ProcessFilterItemSelection(filterItem, GradeFilter);
+            DisplayGradeFilterText = ProcessDisplayText(GradeFilter);
+            OnSelectionClassroomFilterChange();
+        }
+
+        private string ProcessDisplayText(ObservableCollection<FilterItem> filterItems)
+        {
+            string displayText;
+            int selectionCount = filterItems.Count(i => i.IsChecked);
+            if (selectionCount < filterItems.Count - 1)
+                displayText = $"{selectionCount} được chọn";
+            else
+                displayText = "Tất cả";
+            return displayText;
+        }
+
+        private void ProcessFilterItemSelection(FilterItem filterItem, ObservableCollection<FilterItem> filterItems)
+        {
+            if (filterItem.Name == "All")
+            {
+                if (filterItem.IsChecked)
+                {
+                    foreach (FilterItem item in filterItems)
+                    {
+                        if (!item.IsChecked)
+                            item.IsChecked = true;
+                    }
+                }
+                else
+                {
+                    int countIsChecked = filterItems.Count(i => i.IsChecked);
+                    if (countIsChecked == filterItems.Count - 1)
+                    {
+                        foreach (FilterItem item in filterItems)
+                            item.IsChecked = false;
+                    }
+                }
+            }
+            else
+            {
+                if (filterItem.IsChecked == false && filterItems[0].IsChecked)
+                    filterItems[0].IsChecked = false;
+
+                if (filterItem.IsChecked && filterItems.Count(i => i.IsChecked) >= filterItems.Count - 1)
+                    filterItems[0].IsChecked = true;
             }
         }
 
@@ -240,7 +310,7 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ClassOption
                 ToastMessageViewModel.ShowErrorToast("Hãy chọn một lớp để xóa");
                 return;
             }
-                
+
             Classroom classroom = ClassroomDic[SelectedClass["Tên lớp"].ToString()];
             await GenericDataService<Classroom>.Instance.DeleteOneAsync(c => c.Id == classroom.Id);
             ClassroomDic.Remove(classroom.Name);

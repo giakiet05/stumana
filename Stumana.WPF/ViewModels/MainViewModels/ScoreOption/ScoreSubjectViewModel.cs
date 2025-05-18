@@ -242,8 +242,8 @@ public class ScoreSubjectViewModel : BaseViewModel
             SchoolYearFilter.Add(schoolyearName);
             SchoolYearDic.Add(schoolyearName, schoolYear);
         }
-
-        SelectedSchoolYear = SchoolYearFilter[0];
+        if (SchoolYearFilter.Any())
+            SelectedSchoolYear = SchoolYearFilter[0];
     }
 
     public async Task LoadGradeFilter()
@@ -285,8 +285,8 @@ public class ScoreSubjectViewModel : BaseViewModel
             SubjectDic.Add(subjectName, subject);
             SubjectFilter.Add(subjectName);
         }
-
-        SelectedSubject = SubjectFilter[0];
+        if (SubjectFilter.Any())
+            SelectedSubject = SubjectFilter[0];
     }
 
     public async Task LoadClassroomFilter(SchoolYear? schoolYear, List<Grade> grades)

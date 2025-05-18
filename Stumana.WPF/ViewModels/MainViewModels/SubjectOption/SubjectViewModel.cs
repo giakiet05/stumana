@@ -182,8 +182,8 @@ namespace Stumana.WPF.ViewModels.MainViewModels.SubjectOption
                 SchoolYearCollection.Add(schoolyearstr);
                 SchoolYearsDic.Add(schoolyearstr, schoolYear);
             }
-
-            SelectedSchoolYear = SchoolYearCollection[0];
+            if (SchoolYearCollection.Any())
+                SelectedSchoolYear = SchoolYearCollection[0];
         }
 
         public async void LoadGradeFilter()

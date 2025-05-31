@@ -67,10 +67,6 @@
     </DataTemplate>
     <!--#endregion-->
     <!--#region ScoreOption-->
-    <DataTemplate DataType="{x:Type scoreOptionViewModels:EditScoreInputViewModel}">
-        <scoreOptionViews:EditScoreInputView />
-    </DataTemplate>
-
     <DataTemplate DataType="{x:Type scoreOptionViewModels:ScoreSubjectViewModel}">
         <scoreOptionViews:ScoreSubjectView />
     </DataTemplate>
@@ -84,8 +80,8 @@
     <!--#endregion-->
 
     <!--#region StudentOption-->
-    <DataTemplate DataType="{x:Type studentOptionViewModels:StudentInforViewModel}">
-        <studentOptionViews:StudentInforView />
+    <DataTemplate DataType="{x:Type studentOptionViewModels:StudentInfoViewModel}">
+        <studentOptionViews:StudentInfoView />
     </DataTemplate>
 
     <DataTemplate DataType="{x:Type studentOptionViewModels:StudentViewModel}">

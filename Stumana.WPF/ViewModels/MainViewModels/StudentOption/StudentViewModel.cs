@@ -128,6 +128,7 @@ namespace Stumana.WPF.ViewModels.MainViewModels.StudentOption
         public ICommand AddStudentCommand { get; set; }
         public ICommand DeleteStudentCommand { get; set; }
         public ICommand EditStudentCommand { get; set; }
+        public ICommand StudentDetailCommand { get; set; }
 
         public EventHandler? OnStudentDataChanged { get; set; }
 
@@ -141,6 +142,7 @@ namespace Stumana.WPF.ViewModels.MainViewModels.StudentOption
             DeleteStudentCommand = new RelayCommand(DeleteStudent);
             EditStudentCommand = new NavigateModalCommand(() => new EditStudentViewModel(SelectedStudent, OnStudentDataChanged),
                                                           () => SelectedStudent != null, "Hãy chọn một học sinh để chỉnh sửa.");
+            StudentDetailCommand = new NavigateModalCommand(() => new StudentInfoViewModel(SelectedStudent));
 
             LoadInitFilter();
         }

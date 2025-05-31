@@ -257,6 +257,13 @@
                               ItemsSource="{Binding StudentTable}"
                               SelectedItem="{Binding SelectedStudent}">
 
+                        <b:Interaction.Triggers>
+                            <b:EventTrigger EventName="MouseDoubleClick">
+                                <b:InvokeCommandAction Command="{Binding StudentDetailCommand}"
+                                                       CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
+                            </b:EventTrigger>
+                        </b:Interaction.Triggers>
+
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Mã học sinh" Binding="{Binding Id}"/>
                             <DataGridTextColumn Header="Họ và tên" Binding="{Binding Name}" />

@@ -18,9 +18,9 @@ namespace Stumana.WPF.Views.MainView.StudentOption
     /// <summary>
     /// Interaction logic for StudentInforView.xaml
     /// </summary>
-    public partial class StudentInforView : UserControl
+    public partial class StudentInfoView : UserControl
     {
-        public StudentInforView()
+        public StudentInfoView()
         {
             InitializeComponent();
         }

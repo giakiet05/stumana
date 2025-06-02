@@ -336,6 +336,9 @@ public class ScoreSubjectViewModel : BaseViewModel
 
     public async void LoadDependentFilter()
     {
+        if (SelectedSchoolYear == null)
+            return;
+
         SchoolYear schoolYear = SchoolYearDic[SelectedSchoolYear];
 
         List<Grade> grades = new List<Grade>();
@@ -503,7 +506,7 @@ public class ScoreSubjectViewModel : BaseViewModel
             }
 
             if (sumCoefficient != 0 && sumCoefficient >= maxSumCoefficient)
-                dataRow["Điểm TB"] = sumScore / sumCoefficient;
+                dataRow["Điểm TB"] = double.Round(sumScore / sumCoefficient, 2);
             else
                 dataRow["Điểm TB"] = DBNull.Value;
 

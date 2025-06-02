@@ -1,6 +1,5 @@
 ﻿using System.Collections.ObjectModel;
 using System.Data;
-using System.Diagnostics;
 using System.Windows.Input;
 using Microsoft.EntityFrameworkCore;
 using Stumana.DataAccess.Services;
@@ -14,8 +13,10 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ClassOption
     public class ClassListViewModel : BaseViewModel
     {
         #region Commands
+
         public ICommand FilterGradeCommand { get; set; }
         public ICommand AddStudentToClassCommand { get; set; }
+        public ICommand TransferStudentCommand { get; set; }
         public ICommand DeleteStudentCommand { get; set; }
         public ICommand AddClassroomCommand { get; set; }
         public ICommand DeleteClassroomCommand { get; set; }
@@ -137,6 +138,8 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ClassOption
             DeleteClassroomCommand = new RelayCommand(DeleteClassroom);
             AddStudentToClassCommand = new NavigateModalCommand(() => new AddStudentToClassViewModel(ClassroomDic[SelectedClass["Tên lớp"].ToString()], OnStudentDataChanged),
                                                                 () => SelectedClass != null, "Hãy chọn một lớp để thêm");
+            //TransferStudentCommand = new NavigateModalCommand(() => new StudentTransferViewModel(SelectedStudent ,OnStudentDataChanged), () => SelectedStudent != null,
+            //                                                  "Hãy chọn một học sinh để chuyển lớp.");
             DeleteStudentCommand = new RelayCommand(DeleteStudent);
         }
 
@@ -231,6 +234,7 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ClassOption
                 SchoolYearCollection.Add(schoolyearstr);
                 SchoolYearsDic.Add(schoolyearstr, schoolYear);
             }
+
             if (SchoolYearCollection.Any())
                 SelectedSchoolYear = SchoolYearCollection[0];
         }

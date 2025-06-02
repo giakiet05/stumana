@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Stumana.DataAcess.Models;
 
 namespace Stumana.WPF.ViewModels.PopupModels
 {
     public class StudentTransferViewModel : BaseViewModel
     {
+        public StudentTransferViewModel(Student student, EventHandler onStudentDataChanged)
+        {
+            
+        }
     }
 }

@@ -99,10 +99,11 @@
 
                 <DataGrid Grid.Row="1" Grid.Column="0"
                           Margin="10,10,0,0"
-                          AutoGenerateColumns="False"
+                          AutoGenerateColumns="True"
                           HorizontalAlignment="Stretch"
                           CanUserAddRows="False"
                           IsReadOnly="True"
+                          FontSize="18"
                           CellStyle="{StaticResource DataGridCellStyle}"
                           RowStyle="{StaticResource DataGridRowStyle}"
                           ItemsSource="{Binding TableView}">
@@ -178,7 +179,7 @@
                                      FontSize="14"
                                      IsReadOnly="True"
                                      IsEnabled="False"
-                                     Text="{Binding Classroom}"
+                                     Text="{Binding ClassroomName}"
                                      VerticalContentAlignment="Center"
                                      HorizontalContentAlignment="Center"/>
                         </StackPanel>
@@ -194,7 +195,7 @@
                             <TextBox Background="#FFFFFF"
                                      Margin="10 10 0 0"
                                      Width="50" Height="25"
-                                     Text="{Binding Absence}"
+                                     Text="{Binding Absence, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                      BorderBrush="#CCCCCC"
                                      BorderThickness="1"
                                      VerticalContentAlignment="Center"
@@ -265,13 +266,14 @@
                                  Margin="10,0,10,10"
                                  BorderBrush="#CCCCCC"
                                  BorderThickness="1"
-                                 Text="{Binding Evaluation}"
+                                 Text="{Binding Evaluation, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                  AcceptsReturn="True"
                                  TextWrapping="Wrap"
                                  VerticalScrollBarVisibility="Auto"
                                  HorizontalContentAlignment="Left" />
-                    </StackPanel>
 
+
+                    </StackPanel>
                 </Grid>
 
                 <StackPanel Grid.Column="0" Grid.Row="2"

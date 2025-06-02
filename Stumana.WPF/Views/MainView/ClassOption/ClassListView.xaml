@@ -286,9 +286,9 @@
                     FlowDirection="RightToLeft">
 
             <Button Margin="10,15,10,15"
-                    Width="140"
+                    Width="200"
                     FontSize="18"
-                    Content="Xóa học sinh"
+                    Content="Xóa học sinh khỏi lớp"
                     Padding="10"
                     Style="{StaticResource PrimaryButtonStyle}"
                     Command="{Binding DeleteStudentCommand}" />

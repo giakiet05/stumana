@@ -129,6 +129,7 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ClassOption
         {
             OnClassDataChanged += UpdateClassTable;
             OnStudentDataChanged += UpdateStudentTable;
+            OnStudentDataChanged += UpdateClassTable;
 
             LoadClassTableColumn();
             LoadFilter();
@@ -138,8 +139,6 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ClassOption
             DeleteClassroomCommand = new RelayCommand(DeleteClassroom);
             AddStudentToClassCommand = new NavigateModalCommand(() => new AddStudentToClassViewModel(ClassroomDic[SelectedClass["Tên lớp"].ToString()], OnStudentDataChanged),
                                                                 () => SelectedClass != null, "Hãy chọn một lớp để thêm");
-            //TransferStudentCommand = new NavigateModalCommand(() => new StudentTransferViewModel(SelectedStudent ,OnStudentDataChanged), () => SelectedStudent != null,
-            //                                                  "Hãy chọn một học sinh để chuyển lớp.");
             DeleteStudentCommand = new RelayCommand(DeleteStudent);
         }
 
@@ -333,6 +332,7 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ClassOption
             await GenericDataService<StudentAssignment>.Instance.DeleteManyAsync(sa => studentAssignmentIds.Contains(sa.Id));
             ToastMessageViewModel.ShowSuccessToast("Xóa học sinh khỏi lớp thành công");
             StudentTable.Remove(SelectedStudent);
+            OnClassDataChanged?.Invoke(this, EventArgs.Empty);
         }
 
         private void UpdateClassTable(object? sender, EventArgs e)

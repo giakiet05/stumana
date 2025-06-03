@@ -33,6 +33,7 @@ public class AddStudentToClassViewModel : BaseViewModel
 
     public ICommand CancelCommand { get; set; }
     public ICommand SaveChangeCommand { get; set; }
+    public ICommand RowClickCommand { get; set; }
 
     private readonly EventHandler? OnUpdateData;
 
@@ -43,6 +44,14 @@ public class AddStudentToClassViewModel : BaseViewModel
 
         SaveChangeCommand = new RelayCommand(SaveChange);
         CancelCommand = new RelayCommand(ModalNavigationStore.Instance.Close);
+        RowClickCommand = new RelayCommand(obj =>
+        {
+            if (obj is StudentChoiceInfo studentChoiceInfo)
+            {
+                studentChoiceInfo.IsSelected = !studentChoiceInfo.IsSelected;
+                OnPropertyChanged(nameof(studentChoiceInfo));
+            }
+        });
 
         LoadData();
     }
@@ -88,8 +97,9 @@ public class AddStudentToClassViewModel : BaseViewModel
             {
                 Id = Guid.NewGuid().ToString(),
                 Semester = 1,
-                Conduct = String.Empty,
+                Conduct = string.Empty,
                 Absence = 0,
+                Comment = string.Empty,
                 StudentId = student.StudentID,
                 ClassroomId = CurClassroom.Id
             });
@@ -97,8 +107,9 @@ public class AddStudentToClassViewModel : BaseViewModel
             {
                 Id = Guid.NewGuid().ToString(),
                 Semester = 2,
-                Conduct = String.Empty,
+                Conduct = string.Empty,
                 Absence = 0,
+                Comment = string.Empty,
                 StudentId = student.StudentID,
                 ClassroomId = CurClassroom.Id
             });

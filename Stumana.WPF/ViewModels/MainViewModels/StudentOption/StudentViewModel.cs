@@ -240,6 +240,7 @@ namespace Stumana.WPF.ViewModels.MainViewModels.StudentOption
                 ProcessFilterItemSelection(filterItem, GradeFilter);
                 DisplayGradeFilterText = ProcessDisplayText(GradeFilter, "Khối*");
                 LoadClassroomFilter();
+                OnFilterChange();
             }
             finally
             {

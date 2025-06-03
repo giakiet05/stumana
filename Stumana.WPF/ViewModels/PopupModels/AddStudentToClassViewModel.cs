@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
+using Microsoft.EntityFrameworkCore;
 using Stumana.DataAccess.Services;
 using Stumana.DataAcess.Models;
 using Stumana.WPF.Commands;
@@ -58,8 +59,12 @@ public class AddStudentToClassViewModel : BaseViewModel
 
     public async void LoadData()
     {
-        var studentAssignment = (await GenericDataService<StudentAssignment>.Instance.GetAllAsync()).Select(sa => sa.StudentId).Distinct().ToList();
-        var unassignStudent = (await GenericDataService<Student>.Instance.GetManyAsync(s => !studentAssignment.Contains(s.Id))).ToList();
+        var studentAssignments = await GenericDataService<StudentAssignment>.Instance.GetManyAsync(sa => sa.Classroom.YearId == CurClassroom.YearId &&
+                                                                                                         sa.Classroom.GradeId == CurClassroom.GradeId,
+                                                                                                   query => query.Include(sa => sa.Classroom));
+
+        var studentWithClassIds = studentAssignments.Select(sa => sa.StudentId).Distinct().ToList();
+        var unassignStudent = (await GenericDataService<Student>.Instance.GetManyAsync(s => !studentWithClassIds.Contains(s.Id))).ToList();
 
         foreach (Student student in unassignStudent)
         {
@@ -182,6 +187,7 @@ public class AddStudentToClassViewModel : BaseViewModel
                 OnPropertyChanged();
             }
         }
+
         public string StudentID { get; set; }
         public string Name { get; set; }
         public DateTime Birthday { get; set; }

@@ -80,6 +80,7 @@
                         <ComboBox Background="#FFFFFF"
                                   Padding="5 0 10 0"
                                   Width="150" Height="30"
+                                  FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
                                   Style="{StaticResource MaterialDesignComboBox}"
                                   Margin="20,0,20,0"
                                   HorizontalAlignment="Left"

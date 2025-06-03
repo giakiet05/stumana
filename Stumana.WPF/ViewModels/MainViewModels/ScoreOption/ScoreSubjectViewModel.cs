@@ -242,6 +242,7 @@ public class ScoreSubjectViewModel : BaseViewModel
             SchoolYearFilter.Add(schoolyearName);
             SchoolYearDic.Add(schoolyearName, schoolYear);
         }
+
         if (SchoolYearFilter.Any())
             SelectedSchoolYear = SchoolYearFilter[0];
     }
@@ -285,6 +286,7 @@ public class ScoreSubjectViewModel : BaseViewModel
             SubjectDic.Add(subjectName, subject);
             SubjectFilter.Add(subjectName);
         }
+
         if (SubjectFilter.Any())
             SelectedSubject = SubjectFilter[0];
     }
@@ -305,7 +307,7 @@ public class ScoreSubjectViewModel : BaseViewModel
         ClassFilter.Add(new FilterItem("All", true));
         foreach (Classroom classroom in classrooms)
         {
-            string className = $"Lớp {classroom.Name}";
+            string className = $"{classroom.Name}";
             ClassFilter.Add(new FilterItem(className, true));
             ClassroomDic[className] = classroom;
         }
@@ -475,6 +477,7 @@ public class ScoreSubjectViewModel : BaseViewModel
 
                 var studentScores = (await GenericDataService<Score>.Instance.GetManyAsync(sc => sc.StudentAssignmentId == studentAssignment.Id
                                                                                                  && sc.SubjectScoreTypeId == subjectScoreType.Id)).ToList();
+                studentScores.Sort((a, b) => a.Attempt.CompareTo(b.Attempt));
 
                 if (subjectScoreType.Amount <= 1)
                 {
@@ -632,10 +635,20 @@ public class ScoreSubjectViewModel : BaseViewModel
             originalValue = myTuple.Item1;
         else
         {
-            Score? score = await GenericDataService<Score>.Instance.GetOneAsync(s => s.SubjectScoreTypeId == SubjectScoreTypeDic[columnName].Id &&
-                                                                                     s.StudentAssignment.StudentId == e.Row["Mã học sinh"].ToString() &&
-                                                                                     s.StudentAssignment.Semester == int.Parse(e.Row["Học kì"].ToString()),
-                                                                                query => query.Include(s => s.StudentAssignment));
+            var subjectScoreTypeId = SubjectScoreTypeDic[columnName].Id;
+            var studentId = e.Row["Mã học sinh"].ToString();
+            var semester = int.Parse(e.Row["Học kì"].ToString());
+            var classroomId = ClassroomDic[e.Row["Lớp"].ToString()].Id;
+
+            var attemptStr = columnName.Split(' ').Last();
+            int attempt = int.TryParse(attemptStr, out var parsed) ? parsed : 1;
+
+            var scores = (await GenericDataService<Score>.Instance.GetManyAsync(s => s.SubjectScoreTypeId == subjectScoreTypeId &&
+                                                                                     s.StudentAssignment.StudentId == studentId &&
+                                                                                     s.StudentAssignment.Semester == semester &&
+                                                                                     s.StudentAssignment.ClassroomId == classroomId,
+                                                                                query => query.Include(s => s.StudentAssignment))).ToList();
+            var score = scores.FirstOrDefault(s => s.Attempt == attempt);
             if (score == null)
                 originalValue = -1;
             else
@@ -691,6 +704,7 @@ public class ScoreSubjectViewModel : BaseViewModel
 
                 string studentId = row["Mã học sinh"].ToString();
                 int semester = SemesterDic[row["Học kì"].ToString()];
+                string classroomId = ClassroomDic[row["Lớp"].ToString()].Id;
 
                 foreach (var columnEntry in columnChanges)
                 {
@@ -700,13 +714,17 @@ public class ScoreSubjectViewModel : BaseViewModel
 
                     string scoreTypeId = SubjectScoreTypeDic[columnName].ScoreTypeId;
 
-                    var studentAssignment = await GenericDataService<StudentAssignment>.Instance.GetOneAsync(sa => sa.StudentId == studentId && sa.Semester == semester);
+                    var studentAssignment = await GenericDataService<StudentAssignment>.Instance.GetOneAsync(sa => sa.StudentId == studentId &&
+                                                                                                                   sa.Semester == semester &&
+                                                                                                                   sa.ClassroomId == classroomId);
+
                     var scoreType = await GenericDataService<SubjectScoreType>.Instance.GetOneAsync(sst => sst.ScoreType.Id == scoreTypeId,
                                                                                                     query => query.Include(sst => sst.ScoreType));
                     if (newValue == null)
                     {
                         Score oldScore = await GenericDataService<Score>.Instance.GetOneAsync(s => s.StudentAssignmentId == studentAssignment.Id &&
-                                                                                                   s.SubjectScoreTypeId == scoreType.Id);
+                                                                                                   s.SubjectScoreTypeId == scoreType.Id &&
+                                                                                                   s.Value == oldValue);
 
                         await GenericDataService<Score>.Instance.DeleteOneAsync(s => s.Id == oldScore.Id);
                         continue;
@@ -734,9 +752,9 @@ public class ScoreSubjectViewModel : BaseViewModel
                 }
             }
 
+            ChangedData.Clear();
             ToastMessageViewModel.ShowSuccessToast("Lưu thay đổi thành công");
             OnFilterChange();
-            ChangedData.Clear();
         }
         catch (Exception e)
         {

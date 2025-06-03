@@ -129,7 +129,8 @@
                 </StackPanel>
                 <StackPanel Width="192" Height="142" VerticalAlignment="Bottom">
                     <RadioButton GroupName="Option"
-                                 Height="40">
+                                 Height="40"
+                                 Command="{Binding LogoutCommand}">
                         <StackPanel Orientation="Horizontal">
                             <Image Height="17"
                                    Source="/Resource/Image/Transfer-Out--Streamline-Tabler.png">

@@ -1,0 +1,47 @@
+﻿<UserControl x:Class="Stumana.WPF.Views.LogoutConfirmView"
+         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+         xmlns:local="clr-namespace:Stumana.WPF.Views"
+         mc:Ignorable="d" 
+         Height="240" Width="400" Background="#fff7f7">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="190"/>
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+
+        <Border Margin="10" Background="#87C5FC" CornerRadius="10">
+            <StackPanel>
+                <Image Source="pack://application:,,,/LearnHub;component/resource/icons/deleteconfirm.png"
+                   Stretch="Uniform" Height="80" Width="80"/>
+
+                <TextBlock Text="Bạn muốn đăng xuất?" 
+                       VerticalAlignment="Center" TextAlignment="Center"
+                       HorizontalAlignment="Center" Foreground="Black"
+                       FontSize="25" Margin="0 5 0 0"/>
+
+                <TextBlock Text="Bạn có chắn chắn muốn đăng xuất không?" 
+                       TextWrapping="Wrap" Width="300" Foreground="Black"
+                        TextAlignment="Center"
+                       VerticalAlignment="Center" HorizontalAlignment="Center" 
+                       FontSize="15" Margin="0 10 0 0"/>
+            </StackPanel>
+        </Border>
+
+        <!--các button chức năng-->
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
+            <!--button xác nhận-->
+            <Button x:Name="btnXacNhan" Content="Đăng xuất"  Width="118"
+                Command="{Binding LogoutCommand}" 
+                Margin="10 0 10 10" Background="#87C5FC" BorderBrush="Transparent"/>
+            <!--button huỷ-->
+            <Button x:Name="btnHuy" Content="Huỷ"  Width="118"
+                Command="{Binding CancelCommand}"
+                Margin="10 0 10 10" Background="#93A7BF" BorderBrush="Transparent"/>
+
+        </StackPanel>
+
+    </Grid>
+</UserControl>

@@ -170,6 +170,7 @@ namespace Stumana.DataAcess.Migrations
                     Semester = table.Column<int>(type: "INTEGER", nullable: false),
                     Conduct = table.Column<string>(type: "TEXT", nullable: false),
                     Absence = table.Column<int>(type: "INTEGER", nullable: false),
+                    Comment = table.Column<string>(type: "TEXT", nullable: false),
                     StudentId = table.Column<string>(type: "TEXT", nullable: false),
                     ClassroomId = table.Column<string>(type: "TEXT", nullable: false)
                 },
@@ -222,6 +223,7 @@ namespace Stumana.DataAcess.Migrations
                 {
                     Id = table.Column<string>(type: "TEXT", maxLength: 191, nullable: false),
                     Value = table.Column<double>(type: "REAL", nullable: false),
+                    Attempt = table.Column<int>(type: "INTEGER", nullable: false),
                     StudentAssignmentId = table.Column<string>(type: "TEXT", nullable: false),
                     SubjectScoreTypeId = table.Column<string>(type: "TEXT", nullable: false)
                 },

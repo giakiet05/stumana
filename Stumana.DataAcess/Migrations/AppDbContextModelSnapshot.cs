@@ -109,6 +109,9 @@ namespace Stumana.DataAcess.Migrations
                         .HasMaxLength(191)
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("Attempt")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("StudentAssignmentId")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -197,6 +200,10 @@ namespace Stumana.DataAcess.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("ClassroomId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Comment")
                         .IsRequired()
                         .HasColumnType("TEXT");
 

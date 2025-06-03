@@ -44,11 +44,13 @@ namespace Stumana.WPF.ViewModels.MainViewModels
             ReportNavigateCommand = new NavigateLayoutCommand(() => new ReportMainViewModel());
             LogoutCommand = new RelayCommand(() =>
             {
-                AccountStore.Instance.CurrentUser = null;
-                NavigationStore.Instance.CurrentViewModel = new SignInViewModel();
-                ToastMessageViewModel.ShowSuccessToast("Đăng xuất thành công");
+                //AccountStore.Instance.CurrentUser = null;
+                //NavigationStore.Instance.CurrentViewModel = new SignInViewModel();
+                //ToastMessageViewModel.ShowSuccessToast("Đăng xuất thành công");
+                ModalNavigationStore.Instance.CurrentModalViewModel = new LogoutConfirmViewModel();
             });
         }
+        
 
         public void OnCurrentLayoutModelChanged()
         {

@@ -59,9 +59,9 @@ namespace Stumana.WPF.ViewModels.MainViewModels.StudentOption
             }
         }
 
-        private string _selectedSchoolYear;
+        private string? _selectedSchoolYear;
 
-        public string SelectedSchoolYear
+        public string? SelectedSchoolYear
         {
             get => _selectedSchoolYear;
             set
@@ -173,6 +173,7 @@ namespace Stumana.WPF.ViewModels.MainViewModels.StudentOption
                 SchoolYearFilter.Add(schoolyearName);
                 SchoolYearDic.Add(schoolyearName, schoolYear);
             }
+
             if (SchoolYearFilter.Any())
                 SelectedSchoolYear = SchoolYearFilter[0];
         }
@@ -229,7 +230,7 @@ namespace Stumana.WPF.ViewModels.MainViewModels.StudentOption
 
         private async void FilterGrade(object param)
         {
-            if (IsProcessingFilter) 
+            if (IsProcessingFilter)
                 return;
 
             try
@@ -248,9 +249,9 @@ namespace Stumana.WPF.ViewModels.MainViewModels.StudentOption
 
         private void FilterClassroom(object param)
         {
-            if (IsProcessingFilter) 
+            if (IsProcessingFilter)
                 return;
-    
+
             try
             {
                 IsProcessingFilter = true;
@@ -332,11 +333,25 @@ namespace Stumana.WPF.ViewModels.MainViewModels.StudentOption
                     classrooms.Add(ClassroomDic[filterItem.Name]);
             }
 
-            await LoadStudentData(classrooms, haveNoClassStudent);
+            if (SelectedSchoolYear == null || GradeFilter.Count(i => i.IsChecked) == 0)
+                return;
+
+            SchoolYear schoolYear = SchoolYearDic[SelectedSchoolYear];
+            List<Grade> grades = new List<Grade>();
+            foreach (FilterItem item in GradeFilter)
+            {
+                if (item.IsChecked && item.Name != "All")
+                    grades.Add(GradeDic[item.Name]);
+            }
+
+            await LoadStudentData(classrooms, haveNoClassStudent, schoolYear, grades);
         }
 
-        private async Task LoadStudentData(List<Classroom> classrooms, bool haveNoClassStudent)
+        private async Task LoadStudentData(List<Classroom> classrooms, bool haveNoClassStudent, SchoolYear schoolYear, List<Grade> grades)
         {
+            StudentTable.Clear();
+            OriginalStudentTable.Clear();
+
             if (classrooms.Count == 0 && !haveNoClassStudent)
                 return;
 
@@ -350,15 +365,16 @@ namespace Stumana.WPF.ViewModels.MainViewModels.StudentOption
             List<Student> studentsWithNoClass = new List<Student>();
             if (haveNoClassStudent)
             {
-                var studentWithClassId = studentsWithClass.Select(s => s.Id).Distinct();
-                studentsWithNoClass = (await GenericDataService<Student>.Instance.GetManyAsync(s => !studentWithClassId.Contains(s.Id))).ToList();
+                var allClassroomIds = (await GenericDataService<Classroom>.Instance.GetManyAsync(c => c.YearId == schoolYear.Id
+                                                                                                      && grades.Select(g => g.Id).Contains(c.GradeId))).Select(c => c.Id);
+                var studentsWithClassIds = (await GenericDataService<StudentAssignment>.Instance.GetManyAsync(sa => allClassroomIds.Contains(sa.ClassroomId))).Select(sa => sa.StudentId);
+
+                studentsWithNoClass = (await GenericDataService<Student>.Instance.GetManyAsync(s => !studentsWithClassIds.Contains(s.Id))).ToList();
             }
 
             List<Student> students = new List<Student>(studentsWithClass);
             students.AddRange(studentsWithNoClass);
 
-            OriginalStudentTable.Clear();
-            StudentTable.Clear();
             foreach (var student in students)
             {
                 StudentTable.Add(student);

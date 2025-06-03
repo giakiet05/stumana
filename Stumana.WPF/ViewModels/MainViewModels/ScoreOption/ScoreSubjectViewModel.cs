@@ -223,8 +223,8 @@ public class ScoreSubjectViewModel : BaseViewModel
         DisplayGradeFilterText = ProcessDisplayText(GradeFilter);
 
         LoadDependentFilter();
-        DisplayClassFilterText = ProcessDisplayText(ClassFilter, "Lớp");
-        DisplaySemesterFilterText = ProcessDisplayText(SemesterFilter, "Học kì");
+        DisplayClassFilterText = ProcessDisplayText(ClassFilter);
+        DisplaySemesterFilterText = ProcessDisplayText(SemesterFilter);
     }
 
     private async Task LoadSchoolYearFilter()
@@ -262,7 +262,7 @@ public class ScoreSubjectViewModel : BaseViewModel
             GradeDic.Add(gradeName, grade);
         }
 
-        DisplayGradeFilterText = ProcessDisplayText(GradeFilter, "Khối*");
+        DisplayGradeFilterText = ProcessDisplayText(GradeFilter);
     }
 
     public async Task LoadSubjectFilter(SchoolYear? schoolYear, List<Grade> grades)
@@ -351,15 +351,15 @@ public class ScoreSubjectViewModel : BaseViewModel
         await LoadClassroomFilter(schoolYear, grades);
         await LoadSubjectFilter(schoolYear, grades);
         await LoadSemesterFilter(schoolYear, grades);
-        DisplayClassFilterText = ProcessDisplayText(ClassFilter, "Lớp");
-        DisplaySemesterFilterText = ProcessDisplayText(SemesterFilter, "Học kì");
+        DisplayClassFilterText = ProcessDisplayText(ClassFilter);
+        DisplaySemesterFilterText = ProcessDisplayText(SemesterFilter);
 
         OnFilterChange();
     }
 
     private async void OnFilterChange()
     {
-        if (SelectedSchoolYear == null || GradeFilter.Count(i => i.IsChecked) == 0 || string.IsNullOrEmpty(SelectedSubject))
+        if (string.IsNullOrEmpty(SelectedSchoolYear) || GradeFilter.Count(i => i.IsChecked) == 0 || string.IsNullOrEmpty(SelectedSubject))
         {
             TableView = null;
             return;
@@ -452,7 +452,7 @@ public class ScoreSubjectViewModel : BaseViewModel
                                                                                                         .Include(sa => sa.Classroom))).ToList();
         }
 
-        if (semesters != null && semesters.Count > 0)
+        if (semesters != null)
             studentAssignments = studentAssignments.Where(sa => semesters.Contains(sa.Semester)).ToList();
 
         ScoreDataTable.Clear();
@@ -524,7 +524,7 @@ public class ScoreSubjectViewModel : BaseViewModel
             IsProcessingFilter = true;
             FilterItem filterItem = (FilterItem)param;
             ProcessFilterItemSelection(filterItem, GradeFilter);
-            DisplayGradeFilterText = ProcessDisplayText(GradeFilter, "Khối*");
+            DisplayGradeFilterText = ProcessDisplayText(GradeFilter);
             LoadDependentFilter();
         }
         finally
@@ -543,7 +543,7 @@ public class ScoreSubjectViewModel : BaseViewModel
             IsProcessingFilter = true;
             FilterItem filterItem = (FilterItem)param;
             ProcessFilterItemSelection(filterItem, ClassFilter);
-            DisplayClassFilterText = ProcessDisplayText(ClassFilter, "Lớp");
+            DisplayClassFilterText = ProcessDisplayText(ClassFilter);
             OnFilterChange();
         }
         finally
@@ -562,7 +562,7 @@ public class ScoreSubjectViewModel : BaseViewModel
             IsProcessingFilter = true;
             FilterItem filterItem = (FilterItem)param;
             ProcessFilterItemSelection(filterItem, SemesterFilter);
-            DisplaySemesterFilterText = ProcessDisplayText(SemesterFilter, "Học kì");
+            DisplaySemesterFilterText = ProcessDisplayText(SemesterFilter);
             OnFilterChange();
         }
         finally

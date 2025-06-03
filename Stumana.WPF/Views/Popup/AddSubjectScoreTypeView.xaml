@@ -71,7 +71,7 @@
                     <TextBox Style="{StaticResource InputFieldStyle}"
                              IsReadOnly="True"
                              Background="#1A808080"
-                             Text="{Binding GradeName, UpdateSourceTrigger=PropertyChanged}" />
+                             Text="{Binding Coefficient, UpdateSourceTrigger=PropertyChanged}" />
                 </StackPanel>
             </Grid>
 

@@ -11,15 +11,21 @@ namespace Stumana.WPF.ViewModels.PopupModels
     {
         private Dictionary<string, ScoreType> ScoreTypeDic { get; set; } = new();
         public ObservableCollection<string> ScoreTypeCollection { get; set; } = new();
-        private string _selectedScoreType;
+        private string? _selectedScoreType;
 
-        public string SelectedScoreType
+        public string? SelectedScoreType
         {
             get => _selectedScoreType;
             set
             {
-                _selectedScoreType = value;
-                OnPropertyChanged();
+                if (_selectedScoreType != value)
+                {
+                    _selectedScoreType = value;
+                    OnPropertyChanged();
+
+                    if (_selectedScoreType != null)
+                        Coefficient = ScoreTypeDic[_selectedScoreType].Coefficient;
+                }
             }
         }
 
@@ -31,6 +37,18 @@ namespace Stumana.WPF.ViewModels.PopupModels
             set
             {
                 _isScoreTypeInvalid = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private double _coefficient;
+
+        public double Coefficient
+        {
+            get => _coefficient;
+            set
+            {
+                _coefficient = value;
                 OnPropertyChanged();
             }
         }

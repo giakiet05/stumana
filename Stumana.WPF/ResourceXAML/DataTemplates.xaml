@@ -131,8 +131,16 @@
         <popupViews:AddYearView />
     </DataTemplate>
 
+    <DataTemplate DataType="{x:Type popupViewModels:EditYearViewModel}">
+        <popupViews:EditYearView />
+    </DataTemplate>
+
     <DataTemplate DataType="{x:Type popupViewModels:AddGradeViewModel}">
         <popupViews:AddGradeView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type popupViewModels:EditGradeViewModel}">
+        <popupViews:EditGradeView />
     </DataTemplate>
 
     <DataTemplate DataType="{x:Type popupViewModels:AddScoreTypeToSubjectViewModel}">

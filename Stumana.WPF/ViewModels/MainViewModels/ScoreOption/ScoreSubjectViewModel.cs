@@ -716,17 +716,17 @@ public class ScoreSubjectViewModel : BaseViewModel
                     int attempt = int.TryParse(attemptStr, out var parsed) ? parsed : 1;
 
                     string scoreTypeId = SubjectScoreTypeDic[columnName].ScoreTypeId;
+                    var subjectId = SubjectDic[SelectedSubject].Id;
 
                     var studentAssignment = await GenericDataService<StudentAssignment>.Instance.GetOneAsync(sa => sa.StudentId == studentId &&
                                                                                                                    sa.Semester == semester &&
                                                                                                                    sa.ClassroomId == classroomId);
 
-                    var scoreType = await GenericDataService<SubjectScoreType>.Instance.GetOneAsync(sst => sst.ScoreType.Id == scoreTypeId,
-                                                                                                    query => query.Include(sst => sst.ScoreType));
+                    var subjectScoreType = await GenericDataService<SubjectScoreType>.Instance.GetOneAsync(sst => sst.ScoreType.Id == scoreTypeId && sst.SubjectId == subjectId);
                     if (newValue == null)
                     {
                         Score oldScore = await GenericDataService<Score>.Instance.GetOneAsync(s => s.StudentAssignmentId == studentAssignment.Id &&
-                                                                                                   s.SubjectScoreTypeId == scoreType.Id &&
+                                                                                                   s.SubjectScoreTypeId == subjectScoreType.Id &&
                                                                                                    s.Value == oldValue);
 
                         await GenericDataService<Score>.Instance.DeleteOneAsync(s => s.Id == oldScore.Id);
@@ -740,7 +740,7 @@ public class ScoreSubjectViewModel : BaseViewModel
                             Id = Guid.NewGuid().ToString(),
                             Value = (double)newValue,
                             Attempt = attempt,
-                            SubjectScoreTypeId = scoreType.Id,
+                            SubjectScoreTypeId = subjectScoreType.Id,
                             StudentAssignmentId = studentAssignment.Id
                         };
 
@@ -749,7 +749,7 @@ public class ScoreSubjectViewModel : BaseViewModel
                     else
                     {
                         Score newScore = await GenericDataService<Score>.Instance.GetOneAsync(s => s.StudentAssignmentId == studentAssignment.Id &&
-                                                                                                   s.SubjectScoreTypeId == scoreType.Id &&
+                                                                                                   s.SubjectScoreTypeId == subjectScoreType.Id &&
                                                                                                    s.Attempt == attempt);
                         newScore.Value = (double)newValue;
                         await GenericDataService<Score>.Instance.UpdateOneAsync(newScore, s => s.Id == newScore.Id);

@@ -1,9 +1,11 @@
-﻿using Stumana.DataAccess.Services;
+﻿using Microsoft.EntityFrameworkCore;
+using Stumana.DataAccess.Services;
 using Stumana.DataAcess.Models;
 using Stumana.WPF.Commands;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Windows.Input;
+using static System.Formats.Asn1.AsnWriter;
 
 namespace Stumana.WPF.ViewModels.MainViewModels.ReportOption
 {
@@ -12,12 +14,15 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ReportOption
         private readonly GenericDataService<SchoolYear> _schoolYearService;
         private readonly GenericDataService<Score> _scoreService;
         private readonly GenericDataService<StudentAssignment> _studentAssignmentService;
+        private readonly GenericDataService<Subject> _subjectService;
+        private readonly GenericDataService<SubjectScoreType> _subjectScoreTypeService;
 
         private ICommand _exportCommand;
         public ICommand ExportCommand => _exportCommand ??= new RelayCommand(ExecuteExport);
+        private Dictionary<string, SchoolYear> SchoolYearDic { get; set; } = new();
 
-        private ObservableCollection<SchoolYear> _schoolYearCollection;
-        public ObservableCollection<SchoolYear> SchoolYearCollection
+        private ObservableCollection<string> _schoolYearCollection = new();
+        public ObservableCollection<string> SchoolYearCollection
         {
             get => _schoolYearCollection;
             set
@@ -27,8 +32,8 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ReportOption
             }
         }
 
-        private SchoolYear _selectedSchoolYear;
-        public SchoolYear SelectedSchoolYear
+        private string _selectedSchoolYear;
+        public string SelectedSchoolYear
         {
             get => _selectedSchoolYear;
             set
@@ -89,7 +94,8 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ReportOption
             _schoolYearService = GenericDataService<SchoolYear>.Instance;
             _scoreService = GenericDataService<Score>.Instance;
             _studentAssignmentService = GenericDataService<StudentAssignment>.Instance;
-
+            _subjectService = GenericDataService<Subject>.Instance;
+            _subjectScoreTypeService = GenericDataService<SubjectScoreType>.Instance;
             LoadReportTableColumn();
             LoadSchoolYearsAsync();
             LoadSemestersAsync();
@@ -107,9 +113,26 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ReportOption
 
         private async Task LoadSchoolYearsAsync()
         {
-            var schoolYears = await _schoolYearService.GetAllAsync();
-            SchoolYearCollection = new ObservableCollection<SchoolYear>(schoolYears);
+           SchoolYearCollection.Clear();
+
+            List<SchoolYear> schoolYears = (await GenericDataService<SchoolYear>.Instance.GetAllAsync()).ToList();
+
+            if (!schoolYears.Any())
+                return;
+
+            foreach (SchoolYear schoolYear in schoolYears)
+            {
+                string schoolyearName = schoolYear.StartYear + " - " + schoolYear.EndYear;
+                SchoolYearCollection.Add(schoolyearName);
+                SchoolYearDic.Add(schoolyearName, schoolYear);
+            }
+
+            if (SchoolYearCollection.Any())
+            {
+                SelectedSchoolYear = SchoolYearCollection[0];
+            }
         }
+        
 
         private void LoadSemestersAsync()
         {
@@ -122,27 +145,62 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ReportOption
                 return;
 
             ReportTable.Clear();
+            int semester = SelectedSemester == "Học kỳ 1" ? 1 : 2;
+            var studentAssignments = (await _studentAssignmentService.GetManyAsync(
+                sa => sa.Classroom.YearId == SchoolYearDic[SelectedSchoolYear].Id
+                && sa.Semester ==semester ,
+                cl => cl.Include(sa => sa.Classroom))).ToList();
+            var studentAssignmentIds = studentAssignments.Select(sa => sa.Id).ToList();
 
-            var studentAssignments = await _studentAssignmentService.GetManyAsync(
-                sa => sa.Classroom.YearId == SelectedSchoolYear.Id
-            );
-
-            var scores = await _scoreService.GetManyAsync(
-                s => studentAssignments.Any(sa => sa.Id == s.StudentAssignmentId)
-            );
-
+          
             int stt = 1;
-            foreach (var classroom in studentAssignments.Select(sa => sa.Classroom).Distinct())
+            var classrooms = studentAssignments.Select(sa => sa.Classroom).Distinct();
+            foreach (var classroom in classrooms)
             {
-                var classScores = scores.Where(s =>
-                    studentAssignments.Any(sa =>
-                        sa.ClassroomId == classroom.Id &&
-                        sa.Id == s.StudentAssignmentId
-                    )
+                var subjects = await _subjectService.GetManyAsync(
+                    s => s.GradeId == classroom.GradeId 
+                    && s.YearId == classroom.YearId
                 );
+                int passedCount = 0;
+                int totalCount = studentAssignments.Count();
 
-                int passedCount = classScores.Count(s => s.Value >= 5.0);
-                int totalCount = classScores.Count();
+                foreach (var sa in studentAssignments.Where(s=>s.Classroom == classroom)){
+                    float totalScore = 0;
+                    foreach (var subject in subjects)
+                    {
+                        var subjectScoreTypes = await _subjectScoreTypeService.GetManyAsync(
+                            sst => sst.SubjectId == subject.Id,
+                            qr => qr.Include(sst => sst.ScoreType)
+                        );
+                        double tempScore = 0;
+                        double tempCoefficient = 0;
+                        foreach (var subjectScoreType in subjectScoreTypes)
+                        {
+                            var scores = await _scoreService.GetManyAsync(
+                                sc => sc.StudentAssignmentId == sa.Id && sc.SubjectScoreTypeId == subjectScoreType.Id
+                            );
+                            if (scores.Any())
+                            {
+                                foreach (var score in scores)
+                                {
+                                    tempScore += score.Value * subjectScoreType.ScoreType.Coefficient;
+                                    tempCoefficient += subjectScoreType.ScoreType.Coefficient;
+                                }
+                            }
+                        }
+                        if (tempCoefficient > 0)
+                        {
+                            totalScore += (float)((tempScore / tempCoefficient) / subjects.Count());
+                        }
+                    }
+                    if (totalScore > 5.0f) passedCount++;
+                   
+                }
+              
+               
+
+                
+               
                 double passRate = totalCount > 0 ? (double)passedCount / totalCount * 100 : 0;
 
                 ReportTable.Rows.Add(

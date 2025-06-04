@@ -216,19 +216,16 @@
                                        Text="Xếp loại"
                                        Foreground="#EDE995" />
 
-                            <ComboBox Background="#FFFFFF"
-                                      Padding="5 0 10 0"
-                                      Width="100" Height="25"
-                                      Foreground="Black"
-                                      Style="{StaticResource MaterialDesignComboBox}"
-                                      FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
-                                      Margin="10,0,20,0"
-                                      HorizontalAlignment="Center"
-                                      BorderBrush="#64748B" BorderThickness="1"
-                                      IsReadOnly="True"
-                                      ItemsSource="{Binding GradingCollection}"
-                                      SelectedItem="{Binding SelectedGrading, UpdateSourceTrigger=PropertyChanged}" />
-
+                            <TextBox Margin="10 10 0 0"
+                                     Background="#CCCCCC"
+                                     Foreground="Black"
+                                     Width="100" Height="25"
+                                     FontSize="14"
+                                     IsReadOnly="True"
+                                     IsEnabled="False"
+                                     Text="{Binding Grading}"
+                                     VerticalContentAlignment="Center"
+                                     HorizontalContentAlignment="Center"/>      
 
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Height="70">
@@ -293,10 +290,27 @@
                         <TextBlock HorizontalAlignment="Center"
                                    FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
                                    FontSize="16"
-                                   Text="Xác nhận"
+                                   Text="Thoát"
                                    Foreground="Snow"
                                    Cursor="Hand"
-                                   ToolTip="Nhấn để sửa năm học" />
+                                    />
+                    </Button>
+                    <Button Margin="10"
+                            VerticalAlignment="Center"
+                            Width="120"
+                            Height="40"
+                            Background="#8DB575"
+                            Style="{StaticResource MaterialDesignRaisedButton}"
+                            Command="{Binding SaveCommand}"
+                            materialDesign:ButtonAssist.CornerRadius="20">
+
+                        <TextBlock HorizontalAlignment="Center"
+                                   FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
+                                   FontSize="16"
+                                   Text="Lưu"
+                                   Foreground="Snow"
+                                   Cursor="Hand"
+                                    />
                     </Button>
                 </StackPanel>
             </Grid>

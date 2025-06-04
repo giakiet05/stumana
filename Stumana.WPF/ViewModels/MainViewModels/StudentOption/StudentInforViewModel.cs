@@ -19,6 +19,8 @@ namespace Stumana.WPF.ViewModels.MainViewModels.StudentOption
 
         private DataTable _scoreDataTable = new DataTable();
 
+
+
         public DataTable ScoreDataTable
         {
             get => _scoreDataTable;
@@ -42,6 +44,7 @@ namespace Stumana.WPF.ViewModels.MainViewModels.StudentOption
         }
 
         private string _studentId;
+
 
         public string StudentId
         {
@@ -121,6 +124,7 @@ namespace Stumana.WPF.ViewModels.MainViewModels.StudentOption
                     OnPropertyChanged();
                     LoadTable();
                     LoadClassroom();
+                    CaculateGrading();
                 }
             }
         }
@@ -146,22 +150,19 @@ namespace Stumana.WPF.ViewModels.MainViewModels.StudentOption
             {
                 _absence = value;
                 OnPropertyChanged();
-                SaveInfo();
             }
         }
 
 
-        public ObservableCollection<string> GradingCollection { get; set; }
-        private string? _selectedGrading;
+        private string? _grading;
 
-        public string? SelectedGrading
+        public string? Grading
         {
-            get => _selectedGrading;
+            get => _grading;
             set
             {
-                _selectedGrading = value;
+                _grading = value;
                 OnPropertyChanged();
-                SaveInfo();
             }
         }
 
@@ -175,7 +176,7 @@ namespace Stumana.WPF.ViewModels.MainViewModels.StudentOption
             {
                 _selectedConduct = value;
                 OnPropertyChanged();
-                SaveInfo();
+                if (value != null) CaculateGrading();
             }
         }
 
@@ -188,11 +189,11 @@ namespace Stumana.WPF.ViewModels.MainViewModels.StudentOption
             {
                 _evaluation = value;
                 OnPropertyChanged();
-                SaveInfo();
             }
         }
 
         public ICommand CloseModalCommand { get; set; }
+        public ICommand SaveCommand { get; set; }
 
         public StudentInfoViewModel(Student? student)
         {
@@ -203,12 +204,43 @@ namespace Stumana.WPF.ViewModels.MainViewModels.StudentOption
             StudentName = student.Name;
 
             CloseModalCommand = new RelayCommand(ModalNavigationStore.Instance.Close);
-
+            SaveCommand = new RelayCommand(Save);
             LoadSchoolYearFilter();
 
-            ClassroomName = "10A3";
+            ConductCollection = new ObservableCollection<string>
+            {
+                "Tốt",
+                "Khá",
+                "Trung bình",
+                "Yếu",
+                "Kém"
+            };
         }
+        public async void Save()
+        {
+            if (SelectedSchoolYear == null || SelectedSemester == null)
+                return;
 
+            StudentAssignment? studentAssignment = StudentAssignments.FirstOrDefault(sa => sa.Classroom.YearId == SchoolYearDic[SelectedSchoolYear].Id
+                                                                                           && sa.Semester == SemesterDic[SelectedSemester]);
+
+            if (studentAssignment == null)
+                return;
+
+            if (!string.IsNullOrEmpty(Absence))
+                studentAssignment.Absence = int.Parse(Absence);
+
+           
+            if (SelectedConduct != null)
+                studentAssignment.Conduct = SelectedConduct;
+
+            if (!string.IsNullOrEmpty(Evaluation))
+                studentAssignment.Comment = Evaluation;
+
+            await GenericDataService<StudentAssignment>.Instance.UpdateOneAsync(studentAssignment, sa => sa.Id == studentAssignment.Id);
+
+            ToastMessageViewModel.ShowSuccessToast("Cập nhật thành công");
+        }
         private async void LoadStudentAssignment(Student? student)
         {
             if (student == null)
@@ -288,7 +320,46 @@ namespace Stumana.WPF.ViewModels.MainViewModels.StudentOption
                 return;
 
             ClassroomName = studentAssignment.Classroom.Name;
+            Evaluation = studentAssignment.Comment;
+            Absence = studentAssignment.Absence.ToString();
+            if (!string.IsNullOrEmpty(studentAssignment.Conduct))
+            {
+                SelectedConduct = studentAssignment.Conduct;
+            }
+            else
+            {
+                SelectedConduct = null;
+            }
         }
+        private async void CaculateGrading()
+        {
+            if (SelectedSchoolYear == null || SelectedSemester == null)
+                return;
+            if (String.IsNullOrEmpty(SelectedConduct))
+            {
+                Grading = "Chưa đánh giá";
+                return;
+            }
+            float _totalScore = 0;
+            foreach (DataRow row in ScoreDataTable.Rows)
+            {
+                if (row["Điểm TB"] is DBNull)
+                    continue;
+                _totalScore += Convert.ToSingle(row["Điểm TB"]);
+            }
+            _totalScore /= ScoreDataTable.Rows.Count;
+            
+          
+            if (_totalScore >= 8.0 && SelectedConduct == "Tốt")
+                Grading = "Giỏi";
+            else if (_totalScore >= 6.5 && (SelectedConduct == "Tốt" || SelectedConduct == "Khá"))
+                Grading = "Khá";
+            else if (_totalScore >= 5.0 && (SelectedConduct == "Tốt" || SelectedConduct == "Khá" || SelectedConduct == "Trung bình"))
+                Grading = "Trung bình";
+            else
+                Grading = "Yếu";
+        }
+
 
         private async Task LoadTable()
         {
@@ -355,33 +426,10 @@ namespace Stumana.WPF.ViewModels.MainViewModels.StudentOption
 
                 dataRow["Điểm TB"] = sumCoefficient > 0 ? Math.Round(sumScore / sumCoefficient, 2) : DBNull.Value;
                 ScoreDataTable.Rows.Add(dataRow);
+
             }
         }
 
-        private async void SaveInfo()
-        {
-            if (SelectedSchoolYear == null || SelectedSemester == null)
-                return;
-
-            StudentAssignment? studentAssignment = StudentAssignments.FirstOrDefault(sa => sa.Classroom.YearId == SchoolYearDic[SelectedSchoolYear].Id
-                                                                                           && sa.Semester == SemesterDic[SelectedSemester]);
-
-            if (studentAssignment == null) 
-                return;
-
-            if (!string.IsNullOrEmpty(Absence))
-                studentAssignment.Absence = int.Parse(Absence);
-
-            if (SelectedGrading != null)
-                ;
-
-            if (SelectedConduct != null)
-                studentAssignment.Conduct = SelectedConduct;
-
-            if (!string.IsNullOrEmpty(Evaluation))
-                ;
-
-            await GenericDataService<StudentAssignment>.Instance.UpdateOneAsync(studentAssignment, sa => sa.Id == studentAssignment.Id);
-        }
+        
     }
 }

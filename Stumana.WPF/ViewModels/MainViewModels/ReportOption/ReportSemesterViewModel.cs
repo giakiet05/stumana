@@ -11,7 +11,6 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ReportOption
 {
     public class ReportSemesterViewModel : BaseViewModel
     {
-        private readonly GenericDataService<SchoolYear> _schoolYearService;
         private readonly GenericDataService<Score> _scoreService;
         private readonly GenericDataService<StudentAssignment> _studentAssignmentService;
         private readonly GenericDataService<Subject> _subjectService;
@@ -91,7 +90,6 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ReportOption
 
         public ReportSemesterViewModel()
         {
-            _schoolYearService = GenericDataService<SchoolYear>.Instance;
             _scoreService = GenericDataService<Score>.Instance;
             _studentAssignmentService = GenericDataService<StudentAssignment>.Instance;
             _subjectService = GenericDataService<Subject>.Instance;
@@ -194,7 +192,7 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ReportOption
                             totalScore += (float)((tempScore / tempCoefficient) / subjects.Count());
                         }
                     }
-                    if (totalScore > scoreToPass) passedCount++;
+                    if (totalScore >= scoreToPass) passedCount++;
                    
                 }
               

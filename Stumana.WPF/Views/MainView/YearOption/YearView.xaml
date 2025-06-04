@@ -116,6 +116,9 @@
                                       CanUserAddRows="False"
                                       IsReadOnly="True"
                                       FontSize="20"
+                                      ScrollViewer.HorizontalScrollBarVisibility="Visible"
+                                      ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                      ScrollViewer.CanContentScroll="False"
                                       CellStyle="{StaticResource DataGridCellStyle}"
                                       RowStyle="{StaticResource DataGridRowStyle}"
                                       ItemsSource="{Binding YearTable}"
@@ -140,6 +143,46 @@
                                     </DataGridTextColumn>
                                     <DataGridTextColumn Header="Năm học" Width="Auto" MinWidth="290"
                                                         Binding="{Binding YearName}">
+                                        <DataGridTextColumn.ElementStyle>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="TextAlignment" Value="Center"/>
+                                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                                            </Style>
+                                        </DataGridTextColumn.ElementStyle>
+                                    </DataGridTextColumn>
+                                    <DataGridTextColumn Header="Tuổi tối thiểu" Width="Auto" MinWidth="290"
+                                                        Binding="{Binding MinAge}">
+                                        <DataGridTextColumn.ElementStyle>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="TextAlignment" Value="Center"/>
+                                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                                            </Style>
+                                        </DataGridTextColumn.ElementStyle>
+                                    </DataGridTextColumn>
+                                    <DataGridTextColumn Header="Tuổi tối đa" Width="Auto" MinWidth="290"
+                                                        Binding="{Binding MaxAge}">
+                                        <DataGridTextColumn.ElementStyle>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="TextAlignment" Value="Center"/>
+                                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                                            </Style>
+                                        </DataGridTextColumn.ElementStyle>
+                                    </DataGridTextColumn>
+                                    <DataGridTextColumn Header="Điểm đạt tối thiểu" Width="Auto" MinWidth="290"
+                                                        Binding="{Binding MinScore}">
+                                        <DataGridTextColumn.ElementStyle>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="TextAlignment" Value="Center"/>
+                                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                                            </Style>
+                                        </DataGridTextColumn.ElementStyle>
+                                    </DataGridTextColumn>
+                                    <DataGridTextColumn Header="Sĩ số tối đa" Width="Auto" MinWidth="290"
+                                                        Binding="{Binding MaxClassSize}">
                                         <DataGridTextColumn.ElementStyle>
                                             <Style TargetType="TextBlock">
                                                 <Setter Property="TextAlignment" Value="Center"/>
@@ -176,6 +219,15 @@
                                     Margin="10,15,10,15"
                                     Style="{StaticResource PrimaryButtonStyle}"
                                     Command="{Binding DeleteYearCommand}" />
+                            <Button Margin="10,15,10,15"
+                                    Width="200"
+                                    FontSize="18"
+                                    Content="Chỉnh sửa loại điểm"
+                                    Padding="10"
+                                    Style="{StaticResource PrimaryButtonStyle}"
+                                    Command="{Binding EditScoreTypeCommand}" />
+
+
                         </StackPanel>
                     </Grid>
                 </GroupBox>

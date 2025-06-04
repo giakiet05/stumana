@@ -74,6 +74,7 @@ namespace Stumana.WPF.ViewModels.MainViewModels.YearOption
         public ICommand AddGradeCommand { get; set; }
         public ICommand EditGradeCommand { get; set; }
         public ICommand DeleteGradeCommand { get; set; }
+        public ICommand EditScoreTypeCommand { get; set; }
 
         public EventHandler? OnTableUpdate { get; set; }
 
@@ -89,7 +90,7 @@ namespace Stumana.WPF.ViewModels.MainViewModels.YearOption
             EditGradeCommand = new NavigateModalCommand(() => new EditGradeViewModel(SelectedGrade, OnTableUpdate), 
                                                        () => SelectedGrade != null, "Hãy chọn một khối lớp để sửa");
             DeleteGradeCommand = new RelayCommand(DeleteGrade);
-
+            EditScoreTypeCommand = new NavigateModalCommand(() => new EditScoreTypeViewModel());
             LoadData();
         }
 

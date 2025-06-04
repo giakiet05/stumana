@@ -317,14 +317,6 @@
         <StackPanel Grid.Row="2"
                     Orientation="Horizontal"
                     FlowDirection="RightToLeft">
-
-            <Button Margin="10,15,10,15"
-                    Width="200"
-                    FontSize="18"
-                    Content="Chỉnh sửa loại điểm"
-                    Padding="10"
-                    Style="{StaticResource PrimaryButtonStyle}"
-                    Command="{Binding EditScoreTypeCommand}" />
             <Button Width="150"
                     Style="{StaticResource PrimaryButtonStyle}"
                     Content="Xóa loại điểm"
@@ -353,6 +345,7 @@
                     Padding="10"
                     Style="{StaticResource PrimaryButtonStyle}"
                     Command="{Binding AddSubjectCommand}" />
+            
         </StackPanel>
     </Grid>
 </UserControl>

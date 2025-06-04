@@ -72,6 +72,7 @@ namespace Stumana.WPF.ViewModels.MainViewModels.YearOption
         public ICommand DeleteYearCommand { get; set; }
         public ICommand AddGradeCommand { get; set; }
         public ICommand DeleteGradeCommand { get; set; }
+        public ICommand EditScoreTypeCommand { get; set; }
 
         public EventHandler? OnTableUpdate { get; set; }
 
@@ -83,7 +84,7 @@ namespace Stumana.WPF.ViewModels.MainViewModels.YearOption
             DeleteYearCommand = new RelayCommand(DeleteYear);
             AddGradeCommand = new NavigateModalCommand(() => new AddGradeViewModel(OnTableUpdate));
             DeleteGradeCommand = new RelayCommand(DeleteGrade);
-
+            EditScoreTypeCommand = new NavigateModalCommand(() => new EditScoreTypeViewModel());
             LoadData();
         }
 

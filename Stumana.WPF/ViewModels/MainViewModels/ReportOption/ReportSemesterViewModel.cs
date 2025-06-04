@@ -143,7 +143,8 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ReportOption
         {
             if (SelectedSchoolYear == null || string.IsNullOrEmpty(SelectedSemester))
                 return;
-
+            Asset asset = await GenericDataService<Asset>.Instance.GetOneAsync(a => a.YearId == SchoolYearDic[SelectedSchoolYear].Id);
+            float scoreToPass = (float)asset.ScoreToPass;
             ReportTable.Clear();
             int semester = SelectedSemester == "Học kỳ 1" ? 1 : 2;
             var studentAssignments = (await _studentAssignmentService.GetManyAsync(
@@ -193,14 +194,11 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ReportOption
                             totalScore += (float)((tempScore / tempCoefficient) / subjects.Count());
                         }
                     }
-                    if (totalScore > 5.0f) passedCount++;
+                    if (totalScore > scoreToPass) passedCount++;
                    
                 }
               
-               
-
-                
-               
+           
                 double passRate = totalCount > 0 ? (double)passedCount / totalCount * 100 : 0;
 
                 ReportTable.Rows.Add(

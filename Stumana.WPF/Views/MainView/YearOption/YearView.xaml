@@ -109,23 +109,91 @@
                             </Grid>
                         </Border>
 
-                        <Border Grid.Row="1" Margin="0,0,0,0" VerticalAlignment="Stretch"/>
-                        <DataGrid x:Name="MyDataGrid"
-          AutoGenerateColumns="False"
-          ScrollViewer.HorizontalScrollBarVisibility="Auto"
-          ScrollViewer.VerticalScrollBarVisibility="Auto"
-          ScrollViewer.CanContentScroll="False"
-          HorizontalAlignment="Stretch"
-          ColumnWidth="SizeToHeader">
-                            <DataGrid.Columns>
-                                <DataGridTextColumn Header="Mã năm" Width="200" Binding="{Binding MaNam}" />
-                                <DataGridTextColumn Header="Tên năm học" Width="300" Binding="{Binding TenNamHoc}" />
-                                <DataGridTextColumn Header="Cột ẩn 1" Width="300" Binding="{Binding CotAn1}" />
-                                <DataGridTextColumn Header="Cột ẩn 2" Width="300" Binding="{Binding CotAn2}" />
-                                <!-- Thêm nhiều cột để nó bị tràn -->
-                            </DataGrid.Columns>
-                        </DataGrid>
+                        <Border Grid.Row="1" Margin="0,0,0,0" VerticalAlignment="Stretch">
+                            <DataGrid Margin="10 10 10 0"
+                                      AutoGenerateColumns="False"
+                                      HorizontalAlignment="Stretch"
+                                      CanUserAddRows="False"
+                                      IsReadOnly="True"
+                                      FontSize="20"
+                                      ScrollViewer.HorizontalScrollBarVisibility="Visible"
+                                      ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                      ScrollViewer.CanContentScroll="False"
+                                      CellStyle="{StaticResource DataGridCellStyle}"
+                                      RowStyle="{StaticResource DataGridRowStyle}"
+                                      ItemsSource="{Binding YearTable}"
+                                      SelectedItem="{Binding SelectedYear, UpdateSourceTrigger=PropertyChanged}">
 
+                                <DataGrid.Resources>
+                                    <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource {x:Type DataGridColumnHeader}}">
+                                        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                                    </Style>
+                                </DataGrid.Resources>
+
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Mã năm" Width="Auto" MinWidth="290"
+                                                        Binding="{Binding YearID}">
+                                        <DataGridTextColumn.ElementStyle>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="TextAlignment" Value="Center"/>
+                                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                                            </Style>
+                                        </DataGridTextColumn.ElementStyle>
+                                    </DataGridTextColumn>
+                                    <DataGridTextColumn Header="Năm học" Width="Auto" MinWidth="290"
+                                                        Binding="{Binding YearName}">
+                                        <DataGridTextColumn.ElementStyle>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="TextAlignment" Value="Center"/>
+                                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                                            </Style>
+                                        </DataGridTextColumn.ElementStyle>
+                                    </DataGridTextColumn>
+                                    <DataGridTextColumn Header="Tuổi tối thiểu" Width="Auto" MinWidth="290"
+                                                        Binding="{Binding MinAge}">
+                                        <DataGridTextColumn.ElementStyle>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="TextAlignment" Value="Center"/>
+                                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                                            </Style>
+                                        </DataGridTextColumn.ElementStyle>
+                                    </DataGridTextColumn>
+                                    <DataGridTextColumn Header="Tuổi tối đa" Width="Auto" MinWidth="290"
+                                                        Binding="{Binding MaxAge}">
+                                        <DataGridTextColumn.ElementStyle>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="TextAlignment" Value="Center"/>
+                                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                                            </Style>
+                                        </DataGridTextColumn.ElementStyle>
+                                    </DataGridTextColumn>
+                                    <DataGridTextColumn Header="Điểm đạt tối thiểu" Width="Auto" MinWidth="290"
+                                                        Binding="{Binding MinScore}">
+                                        <DataGridTextColumn.ElementStyle>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="TextAlignment" Value="Center"/>
+                                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                                            </Style>
+                                        </DataGridTextColumn.ElementStyle>
+                                    </DataGridTextColumn>
+                                    <DataGridTextColumn Header="Sĩ số tối đa" Width="Auto" MinWidth="290"
+                                                        Binding="{Binding MaxClassSize}">
+                                        <DataGridTextColumn.ElementStyle>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="TextAlignment" Value="Center"/>
+                                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                                            </Style>
+                                        </DataGridTextColumn.ElementStyle>
+                                    </DataGridTextColumn>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Border>
                         <StackPanel Grid.Row="2"
                                     HorizontalAlignment="Center"
                                     Orientation="Horizontal"

@@ -312,6 +312,14 @@
             <Button Margin="10,15,10,15"
                     Width="140"
                     FontSize="18"
+                    Content="Sửa thông tin"
+                    Padding="10"
+                    Style="{StaticResource PrimaryButtonStyle}"
+                    Command="{Binding EditClassroomCommand}" />
+
+            <Button Margin="10,15,10,15"
+                    Width="140"
+                    FontSize="18"
                     Content="Thêm lớp học"
                     Padding="10"
                     Style="{StaticResource PrimaryButtonStyle}"

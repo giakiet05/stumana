@@ -138,9 +138,8 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ClassOption
             AddClassroomCommand = new NavigateModalCommand(() => new AddClassroomViewModel(OnClassDataChanged));
             DeleteClassroomCommand = new RelayCommand(DeleteClassroom);
             AddStudentToClassCommand = new NavigateModalCommand(() => new AddStudentToClassViewModel(SelectedClass.Classroom, OnStudentDataChanged),
-                                     () => SelectedClass != null, "Hãy chọn một lớp để thêm");
-            DeleteStudentCommand = new NavigateModalCommand(() => new DeleteConfirmViewModel(DeleteStudent),
-                                                            () => SelectedStudent != null, "Hãy chọn một học sinh để xóa khỏi lớp");
+                                                                () => SelectedClass != null, "Hãy chọn một lớp để thêm");
+            DeleteStudentCommand = new RelayCommand(DeleteStudent);
         }
 
         private void LoadFilter()

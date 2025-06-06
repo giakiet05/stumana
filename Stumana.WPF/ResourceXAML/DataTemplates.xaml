@@ -127,6 +127,9 @@
     <DataTemplate DataType="{x:Type popupViewModels:AddClassroomViewModel}">
         <popupViews:AddClassroomView />
     </DataTemplate>
+    <DataTemplate DataType="{x:Type popupViewModels:EditClassroomViewModel}">
+        <popupViews:EditClassroomView />
+    </DataTemplate>
 
     <DataTemplate DataType="{x:Type popupViewModels:EditUsernameAndEmailViewModel}">
         <popupViews:EditUsernameAndEmailView />

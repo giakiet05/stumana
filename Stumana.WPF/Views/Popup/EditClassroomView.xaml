@@ -73,7 +73,7 @@
                         <ComboBox Style="{StaticResource MaterialDesignComboBox}"
                                   FontSize="15"
                                   Foreground="Black"
-                                  IsReadOnly="True"
+                                  IsEnabled="False"
                                   ItemsSource="{Binding SchoolYearCollection}"
                                   SelectedItem="{Binding SelectedSchoolYear}">
                         </ComboBox>
@@ -92,7 +92,7 @@
                         <ComboBox Style="{StaticResource MaterialDesignComboBox}"
                                   FontSize="15"
                                   Foreground="Black"
-                                  IsReadOnly="True"
+                                  IsEnabled="False"
                                   ItemsSource="{Binding GradeCollection}"
                                   SelectedItem="{Binding SelectedGrade}">
                         </ComboBox>

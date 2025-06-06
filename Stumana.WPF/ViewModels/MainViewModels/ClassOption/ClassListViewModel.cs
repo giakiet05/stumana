@@ -121,6 +121,7 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ClassOption
         public ICommand DeleteStudentCommand { get; set; }
         public ICommand AddClassroomCommand { get; set; }
         public ICommand DeleteClassroomCommand { get; set; }
+        public ICommand EditClassroomCommand { get; set; }
 
         #endregion Commands
 
@@ -137,7 +138,9 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ClassOption
 
             FilterGradeCommand = new RelayCommand(FilterGrade);
             AddClassroomCommand = new NavigateModalCommand(() => new AddClassroomViewModel(OnClassDataChanged));
-           DeleteClassroomCommand = new NavigateModalCommand(()=>new DeleteConfirmViewModel(DeleteClassroom));
+            DeleteClassroomCommand = new NavigateModalCommand(()=>new DeleteConfirmViewModel(DeleteClassroom));
+            EditClassroomCommand = new NavigateModalCommand(() => new EditClassroomViewModel(SelectedClass.Classroom, OnClassDataChanged),
+                                                            () => SelectedClass != null, "Hãy chọn một lớp để sửa");
             AddStudentToClassCommand = new RelayCommand(() =>
             {
                 if (SelectedClass == null)

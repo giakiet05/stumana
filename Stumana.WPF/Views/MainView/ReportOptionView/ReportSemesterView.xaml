@@ -65,6 +65,7 @@
                           Margin="10 0 10,0"
                           AutoGenerateColumns="False"
                           CanUserAddRows="False"
+                          IsReadOnly="True"
                           ItemsSource="{Binding ReportTableView}">
 
                     <DataGrid.Resources>

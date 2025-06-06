@@ -8,6 +8,7 @@ using Stumana.DataAccess.Services;
 using Stumana.DataAcess.Models;
 using Stumana.WPF.Commands;
 using Stumana.WPF.Helpers;
+using Stumana.WPF.Stores;
 
 namespace Stumana.WPF.ViewModels.MainViewModels.ScoreOption;
 
@@ -769,31 +770,32 @@ public class ScoreSubjectViewModel : BaseViewModel
 
     public void DiscardChange()
     {
-        var result = MessageBox.Show(
-            "Bạn có chắc chắn muốn huỷ thay đổi?",
-            "Xác nhận huỷ",
-            MessageBoxButton.YesNo,
-            MessageBoxImage.Question
-        );
-
-        if (result != MessageBoxResult.Yes)
-            return;
-
-        foreach (var rowEntry in ChangedData)
-        {
-            DataRow row = rowEntry.Key;
-            Dictionary<string, Tuple<double, double?>> columnChanges = rowEntry.Value;
-
-            foreach (var columnEntry in columnChanges)
+        ModalNavigationStore.Instance.CurrentModalViewModel = new DeleteConfirmViewModel(
+            () =>
             {
-                string columnName = columnEntry.Key;
-                double oldValue = columnEntry.Value.Item1;
+                foreach (var rowEntry in ChangedData)
+                {
+                    DataRow row = rowEntry.Key;
+                    Dictionary<string, Tuple<double, double?>> columnChanges = rowEntry.Value;
 
-                row[columnName] = oldValue >= 0 ? oldValue : DBNull.Value;
-            }
-        }
+                    foreach (var columnEntry in columnChanges)
+                    {
+                        string columnName = columnEntry.Key;
+                        double oldValue = columnEntry.Value.Item1;
 
-        ChangedData.Clear();
+                        row[columnName] = oldValue >= 0 ? oldValue : DBNull.Value;
+                    }
+                }
+
+                ChangedData.Clear();
+                ModalNavigationStore.Instance.Close();
+            },
+            "Bạn có chắc chắn muốn huỷ thay đổi?\nĐiều này không thể hoàn tác"
+                );
+       
+       
+
+        
     }
 
     public void OnSearchTextChange()

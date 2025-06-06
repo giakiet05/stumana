@@ -71,6 +71,7 @@
                           CanUserAddRows="False"
                           VerticalAlignment="Stretch"
                           HorizontalAlignment="Stretch"
+                          IsReadOnly="True"
                           ItemsSource="{Binding ReportTableView}">
                     <DataGrid.Resources>
                         <Style TargetType="DataGridColumnHeader">

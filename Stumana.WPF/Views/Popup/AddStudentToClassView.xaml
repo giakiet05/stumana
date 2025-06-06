@@ -27,7 +27,7 @@
         </Grid.RowDefinitions>
 
         <TextBlock Grid.Row="0"
-                   Text="Thêm học sinh"
+                   Text="Danh sách học sinh có thể thêm vào lớp"
                    FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
                    FontSize="35"
                    FontWeight="SemiBold"

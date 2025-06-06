@@ -16,6 +16,7 @@ public class AddStudentToClassViewModel : BaseViewModel
 {
     private List<StudentChoiceInfo> UnassignStudents { get; set; } = new();
     public ObservableCollection<StudentChoiceInfo> StudentChoiceTable { get; set; } = new();
+    public int UnassignStudentCount => UnassignStudents.Count;
 
     public Classroom CurClassroom { get; set; }
 
@@ -59,28 +60,36 @@ public class AddStudentToClassViewModel : BaseViewModel
 
     public async void LoadData()
     {
-        var studentAssignments = await GenericDataService<StudentAssignment>.Instance.GetManyAsync(sa => sa.Classroom.YearId == CurClassroom.YearId &&
+        var studentAssignments = await GenericDataService<StudentAssignment>.Instance.GetManyAsync(sa => sa.Classroom.YearId == CurClassroom.YearId ||
                                                                                                          sa.Classroom.GradeId == CurClassroom.GradeId,
                                                                                                    query => query.Include(sa => sa.Classroom));
 
         var studentWithClassIds = studentAssignments.Select(sa => sa.StudentId).Distinct().ToList();
         var unassignStudent = (await GenericDataService<Student>.Instance.GetManyAsync(s => !studentWithClassIds.Contains(s.Id))).ToList();
+       var asset = await GenericDataService<Asset>.Instance.GetOneAsync(a => a.YearId == CurClassroom.YearId, s=>s.Include(a=>a.Year));
 
         foreach (Student student in unassignStudent)
         {
-            StudentChoiceInfo choice = new StudentChoiceInfo
+           int birthYear = student.Birthday.Year;
+           int age = asset.Year.StartYear - birthYear;
+            // Check if the student's age is within the allowed range for the asset
+            if (age >= asset.MinAge && age <= asset.MaxAge)
             {
-                IsSelected = false,
-                StudentID = student.Id,
-                Name = student.Name,
-                Birthday = student.Birthday,
-                Email = student.Email,
-                PhoneNumber = student.Phone
-            };
+                StudentChoiceInfo choice = new StudentChoiceInfo
+                {
+                    IsSelected = false,
+                    StudentID = student.Id,
+                    Name = student.Name,
+                    Birthday = student.Birthday,
+                    Email = student.Email,
+                    PhoneNumber = student.Phone
+                };
 
-            StudentChoiceTable.Add(choice);
-            UnassignStudents.Add(choice);
+                StudentChoiceTable.Add(choice);
+                UnassignStudents.Add(choice);
+            }
         }
+       
     }
 
     private async void SaveChange()

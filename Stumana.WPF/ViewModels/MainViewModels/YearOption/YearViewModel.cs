@@ -115,7 +115,8 @@ namespace Stumana.WPF.ViewModels.MainViewModels.YearOption
             YearList.Clear();
             foreach (var year in years)
             {
-                var row = new YearTableRow(year.Id, $"{year.StartYear}-{year.EndYear}");
+                Asset asset = await GenericDataService<Asset>.Instance.GetOneAsync(a => a.YearId == year.Id);
+                var row = new YearTableRow(year.Id, $"{year.StartYear}-{year.EndYear}", asset.MinAge.ToString(), asset.MaxAge.ToString(), asset.ScoreToPass.ToString(), asset.MaxCapacity.ToString());
                 YearTable.Add(row);
                 YearList.Add(row);
             }
@@ -218,11 +219,19 @@ namespace Stumana.WPF.ViewModels.MainViewModels.YearOption
         {
             public string YearID { get; set; }
             public string YearName { get; set; }
+            public string MinAge { get; set; }
+            public string MaxAge { get; set; }
+            public string MinScore { get; set; }
+            public string MaxClassSize { get; set; }
 
-            public YearTableRow(string yearId, string yearName)
+            public YearTableRow(string yearId, string yearName,string minAge, string maxAge, string minScore, string maxClassSize)
             {
                 YearID = yearId;
                 YearName = yearName;
+                MinAge = minAge;
+                MaxAge = maxAge;
+                MinScore = minScore;
+                MaxClassSize = maxClassSize;
             }
         }
 

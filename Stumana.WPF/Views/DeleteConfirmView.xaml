@@ -73,7 +73,7 @@
                                HorizontalAlignment="Center" Foreground="Black"
                                FontSize="25" Margin="0 40 0 0"/>
 
-                    <TextBlock Text="Bạn có chắn chắn muốn xoá? Điều này sẽ không thể hoàn tác"
+                    <TextBlock Text="{Binding Message}"
                                FontFamily="pack://application:,,,/Resource/Font/#Poppins Regular"
                                TextWrapping="Wrap" Width="300" Foreground="Black"
                                TextAlignment="Center"

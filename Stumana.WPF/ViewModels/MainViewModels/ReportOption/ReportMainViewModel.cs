@@ -4,28 +4,13 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ReportOption
 {
     class ReportMainViewModel : BaseViewModel
     {
-        public ObservableCollection<TabItemViewModel> TabItems { get; set; }
+        public ReportSemesterViewModel ReportSemesterViewModel { get; set; }
+        public ReportSubjectViewModel ReportSubjectViewModel { get; set; }
 
         public ReportMainViewModel()
         {
-            InitTabs();
-        }
-
-        private void InitTabs()
-        {
-            TabItems = new ObservableCollection<TabItemViewModel>();
-
-            TabItems.Add(new TabItemViewModel
-            {
-                Header = "Báo cáo tổng kết học kỳ",
-                ContentViewModel = new ReportSemesterViewModel()
-            });
-
-            TabItems.Add(new TabItemViewModel
-            {
-                Header = "Báo cáo tổng kết môn học",
-                ContentViewModel = new ReportSubjectViewModel()
-            });
+            ReportSemesterViewModel = new ReportSemesterViewModel();
+            ReportSubjectViewModel = new ReportSubjectViewModel();
         }
     }
 

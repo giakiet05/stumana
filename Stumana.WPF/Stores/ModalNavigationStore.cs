@@ -51,11 +51,15 @@ namespace Stumana.WPF.Stores
 
         public void Close()
         {
-            ViewModels.RemoveAt(ViewModels.Count - 1);
-            if (ViewModels.Count > 0) 
-                CurrentModalViewModel = ViewModels.Last();
-            else 
-                CurrentModalViewModel = null;
+
+            if (ViewModels.Count > 0)
+            {
+                ViewModels.RemoveAt(ViewModels.Count - 1);
+               if (ViewModels.Count > 0) CurrentModalViewModel = ViewModels.Last();
+                else CurrentModalViewModel = null;
+            }
+            else CurrentModalViewModel = null;
+
         }
     }
 }

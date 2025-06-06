@@ -11,22 +11,21 @@
             CornerRadius="20"
             Margin="10"
             Background="White">
-        <TabControl ItemsSource="{Binding TabItems}" SelectedIndex="0"
+        <TabControl 
+                    SelectedIndex="0"
                     materialDesign:ColorZoneAssist.Foreground="DarkBlue"
                     materialDesign:ColorZoneAssist.Mode="Custom"
                     Padding="10,5,10,5">
 
-            <TabControl.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock Text="{Binding Header}" FontSize="18"/>
-                </DataTemplate>
-            </TabControl.ItemTemplate>
+       
 
-            <TabControl.ContentTemplate>
-                <DataTemplate>
-                    <ContentControl Content="{Binding ContentViewModel}" />
-                </DataTemplate>
-            </TabControl.ContentTemplate>
+            <TabItem Header="Báo cáo tổng kết học kỳ">
+                <ContentControl Content="{Binding ReportSemesterViewModel}" />
+            </TabItem>
+
+            <TabItem Header="Báo cáo tổng kết môn học">
+                <ContentControl Content="{Binding ReportSubjectViewModel}" />
+            </TabItem>
         </TabControl>
     </Border>
 </UserControl>

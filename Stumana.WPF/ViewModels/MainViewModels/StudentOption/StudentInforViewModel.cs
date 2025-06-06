@@ -197,6 +197,8 @@ namespace Stumana.WPF.ViewModels.MainViewModels.StudentOption
 
         public StudentInfoViewModel(Student? student)
         {
+            if (student == null)
+                return;
             CurStudent = student;
             LoadStudentAssignment(student);
 

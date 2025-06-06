@@ -3,6 +3,7 @@ using Stumana.DataAccess.Services;
 using Stumana.DataAcess.Models;
 using Stumana.WPF.Commands;
 using Stumana.WPF.Helpers;
+using Stumana.WPF.Stores;
 using Stumana.WPF.ViewModels.PopupModels;
 using System.Collections.ObjectModel;
 using System.Globalization;
@@ -136,10 +137,29 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ClassOption
 
             FilterGradeCommand = new RelayCommand(FilterGrade);
             AddClassroomCommand = new NavigateModalCommand(() => new AddClassroomViewModel(OnClassDataChanged));
-            DeleteClassroomCommand = new RelayCommand(DeleteClassroom);
-            AddStudentToClassCommand = new NavigateModalCommand(() => new AddStudentToClassViewModel(SelectedClass.Classroom, OnStudentDataChanged),
-                                                                () => SelectedClass != null, "Hãy chọn một lớp để thêm");
-            DeleteStudentCommand = new RelayCommand(DeleteStudent);
+           DeleteClassroomCommand = new NavigateModalCommand(()=>new DeleteConfirmViewModel(DeleteClassroom));
+            AddStudentToClassCommand = new RelayCommand(() =>
+            {
+                if (SelectedClass == null)
+                {
+                    ToastMessageViewModel.ShowErrorToast("Hãy chọn một lớp để thêm học sinh");
+                    return;
+                }
+                else
+                {
+                    AddStudentToClassViewModel modal = new AddStudentToClassViewModel(SelectedClass.Classroom, OnStudentDataChanged);
+                    if (modal.UnassignStudentCount == 0)
+                    {
+                        ToastMessageViewModel.ShowInfoToast("Không có học sinh nào phù hợp");
+                        return;
+                    }
+                    else
+                        ModalNavigationStore.Instance.CurrentModalViewModel = modal;
+                }
+            });
+
+            // DeleteStudentCommand = new RelayCommand(DeleteStudent);
+            DeleteStudentCommand = new NavigateModalCommand(() => new DeleteConfirmViewModel(DeleteStudent));
         }
 
         private void LoadFilter()
@@ -314,6 +334,7 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ClassOption
             await GenericDataService<Classroom>.Instance.DeleteOneAsync(c => c.Id == SelectedClass.Classroom.Id);
             ClassDataTable.Remove(SelectedClass);
             OriginalClassTable.Remove(SelectedClass);
+            ModalNavigationStore.Instance.Close();
         }
 
         private async void DeleteStudent()
@@ -329,8 +350,8 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ClassOption
             ToastMessageViewModel.ShowSuccessToast("Xóa học sinh khỏi lớp thành công");
             StudentTable.Remove(SelectedStudent);
             OnClassDataChanged?.Invoke(this, EventArgs.Empty);
-            
-            Stumana.WPF.Stores.ModalNavigationStore.Instance.Close();
+            ModalNavigationStore.Instance.Close();
+
         }
 
         private void UpdateClassTable(object? sender, EventArgs e)

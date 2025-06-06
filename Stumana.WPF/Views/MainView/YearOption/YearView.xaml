@@ -222,7 +222,7 @@
                             <Button Margin="10,15,10,15"
                                     Width="200"
                                     FontSize="18"
-                                    Content="Chỉnh sửa loại điểm"
+                                    Content="Quản lí loại điểm"
                                     Padding="10"
                                     Style="{StaticResource PrimaryButtonStyle}"
                                     Command="{Binding EditScoreTypeCommand}" />

@@ -208,6 +208,7 @@
                                   HorizontalAlignment="Stretch"
                                   CanUserAddRows="False"
                                   FontSize="18"
+                                  IsReadOnly="True"
                                   CellStyle="{StaticResource DataGridCellStyle}"
                                   RowStyle="{StaticResource DataGridRowStyle}"
                                   ItemsSource="{Binding SubjectTable}"
@@ -221,7 +222,7 @@
                             </DataGrid.Resources>
 
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Khối" Width="*" IsReadOnly="True"
+                                <DataGridTextColumn Header="Khối" Width="*"
                                                     Binding="{Binding GradeName}">
                                     <DataGridTextColumn.ElementStyle>
                                         <Style TargetType="TextBlock">
@@ -261,7 +262,7 @@
                                       AutoGenerateColumns="False"
                                       HorizontalAlignment="Stretch"
                                       CanUserAddRows="False"
-                                      IsReadOnly="False"
+                                      IsReadOnly="True"
                                       FontSize="18"
                                       CellStyle="{StaticResource DataGridCellStyle}"
                                       RowStyle="{StaticResource DataGridRowStyle}"
@@ -277,7 +278,7 @@
 
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="Tên loại điểm" Width="*" MinWidth="200"
-                                                        IsReadOnly="True" Binding="{Binding ScoreTypeName}">
+                                                        Binding="{Binding ScoreTypeName}">
                                         <DataGridTextColumn.ElementStyle>
                                             <Style TargetType="TextBlock">
                                                 <Setter Property="TextAlignment" Value="Center" />
@@ -286,8 +287,8 @@
                                             </Style>
                                         </DataGridTextColumn.ElementStyle>
                                     </DataGridTextColumn>
-                                    <DataGridTextColumn Header="Hệ số" Width="*" MinWidth="200" 
-                                                        IsReadOnly="True" Binding="{Binding Coefficient}">
+                                    <DataGridTextColumn Header="Hệ số" Width="*" MinWidth="200"
+                                                        Binding="{Binding Coefficient}">
                                         <DataGridTextColumn.ElementStyle>
                                             <Style TargetType="TextBlock">
                                                 <Setter Property="TextAlignment" Value="Center" />
@@ -297,7 +298,7 @@
                                         </DataGridTextColumn.ElementStyle>
                                     </DataGridTextColumn>
                                     <DataGridTextColumn Header="Số lượng điểm" Width="*" MinWidth="200"
-                                                        IsReadOnly="False" Binding="{Binding Amount}">
+                                                        Binding="{Binding Amount}">
                                         <DataGridTextColumn.ElementStyle>
                                             <Style TargetType="TextBlock">
                                                 <Setter Property="TextAlignment" Value="Center" />
@@ -352,7 +353,7 @@
                     Padding="10"
                     Style="{StaticResource PrimaryButtonStyle}"
                     Command="{Binding AddSubjectCommand}" />
-            
+
         </StackPanel>
     </Grid>
 </UserControl>

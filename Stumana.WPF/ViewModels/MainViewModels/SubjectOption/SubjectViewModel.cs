@@ -9,6 +9,7 @@ using Stumana.DataAccess.Services;
 using Stumana.DataAcess.Models;
 using Stumana.WPF.Commands;
 using Stumana.WPF.Helpers;
+using Stumana.WPF.Stores;
 using Stumana.WPF.ViewModels.PopupModels;
 
 namespace Stumana.WPF.ViewModels.MainViewModels.SubjectOption
@@ -184,6 +185,7 @@ namespace Stumana.WPF.ViewModels.MainViewModels.SubjectOption
                 SchoolYearCollection.Add(schoolyearstr);
                 SchoolYearsDic.Add(schoolyearstr, schoolYear);
             }
+
             if (SchoolYearCollection.Any())
                 SelectedSchoolYear = SchoolYearCollection[0];
         }
@@ -275,30 +277,10 @@ namespace Stumana.WPF.ViewModels.MainViewModels.SubjectOption
                     PassScore = subject.ScoreToPass,
                     SubjectName = subject.Name
                 };
-                newRow.PropertyChanged += OnSubjectRowPropertyChanged;
 
                 SubjectTable.Add(newRow);
                 OriginalSubjectTable.Add(newRow);
             }
-        }
-
-        private async void OnSubjectRowPropertyChanged(object? sender, PropertyChangedEventArgs e)
-        {
-            if (sender == null)
-                return;
-
-            var row = (SubjectTableRow)sender;
-            Subject subject = new Subject
-            {
-                Id = row.SubjectId,
-                Name = row.SubjectName,
-                ScoreToPass = row.PassScore,
-                GradeId = row.GradeId,
-                YearId = SchoolYearsDic[SelectedSchoolYear].Id
-            };
-
-            await GenericDataService<Subject>.Instance.UpdateOneAsync(subject, s => s.Id == subject.Id);
-            ToastMessageViewModel.ShowSuccessToast("Chỉnh sửa điểm đạt môn thành công");
         }
 
         private async void LoadSubjectScoreTypeData(SubjectTableRow? subjectRow)
@@ -321,28 +303,9 @@ namespace Stumana.WPF.ViewModels.MainViewModels.SubjectOption
                     Coefficient = subjectScoreType.ScoreType.Coefficient,
                     Amount = subjectScoreType.Amount
                 };
-                newRow.PropertyChanged += OnSubjectScoreTypeRowPropertyChanged;
 
                 SubjectScoreTypeTable.Add(newRow);
             }
-        }
-
-        private async void OnSubjectScoreTypeRowPropertyChanged(object? sender, PropertyChangedEventArgs e)
-        {
-            if (sender == null)
-                return;
-
-            var row = (SubjectScoreTypeTableRow)sender;
-            SubjectScoreType subjectScoreType = new SubjectScoreType
-            {
-                Id = row.SubjectScoreTypeId,
-                Amount = row.Amount,
-                ScoreTypeId = row.ScoreTypeId,
-                SubjectId = row.SubjectId
-            };
-
-            await GenericDataService<SubjectScoreType>.Instance.UpdateOneAsync(subjectScoreType, sst => sst.Id == subjectScoreType.Id);
-            ToastMessageViewModel.ShowSuccessToast("Chỉnh sửa số lượng thành công");
         }
 
         private async void DeleteSubjectRow()
@@ -357,8 +320,8 @@ namespace Stumana.WPF.ViewModels.MainViewModels.SubjectOption
             OriginalSubjectTable.Remove(SelectedSubject);
             SubjectTable.Remove(SelectedSubject);
             SelectedSubject = null;
-            
-            Stumana.WPF.Stores.ModalNavigationStore.Instance.Close();
+
+            ModalNavigationStore.Instance.Close();
         }
 
         private async void DeleteSubjectScoreType()
@@ -371,8 +334,8 @@ namespace Stumana.WPF.ViewModels.MainViewModels.SubjectOption
 
             await GenericDataService<SubjectScoreType>.Instance.DeleteOneAsync(sst => sst.Id == SelectedSubjectScoreType.SubjectScoreTypeId);
             SubjectScoreTypeTable.Remove(SelectedSubjectScoreType);
-            
-            Stumana.WPF.Stores.ModalNavigationStore.Instance.Close();
+
+            ModalNavigationStore.Instance.Close();
         }
 
         public void OnSearchTextChange()
@@ -422,58 +385,25 @@ namespace Stumana.WPF.ViewModels.MainViewModels.SubjectOption
             }
         }
 
-        public class SubjectTableRow : INotifyPropertyChanged
+        public class SubjectTableRow
         {
             public Subject MySubject { get; set; }
             public string SubjectId { get; set; }
             public string GradeId { get; set; }
             public string GradeName { get; set; }
             public string SubjectName { get; set; }
-            private double _passScore;
 
-            public double PassScore
-            {
-                get => _passScore;
-                set
-                {
-                    _passScore = value;
-                    OnPropertyChanged();
-                }
-            }
-
-            public event PropertyChangedEventHandler? PropertyChanged;
-
-            protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
-            {
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-            }
+            public double PassScore { get; set; }
         }
 
-        public class SubjectScoreTypeTableRow : INotifyPropertyChanged
+        public class SubjectScoreTypeTableRow
         {
             public string SubjectScoreTypeId { get; set; }
             public string SubjectId { get; set; }
             public string ScoreTypeId { get; set; }
             public string ScoreTypeName { get; set; }
             public double Coefficient { get; set; }
-            private int _amount;
-
-            public int Amount
-            {
-                get => _amount;
-                set
-                {
-                    _amount = value;
-                    OnPropertyChanged();
-                }
-            }
-
-            public event PropertyChangedEventHandler? PropertyChanged;
-
-            protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
-            {
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-            }
+            public int Amount { get; set; }
         }
     }
 }

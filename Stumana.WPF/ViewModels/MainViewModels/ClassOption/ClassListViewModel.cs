@@ -1,30 +1,49 @@
-﻿using System.Collections.ObjectModel;
-using System.Data;
-using System.Windows.Input;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Stumana.DataAccess.Services;
 using Stumana.DataAcess.Models;
 using Stumana.WPF.Commands;
 using Stumana.WPF.Helpers;
 using Stumana.WPF.ViewModels.PopupModels;
+using System.Collections.ObjectModel;
+using System.Globalization;
+using System.Reflection;
+using System.Windows.Input;
 
 namespace Stumana.WPF.ViewModels.MainViewModels.ClassOption
 {
     public class ClassListViewModel : BaseViewModel
     {
-        #region Commands
-
-        public ICommand FilterGradeCommand { get; set; }
-        public ICommand AddStudentToClassCommand { get; set; }
-        public ICommand TransferStudentCommand { get; set; }
-        public ICommand DeleteStudentCommand { get; set; }
-        public ICommand AddClassroomCommand { get; set; }
-        public ICommand EditClassroomCommand { get; set; }
-        public ICommand DeleteClassroomCommand { get; set; }
-
-        #endregion Commands
-
         #region Properties
+
+        private string _searchText;
+
+        public string SearchText
+        {
+            get => _searchText;
+            set
+            {
+                _searchText = value;
+                OnPropertyChanged();
+                OnSearchTextChange();
+            }
+        }
+
+        private List<ClassTableRow> OriginalClassTable { get; set; } = new();
+        public ObservableCollection<ClassTableRow> ClassDataTable { get; set; } = new();
+
+        public ObservableCollection<Student> StudentTable { get; set; } = new();
+
+        private Student? _selectedStudent;
+
+        public Student? SelectedStudent
+        {
+            get => _selectedStudent;
+            set
+            {
+                _selectedStudent = value;
+                OnPropertyChanged();
+            }
+        }
 
         private Dictionary<string, SchoolYear> SchoolYearsDic { get; set; } = new Dictionary<string, SchoolYear>();
         private ObservableCollection<string> _schoolyearCollection;
@@ -77,10 +96,9 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ClassOption
             }
         }
 
-        private Dictionary<string, Classroom> ClassroomDic { get; set; } = new();
-        private DataRowView? _selectedClass;
+        private ClassTableRow? _selectedClass;
 
-        public DataRowView? SelectedClass
+        public ClassTableRow? SelectedClass
         {
             get => _selectedClass;
             set
@@ -94,34 +112,16 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ClassOption
             }
         }
 
-        public DataTable ClassDataTable { get; set; } = new DataTable();
-        private DataView _classTableView;
-
-        public DataView ClassTableView
-        {
-            get => _classTableView;
-            set
-            {
-                _classTableView = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public ObservableCollection<Student> StudentTable { get; set; } = new();
-
-        private Student? _selectedStudent;
-
-        public Student? SelectedStudent
-        {
-            get => _selectedStudent;
-            set
-            {
-                _selectedStudent = value;
-                OnPropertyChanged();
-            }
-        }
-
         #endregion Properties
+
+        #region Commands
+        public ICommand FilterGradeCommand { get; set; }
+        public ICommand AddStudentToClassCommand { get; set; }
+        public ICommand DeleteStudentCommand { get; set; }
+        public ICommand AddClassroomCommand { get; set; }
+        public ICommand DeleteClassroomCommand { get; set; }
+
+        #endregion Commands
 
         public EventHandler? OnClassDataChanged { get; set; }
         public EventHandler? OnStudentDataChanged { get; set; }
@@ -132,17 +132,13 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ClassOption
             OnStudentDataChanged += UpdateStudentTable;
             OnStudentDataChanged += UpdateClassTable;
 
-            LoadClassTableColumn();
             LoadFilter();
 
             FilterGradeCommand = new RelayCommand(FilterGrade);
             AddClassroomCommand = new NavigateModalCommand(() => new AddClassroomViewModel(OnClassDataChanged));
-            EditClassroomCommand = new NavigateModalCommand(() => new EditClassroomViewModel(ClassroomDic[SelectedClass["Tên lớp"].ToString()], OnClassDataChanged),
-                                                            () => SelectedClass != null, "Hãy chọn một lớp để chỉnh sửa");
-            DeleteClassroomCommand = new NavigateModalCommand(() => new DeleteConfirmViewModel(DeleteClassroom),
-                                                              () => SelectedClass != null, "Hãy chọn một lớp để xóa");
-            AddStudentToClassCommand = new NavigateModalCommand(() => new AddStudentToClassViewModel(ClassroomDic[SelectedClass["Tên lớp"].ToString()], OnStudentDataChanged),
-                                                                () => SelectedClass != null, "Hãy chọn một lớp để thêm");
+            DeleteClassroomCommand = new RelayCommand(DeleteClassroom);
+            AddStudentToClassCommand = new NavigateModalCommand(() => new AddStudentToClassViewModel(SelectedClass.Classroom, OnStudentDataChanged),
+                                     () => SelectedClass != null, "Hãy chọn một lớp để thêm");
             DeleteStudentCommand = new NavigateModalCommand(() => new DeleteConfirmViewModel(DeleteStudent),
                                                             () => SelectedStudent != null, "Hãy chọn một học sinh để xóa khỏi lớp");
         }
@@ -153,14 +149,6 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ClassOption
             LoadGradeFilter();
             DisplayGradeFilterText = ProcessDisplayText(GradeFilter);
             OnSelectionClassroomFilterChange();
-        }
-
-        private void LoadClassTableColumn()
-        {
-            ClassDataTable.Columns.Add("Tên lớp", typeof(string));
-            ClassDataTable.Columns.Add("Sĩ số", typeof(int));
-
-            ClassTableView = ClassDataTable.DefaultView;
         }
 
         private async Task LoadStudentData(Classroom classroom)
@@ -183,7 +171,7 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ClassOption
                 return;
             }
 
-            Classroom classroom = ClassroomDic[SelectedClass["Tên lớp"].ToString()];
+            Classroom classroom = SelectedClass.Classroom;
             await LoadStudentData(classroom);
         }
 
@@ -191,7 +179,8 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ClassOption
         {
             if (string.IsNullOrEmpty(SelectedSchoolYear))
             {
-                ClassDataTable.Rows.Clear();
+                ClassDataTable.Clear();
+                OriginalClassTable.Clear();
                 return;
             }
 
@@ -209,22 +198,26 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ClassOption
 
         private async void LoadClassTable(SchoolYear schoolYear, List<Grade> grades)
         {
-            List<Classroom> classrooms = new List<Classroom>();
             var gradeIds = grades.Select(g => g.Id).Distinct();
-            classrooms = (await GenericDataService<Classroom>.Instance.GetManyAsync(cl => cl.YearId == schoolYear.Id && gradeIds.Contains(cl.GradeId))).ToList();
+            List<Classroom> classrooms = (await GenericDataService<Classroom>.Instance.GetManyAsync(cl => cl.YearId == schoolYear.Id && gradeIds.Contains(cl.GradeId))).ToList();
 
-            ClassDataTable.Rows.Clear();
-            ClassroomDic.Clear();
-            foreach (var classroom in classrooms)
+            ClassDataTable.Clear();
+            OriginalClassTable.Clear();
+            foreach (Classroom classroom in classrooms)
             {
                 var studentAssignments = await GenericDataService<StudentAssignment>.Instance.GetManyAsync(sa => sa.ClassroomId == classroom.Id,
                                                                                                            query => query.Include(sa => sa.Student));
                 List<Student> students = studentAssignments.GroupBy(sa => sa.StudentId).Select(g => g.First().Student).Where(s => s != null).ToList();
-                DataRow dataRow = ClassDataTable.NewRow();
-                dataRow["Tên lớp"] = classroom.Name;
-                dataRow["Sĩ số"] = students.Count;
-                ClassDataTable.Rows.Add(dataRow);
-                ClassroomDic[classroom.Name] = classroom;
+
+                var newRow = new ClassTableRow
+                {
+                    Name = classroom.Name,
+                    Capacity = students.Count,
+                    Classroom = classroom
+                };
+
+                ClassDataTable.Add(newRow);
+                OriginalClassTable.Add(newRow);
             }
         }
 
@@ -319,12 +312,9 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ClassOption
                 return;
             }
 
-            Classroom classroom = ClassroomDic[SelectedClass["Tên lớp"].ToString()];
-            await GenericDataService<Classroom>.Instance.DeleteOneAsync(c => c.Id == classroom.Id);
-            ClassroomDic.Remove(classroom.Name);
-            ClassDataTable.Rows.Remove(SelectedClass.Row);
-            
-            Stumana.WPF.Stores.ModalNavigationStore.Instance.Close();
+            await GenericDataService<Classroom>.Instance.DeleteOneAsync(c => c.Id == SelectedClass.Classroom.Id);
+            ClassDataTable.Remove(SelectedClass);
+            OriginalClassTable.Remove(SelectedClass);
         }
 
         private async void DeleteStudent()
@@ -353,5 +343,68 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ClassOption
         {
             OnSelectedClassChanged();
         }
+
+        public void OnSearchTextChange()
+        {
+            SearchAllColumns(OriginalClassTable, ClassDataTable, SearchText, false, false);
+        }
+
+        public void SearchAllColumns<T>(List<T> originalList, ObservableCollection<T> table, string searchText, bool exactMatch = false, bool caseSensitive = false)
+        {
+            if (originalList == null)
+                return;
+
+            var culture = new CultureInfo("vi-VN");
+            var compareInfo = culture.CompareInfo;
+            var compareOptions = caseSensitive ? CompareOptions.None : CompareOptions.IgnoreCase;
+
+            IEnumerable<T> filtered;
+
+            if (string.IsNullOrEmpty(searchText))
+                filtered = originalList;
+            else
+            {
+                filtered = originalList.Where(s =>
+                {
+                    bool Match(string? value) => !string.IsNullOrEmpty(value) && (exactMatch ? compareInfo.Compare(value, searchText, compareOptions) == 0 : compareInfo.IndexOf(value, searchText, compareOptions) >= 0);
+                    PropertyInfo[] properties = typeof(T).GetProperties();
+                    bool IsMatch = false;
+
+                    foreach (var property in properties)
+                    {
+                        var rawValue = property.GetValue(s);
+                        if (rawValue == null)
+                            continue;
+
+                        string? stringValue = rawValue is DateTime dt ? dt.ToString("dd/MM/yyyy", culture) : rawValue.ToString();
+                        IsMatch = IsMatch || Match(stringValue);
+                    }
+
+                    return IsMatch;
+                });
+            }
+
+            table.Clear();
+            foreach (var row in filtered)
+            {
+                table.Add(row);
+            }
+        }
+    }
+
+    public class ClassTableRow
+    {
+        public ClassTableRow(Classroom classroom, string name, int capacity)
+        {
+            Classroom = classroom;
+            Name = name;
+            Capacity = capacity;
+        }
+
+        public ClassTableRow() { }
+
+        public Classroom Classroom { get; set; }
+        public string Name { get; set; }
+        public int Capacity { get; set; }
     }
 }

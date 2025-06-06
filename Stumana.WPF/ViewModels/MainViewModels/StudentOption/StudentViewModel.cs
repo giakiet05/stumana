@@ -152,9 +152,9 @@ namespace Stumana.WPF.ViewModels.MainViewModels.StudentOption
         {
             await LoadSchoolYearFilter();
             await LoadGradeFilter();
-            LoadClassroomFilter();
-            DisplayGradeFilterText = ProcessDisplayText(GradeFilter, "Khối*");
+            DisplayGradeFilterText = ProcessDisplayText(GradeFilter);
 
+            LoadClassroomFilter();
             OnFilterChange();
             DisplayClassFilterText = ProcessDisplayText(ClassFilter);
         }
@@ -213,9 +213,6 @@ namespace Stumana.WPF.ViewModels.MainViewModels.StudentOption
             var gradeId = grades.Select(g => g.Id);
             List<Classroom> classrooms = (await GenericDataService<Classroom>.Instance.GetManyAsync(c => c.YearId == schoolYear.Id && gradeId.Contains(c.GradeId))).ToList();
 
-            if (!classrooms.Any())
-                return;
-
             ClassroomDic.Clear();
             ClassFilter.Add(new FilterItem("All", true));
             classrooms = classrooms.OrderByDescending(c => c.Name).ToList();
@@ -239,7 +236,7 @@ namespace Stumana.WPF.ViewModels.MainViewModels.StudentOption
                 IsProcessingFilter = true;
                 FilterItem filterItem = (FilterItem)param;
                 ProcessFilterItemSelection(filterItem, GradeFilter);
-                DisplayGradeFilterText = ProcessDisplayText(GradeFilter, "Khối*");
+                DisplayGradeFilterText = ProcessDisplayText(GradeFilter);
                 LoadClassroomFilter();
                 OnFilterChange();
             }
@@ -259,7 +256,7 @@ namespace Stumana.WPF.ViewModels.MainViewModels.StudentOption
                 IsProcessingFilter = true;
                 FilterItem filterItem = (FilterItem)param;
                 ProcessFilterItemSelection(filterItem, ClassFilter);
-                DisplayClassFilterText = ProcessDisplayText(ClassFilter, "Lớp");
+                DisplayClassFilterText = ProcessDisplayText(ClassFilter);
                 OnFilterChange();
             }
             finally
@@ -428,6 +425,9 @@ namespace Stumana.WPF.ViewModels.MainViewModels.StudentOption
 
                     foreach (var property in properties)
                     {
+                        if (property.Name == "Gender")
+                            continue;
+
                         var rawValue = property.GetValue(s);
                         if (rawValue == null)
                             continue;

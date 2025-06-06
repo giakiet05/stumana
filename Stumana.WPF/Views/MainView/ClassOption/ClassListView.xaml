@@ -204,7 +204,8 @@
                                          Style="{StaticResource MaterialDesignOutlinedTextBox}"
                                          materialDesign:HintAssist.Hint="Tìm kiếm lớp học"
                                          materialDesign:TextFieldAssist.HasClearButton="True"
-                                         Padding="20,5,5,5">
+                                         Padding="20,5,5,5"
+                                         Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}">
                                 </TextBox>
                             </Grid>
                         </Border>
@@ -220,7 +221,7 @@
                                   FontSize="16"
                                   CellStyle="{StaticResource DataGridCellStyle}"
                                   RowStyle="{StaticResource DataGridRowStyle}"
-                                  ItemsSource="{Binding ClassTableView}"
+                                  ItemsSource="{Binding ClassDataTable}"
                                   SelectedItem="{Binding SelectedClass, Mode=TwoWay}">
                             <DataGrid.Resources>
                                 <Style TargetType="DataGridColumnHeader"
@@ -230,7 +231,7 @@
                             </DataGrid.Resources>
 
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Tên Lớp" Width="*" Binding="{Binding [Tên lớp]}">
+                                <DataGridTextColumn Header="Tên Lớp" Width="*" Binding="{Binding Name}">
                                     <DataGridTextColumn.ElementStyle>
                                         <Style TargetType="TextBlock">
                                             <Setter Property="TextAlignment" Value="Center" />
@@ -239,7 +240,7 @@
                                         </Style>
                                     </DataGridTextColumn.ElementStyle>
                                 </DataGridTextColumn>
-                                <DataGridTextColumn Header="Sĩ số" Width="*" Binding="{Binding [Sĩ số]}">
+                                <DataGridTextColumn Header="Sĩ số" Width="*" Binding="{Binding Capacity}">
                                     <DataGridTextColumn.ElementStyle>
                                         <Style TargetType="TextBlock">
                                             <Setter Property="TextAlignment" Value="Center" />

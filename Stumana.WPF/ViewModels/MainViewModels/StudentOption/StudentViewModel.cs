@@ -139,7 +139,8 @@ namespace Stumana.WPF.ViewModels.MainViewModels.StudentOption
             FilterGradeCommand = new RelayCommand(FilterGrade);
             FilterClassroomCommand = new RelayCommand(FilterClassroom);
             AddStudentCommand = new NavigateModalCommand(() => new AddStudentViewModel(OnStudentDataChanged));
-            DeleteStudentCommand = new RelayCommand(DeleteStudent);
+            DeleteStudentCommand = new NavigateModalCommand(() => new DeleteConfirmViewModel(DeleteStudent),
+                                                            () => SelectedStudent != null, "Hãy chọn một học sinh để xóa");
             EditStudentCommand = new NavigateModalCommand(() => new EditStudentViewModel(SelectedStudent, OnStudentDataChanged),
                                                           () => SelectedStudent != null, "Hãy chọn một học sinh để chỉnh sửa.");
             StudentDetailCommand = new NavigateModalCommand(() => new StudentInfoViewModel(SelectedStudent));
@@ -395,6 +396,8 @@ namespace Stumana.WPF.ViewModels.MainViewModels.StudentOption
             StudentTable.Remove(SelectedStudent);
             OriginalStudentTable.Remove(SelectedStudent);
             ToastMessageViewModel.ShowSuccessToast("Xóa học sinh thành công");
+            
+            Stumana.WPF.Stores.ModalNavigationStore.Instance.Close();
         }
 
         public void OnSearchTextChange()

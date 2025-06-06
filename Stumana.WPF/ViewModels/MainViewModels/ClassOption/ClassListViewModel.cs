@@ -19,6 +19,7 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ClassOption
         public ICommand TransferStudentCommand { get; set; }
         public ICommand DeleteStudentCommand { get; set; }
         public ICommand AddClassroomCommand { get; set; }
+        public ICommand EditClassroomCommand { get; set; }
         public ICommand DeleteClassroomCommand { get; set; }
 
         #endregion Commands
@@ -136,10 +137,14 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ClassOption
 
             FilterGradeCommand = new RelayCommand(FilterGrade);
             AddClassroomCommand = new NavigateModalCommand(() => new AddClassroomViewModel(OnClassDataChanged));
-            DeleteClassroomCommand = new RelayCommand(DeleteClassroom);
+            EditClassroomCommand = new NavigateModalCommand(() => new EditClassroomViewModel(ClassroomDic[SelectedClass["Tên lớp"].ToString()], OnClassDataChanged),
+                                                            () => SelectedClass != null, "Hãy chọn một lớp để chỉnh sửa");
+            DeleteClassroomCommand = new NavigateModalCommand(() => new DeleteConfirmViewModel(DeleteClassroom),
+                                                              () => SelectedClass != null, "Hãy chọn một lớp để xóa");
             AddStudentToClassCommand = new NavigateModalCommand(() => new AddStudentToClassViewModel(ClassroomDic[SelectedClass["Tên lớp"].ToString()], OnStudentDataChanged),
                                                                 () => SelectedClass != null, "Hãy chọn một lớp để thêm");
-            DeleteStudentCommand = new RelayCommand(DeleteStudent);
+            DeleteStudentCommand = new NavigateModalCommand(() => new DeleteConfirmViewModel(DeleteStudent),
+                                                            () => SelectedStudent != null, "Hãy chọn một học sinh để xóa khỏi lớp");
         }
 
         private void LoadFilter()
@@ -318,6 +323,8 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ClassOption
             await GenericDataService<Classroom>.Instance.DeleteOneAsync(c => c.Id == classroom.Id);
             ClassroomDic.Remove(classroom.Name);
             ClassDataTable.Rows.Remove(SelectedClass.Row);
+            
+            Stumana.WPF.Stores.ModalNavigationStore.Instance.Close();
         }
 
         private async void DeleteStudent()
@@ -333,6 +340,8 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ClassOption
             ToastMessageViewModel.ShowSuccessToast("Xóa học sinh khỏi lớp thành công");
             StudentTable.Remove(SelectedStudent);
             OnClassDataChanged?.Invoke(this, EventArgs.Empty);
+            
+            Stumana.WPF.Stores.ModalNavigationStore.Instance.Close();
         }
 
         private void UpdateClassTable(object? sender, EventArgs e)

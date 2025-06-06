@@ -127,11 +127,13 @@ namespace Stumana.WPF.ViewModels.MainViewModels.SubjectOption
             OnSubjectScoreTypeDataChanged += UpdateSubjectScoreTypeData;
 
             AddSubjectCommand = new NavigateModalCommand(() => new AddSubjectViewModel(OnSubjectDataChanged));
-            DeleteSubjectCommand = new RelayCommand(DeleteSubjectRow);
+            DeleteSubjectCommand = new NavigateModalCommand(() => new DeleteConfirmViewModel(DeleteSubjectRow),
+                                                            () => SelectedSubject != null, "Hãy chọn một môn học để xóa");
             EditScoreTypeCommand = new NavigateModalCommand(() => new EditScoreTypeViewModel());
             AddSubjectScoreTypeCommand = new NavigateModalCommand(() => new AddSubjectScoreTypeViewModel(SelectedSubject.MySubject, OnSubjectScoreTypeDataChanged),
                                                                   () => SelectedSubject != null, "Hãy chọn một môn học");
-            DeleteSubjectScoreTypeCommand = new RelayCommand(DeleteSubjectScoreType);
+            DeleteSubjectScoreTypeCommand = new NavigateModalCommand(() => new DeleteConfirmViewModel(DeleteSubjectScoreType),
+                                                                     () => SelectedSubjectScoreType != null, "Hãy chọn loại điểm để xóa");
             FilterGradeCommand = new RelayCommand(FilterGrade);
 
             LoadFilter();
@@ -355,6 +357,8 @@ namespace Stumana.WPF.ViewModels.MainViewModels.SubjectOption
             OriginalSubjectTable.Remove(SelectedSubject);
             SubjectTable.Remove(SelectedSubject);
             SelectedSubject = null;
+            
+            Stumana.WPF.Stores.ModalNavigationStore.Instance.Close();
         }
 
         private async void DeleteSubjectScoreType()
@@ -367,6 +371,8 @@ namespace Stumana.WPF.ViewModels.MainViewModels.SubjectOption
 
             await GenericDataService<SubjectScoreType>.Instance.DeleteOneAsync(sst => sst.Id == SelectedSubjectScoreType.SubjectScoreTypeId);
             SubjectScoreTypeTable.Remove(SelectedSubjectScoreType);
+            
+            Stumana.WPF.Stores.ModalNavigationStore.Instance.Close();
         }
 
         public void OnSearchTextChange()

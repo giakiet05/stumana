@@ -61,7 +61,8 @@ namespace Stumana.WPF.ViewModels.PopupModels
 
             AddScoreTypeCommand = new NavigateModalCommand(() => new AddScoreTypeViewModel(SchoolYearsDic[SelectedSchoolYear], OnAddedScoreType),
                                                            () => SelectedSchoolYear != null, "Hãy chọn một năm học để thêm");
-            DeleteScoreTypeCommand = new RelayCommand(DeleteScoreType);
+            DeleteScoreTypeCommand = new NavigateModalCommand(() => new DeleteConfirmViewModel(DeleteScoreType),
+                                                              () => SelectedScoreType != null, "Hãy chọn một loại điểm để xóa");
             CancelCommand = new RelayCommand(ModalNavigationStore.Instance.Close);
 
             LoadSchoolYearFilter();
@@ -112,6 +113,8 @@ namespace Stumana.WPF.ViewModels.PopupModels
             ScoreTypeTable.Remove(SelectedScoreType);
             await GenericDataService<ScoreType>.Instance.DeleteOneAsync(st => st.Id == SelectedScoreType.Id);
             SelectedScoreType = null;
+
+            ModalNavigationStore.Instance.Close();
         }
     }
 }

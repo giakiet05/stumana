@@ -83,13 +83,15 @@ namespace Stumana.WPF.ViewModels.MainViewModels.YearOption
             OnTableUpdate += UpdateTable;
 
             AddYearCommand = new NavigateModalCommand(() => new AddYearViewModel(OnTableUpdate));
-            EditYearCommand = new NavigateModalCommand(() => new EditYearViewModel(SelectedYear, OnTableUpdate), 
+            EditYearCommand = new NavigateModalCommand(() => new EditYearViewModel(SelectedYear, OnTableUpdate),
                                                       () => SelectedYear != null, "Hãy chọn một năm học để sửa");
-            DeleteYearCommand = new RelayCommand(DeleteYear);
+            DeleteYearCommand = new NavigateModalCommand(() => new DeleteConfirmViewModel(DeleteYear),
+                                                         () => SelectedYear != null, "Hãy chọn một năm học để xóa");
             AddGradeCommand = new NavigateModalCommand(() => new AddGradeViewModel(OnTableUpdate));
-            EditGradeCommand = new NavigateModalCommand(() => new EditGradeViewModel(SelectedGrade, OnTableUpdate), 
+            EditGradeCommand = new NavigateModalCommand(() => new EditGradeViewModel(SelectedGrade, OnTableUpdate),
                                                        () => SelectedGrade != null, "Hãy chọn một khối lớp để sửa");
-            DeleteGradeCommand = new RelayCommand(DeleteGrade);
+            DeleteGradeCommand = new NavigateModalCommand(() => new DeleteConfirmViewModel(DeleteGrade),
+                                                          () => SelectedGrade != null, "Hãy chọn một khối lớp để xóa");
             EditScoreTypeCommand = new NavigateModalCommand(() => new EditScoreTypeViewModel());
             LoadData();
         }
@@ -144,6 +146,8 @@ namespace Stumana.WPF.ViewModels.MainViewModels.YearOption
             YearTable.Remove(SelectedYear);
             YearList.Remove(SelectedYear);
             SelectedYear = null;
+
+            Stumana.WPF.Stores.ModalNavigationStore.Instance.Close();
         }
 
         private async void DeleteGrade()
@@ -158,6 +162,8 @@ namespace Stumana.WPF.ViewModels.MainViewModels.YearOption
             GradeTable.Remove(SelectedGrade);
             GradeList.Remove(SelectedGrade);
             SelectedGrade = null;
+
+            Stumana.WPF.Stores.ModalNavigationStore.Instance.Close();
         }
 
         public void OnSearchTextChange()

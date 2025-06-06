@@ -40,8 +40,13 @@
     <DataTemplate DataType="{x:Type authencationViewModels:SignUpViewModel}">
         <authencationViews:SignUp />
     </DataTemplate>
+
     <DataTemplate DataType="{x:Type vm:LogoutConfirmViewModel}">
         <views:LogoutConfirmView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:DeleteConfirmViewModel}">
+        <views:DeleteConfirmView />
     </DataTemplate>
     <!--#endregion-->
 

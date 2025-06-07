@@ -114,9 +114,9 @@
 
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="STT" Width="250" Binding="{Binding STT}" />
-                        <DataGridTextColumn Header="Lớp" Width="250" Binding="{Binding Lớp}" />
-                        <DataGridTextColumn Header="Số lượng đạt" Width="250" Binding="{Binding [Số lượng đạt]}" />
-                        <DataGridTextColumn Header="Tỉ lệ" Width="250" Binding="{Binding Tỉ lệ}" />
+                        <DataGridTextColumn Header="Lớp" Width="250" Binding="{Binding Lop}" />
+                        <DataGridTextColumn Header="Số lượng đạt" Width="250" Binding="{Binding SoLuongDat}" />
+                        <DataGridTextColumn Header="Tỉ lệ" Width="250" Binding="{Binding TiLe}" />
                     </DataGrid.Columns>
                 </DataGrid>
             </Grid>

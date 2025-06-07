@@ -128,9 +128,9 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ReportOption
         {
             ReportTable = new DataTable();
             ReportTable.Columns.Add("STT", typeof(int));
-            ReportTable.Columns.Add("Lớp", typeof(string));
-            ReportTable.Columns.Add("Số lượng đạt", typeof(int));
-            ReportTable.Columns.Add("Tỉ lệ", typeof(string));
+            ReportTable.Columns.Add("Lop", typeof(string));
+            ReportTable.Columns.Add("SoLuongDat", typeof(int));
+            ReportTable.Columns.Add("TiLe", typeof(string));
             ReportTableView = ReportTable.DefaultView;
         }
 

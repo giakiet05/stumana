@@ -138,7 +138,8 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ClassOption
 
             FilterGradeCommand = new RelayCommand(FilterGrade);
             AddClassroomCommand = new NavigateModalCommand(() => new AddClassroomViewModel(OnClassDataChanged));
-            DeleteClassroomCommand = new NavigateModalCommand(()=>new DeleteConfirmViewModel(DeleteClassroom));
+            DeleteClassroomCommand = new NavigateModalCommand(()=>new DeleteConfirmViewModel(DeleteClassroom),
+                ()=>SelectedClass!= null,"Hãy chọn 1 lớp học để xóa");
             EditClassroomCommand = new NavigateModalCommand(() => new EditClassroomViewModel(SelectedClass.Classroom, OnClassDataChanged),
                                                             () => SelectedClass != null, "Hãy chọn một lớp để sửa");
             AddStudentToClassCommand = new RelayCommand(() =>
@@ -161,8 +162,10 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ClassOption
                 }
             });
 
+
             // DeleteStudentCommand = new RelayCommand(DeleteStudent);
-            DeleteStudentCommand = new NavigateModalCommand(() => new DeleteConfirmViewModel(DeleteStudent));
+            DeleteStudentCommand = new NavigateModalCommand(() => new DeleteConfirmViewModel(DeleteStudent),
+                ()=> (SelectedClass != null && SelectedStudent !=null),() => (SelectedClass == null) ? "Hãy chọn một lớp" : "Hãy chọn một học sinh để xóa");
         }
 
         private void LoadFilter()

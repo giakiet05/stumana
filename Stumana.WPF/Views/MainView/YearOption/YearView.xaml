@@ -316,6 +316,9 @@
 
                         <Border Grid.Row="1" Margin="0,0,0,0" VerticalAlignment="Stretch">
                             <DataGrid Margin="10 10 10 0"
+                                      ScrollViewer.HorizontalScrollBarVisibility="Visible"
+ScrollViewer.VerticalScrollBarVisibility="Auto"
+ScrollViewer.CanContentScroll="False"
                                       AutoGenerateColumns="False"
                                       HorizontalAlignment="Stretch"
                                       CanUserAddRows="False"

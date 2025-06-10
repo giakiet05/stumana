@@ -98,6 +98,9 @@
                 </Grid>
 
                 <DataGrid Grid.Row="1" Grid.Column="0"
+                          ScrollViewer.HorizontalScrollBarVisibility="Visible"
+ScrollViewer.VerticalScrollBarVisibility="Auto"
+ScrollViewer.CanContentScroll="False"
                           Margin="10,10,0,0"
                           AutoGenerateColumns="True"
                           HorizontalAlignment="Stretch"

@@ -333,7 +333,10 @@ namespace Stumana.WPF.ViewModels.MainViewModels.StudentOption
             }
 
             if (SelectedSchoolYear == null || GradeFilter.Count(i => i.IsChecked) == 0)
+            {
+                await LoadStudentData(classrooms, true, null, null);
                 return;
+            }
 
             SchoolYear schoolYear = SchoolYearDic[SelectedSchoolYear];
             List<Grade> grades = new List<Grade>();
@@ -346,13 +349,25 @@ namespace Stumana.WPF.ViewModels.MainViewModels.StudentOption
             await LoadStudentData(classrooms, haveNoClassStudent, schoolYear, grades);
         }
 
-        private async Task LoadStudentData(List<Classroom> classrooms, bool haveNoClassStudent, SchoolYear schoolYear, List<Grade> grades)
+        private async Task LoadStudentData(List<Classroom> classrooms, bool haveNoClassStudent, SchoolYear? schoolYear, List<Grade>? grades)
         {
             StudentTable.Clear();
             OriginalStudentTable.Clear();
 
             if (classrooms.Count == 0 && !haveNoClassStudent)
                 return;
+
+            if (schoolYear == null || grades == null)
+            {
+                var studentWithAssignmentIds = (await GenericDataService<StudentAssignment>.Instance.GetAllAsync()).Select(sa => sa.StudentId).Distinct();
+                var studentsWithNoAssignment = (await GenericDataService<Student>.Instance.GetManyAsync(s => !studentWithAssignmentIds.Contains(s.Id))).ToList();
+                foreach (var student in studentsWithNoAssignment)
+                {
+                    StudentTable.Add(student);
+                    OriginalStudentTable.Add(student);
+                }
+                return;
+            }
 
             var classIds = classrooms.Select(c => c.Id).Distinct().ToList();
             List<StudentAssignment> studentAssignments = (await GenericDataService<StudentAssignment>.Instance.GetManyAsync(sa => classIds.Contains(sa.ClassroomId),

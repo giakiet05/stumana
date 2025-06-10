@@ -5,12 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:custom="clr-namespace:Stumana.WPF.Helpers"
         mc:Ignorable="d"
-        Title="MainWindow"  Height="789"
+        Title="Stumana"  Height="789"
         Width="1440"
         MinWidth="250"
         MinHeight="500"
          WindowState="Maximized"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"
+        Icon="/Resource/Image/SchoolLogo.ico">
     <Grid>
         <!--ControlBar-->
         <!--<components:ControlBar/>-->

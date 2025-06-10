@@ -62,6 +62,9 @@
                 </StackPanel>
 
                 <DataGrid Grid.Row="1" 
+                          ScrollViewer.HorizontalScrollBarVisibility="Visible"
+ScrollViewer.VerticalScrollBarVisibility="Auto"
+ScrollViewer.CanContentScroll="False"
                           Margin="10 0 10,0"
                           AutoGenerateColumns="False"
                           CanUserAddRows="False"

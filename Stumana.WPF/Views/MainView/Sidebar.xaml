@@ -14,7 +14,7 @@
         <ScrollViewer Grid.Column="0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
             <Grid Background="#152259" Width="241">
                 <StackPanel Height="148" VerticalAlignment="Top" Margin="0 20 0 0">
-                    <Image Source="/Resource/Image/SchoolLogo.png/"
+                    <Image Source="/Resource/Image/SchoolLogo.png"
                            Width="65" Height="65">
                     </Image>
                     <TextBlock Padding="0 30 0 0"

@@ -358,6 +358,9 @@
                               HorizontalAlignment="Stretch"
                               VerticalAlignment="Stretch">
                     <DataGrid Margin="0 0 0 0"
+                              ScrollViewer.HorizontalScrollBarVisibility="Visible"
+ScrollViewer.VerticalScrollBarVisibility="Auto"
+ScrollViewer.CanContentScroll="False"
                               AutoGenerateColumns="True"
                               HorizontalAlignment="Stretch"
                               VerticalAlignment="Stretch"

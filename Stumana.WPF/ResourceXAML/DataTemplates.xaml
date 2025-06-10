@@ -116,6 +116,10 @@
         <popupViews:AddSubjectView />
     </DataTemplate>
 
+    <DataTemplate DataType="{x:Type popupViewModels:EditSubjectViewModel}">
+        <popupViews:EditSubjectView />
+    </DataTemplate>
+
     <DataTemplate DataType="{x:Type popupViewModels:EditPasswordViewModel}">
         <popupViews:EditPasswordView />
     </DataTemplate>

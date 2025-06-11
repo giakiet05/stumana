@@ -263,14 +263,14 @@
                     </Grid>
                 </Border>
 
-                <ScrollViewer Grid.Row="2"
+                
+                    <DataGrid 
+                               Grid.Row="2"
                               Margin="0,20,0,0"
-                              HorizontalScrollBarVisibility="Auto"
-                              VerticalScrollBarVisibility="Disabled" Grid.Column="0">
-                    <DataGrid Margin="0 0 0 0"
-                              ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                              ScrollViewer.VerticalScrollBarVisibility="Auto"
-                              ScrollViewer.CanContentScroll="True"
+                               Grid.Column="0"
+                              ScrollViewer.HorizontalScrollBarVisibility="Visible"
+                            ScrollViewer.VerticalScrollBarVisibility="Auto"
+                            ScrollViewer.CanContentScroll="False"
                               AutoGenerateColumns="False"
                               HorizontalAlignment="Stretch"
                               VerticalAlignment="Stretch"
@@ -300,7 +300,7 @@
                             <DataGridTextColumn Header="Email" Binding="{Binding Email}" />
                         </DataGrid.Columns>
                     </DataGrid>
-                </ScrollViewer>
+                
             </Grid>
         </GroupBox>
 

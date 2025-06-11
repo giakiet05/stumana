@@ -24,5 +24,7 @@ namespace Stumana.WPF.Views.MainView.ReportOptionView
         {
             InitializeComponent();
         }
+
+        
     }
 }

@@ -75,7 +75,7 @@ ScrollViewer.CanContentScroll="False"
                           VerticalAlignment="Stretch"
                           HorizontalAlignment="Stretch"
                           IsReadOnly="True"
-                          ItemsSource="{Binding ReportTableView}">
+                          ItemsSource="{Binding ReportTableView}" >
                     <DataGrid.Resources>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="Template">

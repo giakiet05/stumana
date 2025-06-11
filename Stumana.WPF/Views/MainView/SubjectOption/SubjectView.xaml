@@ -203,6 +203,9 @@
                     <!-- DataGrid -->
                     <Border Grid.Row="1" Grid.Column="0" Margin="0,0,30,0" VerticalAlignment="Stretch">
                         <DataGrid Margin="10 20 0 0"
+                                    ScrollViewer.HorizontalScrollBarVisibility="Visible"
+ScrollViewer.VerticalScrollBarVisibility="Auto"
+ScrollViewer.CanContentScroll="False"
                                   AutoGenerateColumns="False"
                                   Width="490"
                                   HorizontalAlignment="Stretch"
@@ -259,6 +262,9 @@
                                   VerticalAlignment="Stretch">
                         <Border HorizontalAlignment="Stretch">
                             <DataGrid Margin="0 20 0 0"
+                                        ScrollViewer.HorizontalScrollBarVisibility="Visible"
+ScrollViewer.VerticalScrollBarVisibility="Auto"
+ScrollViewer.CanContentScroll="False"
                                       AutoGenerateColumns="False"
                                       HorizontalAlignment="Stretch"
                                       CanUserAddRows="False"

@@ -36,6 +36,7 @@
     <None Remove="Resource\Image\LoginImage.png" />
     <None Remove="Resource\Image\Percentage-80--Streamline-Tabler.png" />
     <None Remove="Resource\Image\Presentation-Audience--Streamline-Ultimate.png" />
+    <None Remove="Resource\Image\SchoolLogo.ico" />
     <None Remove="Resource\Image\SchoolLogo.png" />
     <None Remove="Resource\Image\Spy--Streamline-Tabler.png" />
     <None Remove="Resource\Image\Student-Fill--Streamline-Phosphor-Fill.png" />
@@ -170,6 +171,12 @@
 
   <ItemGroup>
     <None Include="ViewModels\AuthencationViewModels\SignInViewModel.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resource\Image\SchoolLogo.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
 </Project>

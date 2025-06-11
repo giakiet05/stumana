@@ -7,14 +7,19 @@ namespace Stumana.WPF.Commands
     {
         private readonly Func<BaseViewModel> _createViewModel;
         private readonly Func<bool> _canOpenModal;
-        private readonly string _message;
+        private readonly Func<string> _message;
         public NavigateModalCommand(Func<BaseViewModel> createViewModel, Func<bool> canOpenModal = null, string message = null)
+        {
+            _createViewModel = createViewModel;
+            _canOpenModal = canOpenModal ?? (() => true);
+            _message = (() => message);
+        }
+        public NavigateModalCommand(Func<BaseViewModel> createViewModel, Func<bool> canOpenModal, Func<string> message)
         {
             _createViewModel = createViewModel;
             _canOpenModal = canOpenModal ?? (() => true);
             _message = message;
         }
-
         public override void Execute(object parameter)
         {
             if (_canOpenModal())
@@ -23,7 +28,7 @@ namespace Stumana.WPF.Commands
             }
             else
             {
-                ToastMessageViewModel.ShowWarningToast(_message);
+                ToastMessageViewModel.ShowWarningToast(_message());
             }
         }
     }

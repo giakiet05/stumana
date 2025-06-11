@@ -132,6 +132,7 @@
             <StackPanel Grid.Row="4" Orientation="Horizontal">
                 <Button Style="{StaticResource PrimaryButtonStyle}"
                         Content="Cập nhật môn học"
+                        Width="150"
                         Margin="0,10,10,10"
                         Command="{Binding UpdateSubjectCommand}" />
 

@@ -138,7 +138,8 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ClassOption
 
             FilterGradeCommand = new RelayCommand(FilterGrade);
             AddClassroomCommand = new NavigateModalCommand(() => new AddClassroomViewModel(OnClassDataChanged));
-            DeleteClassroomCommand = new NavigateModalCommand(()=>new DeleteConfirmViewModel(DeleteClassroom));
+            DeleteClassroomCommand = new NavigateModalCommand(()=>new DeleteConfirmViewModel(DeleteClassroom),
+                ()=>SelectedClass!= null,"Hãy chọn 1 lớp học để xóa");
             EditClassroomCommand = new NavigateModalCommand(() => new EditClassroomViewModel(SelectedClass.Classroom, OnClassDataChanged),
                                                             () => SelectedClass != null, "Hãy chọn một lớp để sửa");
             AddStudentToClassCommand = new RelayCommand(() =>
@@ -161,8 +162,10 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ClassOption
                 }
             });
 
+
             // DeleteStudentCommand = new RelayCommand(DeleteStudent);
-            DeleteStudentCommand = new NavigateModalCommand(() => new DeleteConfirmViewModel(DeleteStudent));
+            DeleteStudentCommand = new NavigateModalCommand(() => new DeleteConfirmViewModel(DeleteStudent),
+                () => SelectedStudent != null, "Hãy chọn một học sinh để xóa khỏi lớp");
         }
 
         private void LoadFilter()
@@ -220,6 +223,9 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ClassOption
 
         private async void LoadClassTable(SchoolYear schoolYear, List<Grade> grades)
         {
+            // Preserve the selected class before reloading
+            string? selectedClassroomId = SelectedClass?.Classroom?.Id;
+
             var gradeIds = grades.Select(g => g.Id).Distinct();
             List<Classroom> classrooms = (await GenericDataService<Classroom>.Instance.GetManyAsync(cl => cl.YearId == schoolYear.Id && gradeIds.Contains(cl.GradeId))).ToList();
 
@@ -240,6 +246,16 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ClassOption
 
                 ClassDataTable.Add(newRow);
                 OriginalClassTable.Add(newRow);
+            }
+
+            // Restore the selected class if it still exists
+            if (!string.IsNullOrEmpty(selectedClassroomId))
+            {
+                var classToSelect = ClassDataTable.FirstOrDefault(c => c.Classroom?.Id == selectedClassroomId);
+                if (classToSelect != null)
+                {
+                    SelectedClass = classToSelect;
+                }
             }
         }
 
@@ -328,11 +344,8 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ClassOption
 
         private async void DeleteClassroom()
         {
-            if (SelectedClass == null)
-            {
-                ToastMessageViewModel.ShowErrorToast("Hãy chọn một lớp để xóa");
-                return;
-            }
+            // Validation is already done in command, so SelectedClass should not be null here
+            if (SelectedClass == null) return;
 
             await GenericDataService<Classroom>.Instance.DeleteOneAsync(c => c.Id == SelectedClass.Classroom.Id);
             ClassDataTable.Remove(SelectedClass);
@@ -342,11 +355,8 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ClassOption
 
         private async void DeleteStudent()
         {
-            if (SelectedStudent == null)
-            {
-                ToastMessageViewModel.ShowErrorToast("Hãy chọn một học sinh để xóa khỏi lớp");
-                return;
-            }
+            // Validation is already done in command, so SelectedStudent should not be null here
+            if (SelectedStudent == null) return;
 
             var studentAssignmentIds = (await GenericDataService<StudentAssignment>.Instance.GetManyAsync(sa => sa.StudentId == SelectedStudent.Id)).Select(sa => sa.Id);
             await GenericDataService<StudentAssignment>.Instance.DeleteManyAsync(sa => studentAssignmentIds.Contains(sa.Id));
@@ -354,7 +364,6 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ClassOption
             StudentTable.Remove(SelectedStudent);
             OnClassDataChanged?.Invoke(this, EventArgs.Empty);
             ModalNavigationStore.Instance.Close();
-
         }
 
         private void UpdateClassTable(object? sender, EventArgs e)
@@ -362,14 +371,58 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ClassOption
             OnSelectionClassroomFilterChange();
         }
 
-        private void UpdateStudentTable(object? sender, EventArgs e)
+        private async void UpdateStudentTable(object? sender, EventArgs e)
         {
-            OnSelectedClassChanged();
+            // Only reload student data for the selected class, don't reload all classes
+            if (SelectedClass != null)
+            {
+                OnSelectedClassChanged();
+                
+                // Update the capacity count in the current selected class row
+                await UpdateClassCapacityAsync(SelectedClass);
+            }
+        }
+
+        private async Task UpdateClassCapacityAsync(ClassTableRow classRow)
+        {
+            try
+            {
+                var studentAssignments = await GenericDataService<StudentAssignment>.Instance.GetManyAsync(sa => sa.ClassroomId == classRow.Classroom.Id);
+                var studentCount = studentAssignments.GroupBy(sa => sa.StudentId).Count();
+                
+                // Update capacity on UI thread
+                classRow.Capacity = studentCount;
+                
+                // Find and update the same class in OriginalClassTable
+                var originalRow = OriginalClassTable.FirstOrDefault(c => c.Classroom?.Id == classRow.Classroom.Id);
+                if (originalRow != null)
+                {
+                    originalRow.Capacity = studentCount;
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log error or show user-friendly message if needed
+                ToastMessageViewModel.ShowErrorToast($"Lỗi cập nhật sĩ số: {ex.Message}");
+            }
         }
 
         public void OnSearchTextChange()
         {
+            // Preserve the selected class before search
+            string? selectedClassroomId = SelectedClass?.Classroom?.Id;
+            
             SearchAllColumns(OriginalClassTable, ClassDataTable, SearchText, false, false);
+            
+            // Restore the selected class if it still exists in filtered results
+            if (!string.IsNullOrEmpty(selectedClassroomId))
+            {
+                var classToSelect = ClassDataTable.FirstOrDefault(c => c.Classroom?.Id == selectedClassroomId);
+                if (classToSelect != null)
+                {
+                    SelectedClass = classToSelect;
+                }
+            }
         }
 
         public void SearchAllColumns<T>(List<T> originalList, ObservableCollection<T> table, string searchText, bool exactMatch = false, bool caseSensitive = false)

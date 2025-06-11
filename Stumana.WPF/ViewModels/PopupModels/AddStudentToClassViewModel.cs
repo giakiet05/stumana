@@ -60,8 +60,7 @@ public class AddStudentToClassViewModel : BaseViewModel
 
     public async void LoadData()
     {
-        var studentAssignments = await GenericDataService<StudentAssignment>.Instance.GetManyAsync(sa => sa.Classroom.YearId == CurClassroom.YearId ||
-                                                                                                         sa.Classroom.GradeId == CurClassroom.GradeId,
+        var studentAssignments = await GenericDataService<StudentAssignment>.Instance.GetManyAsync(sa => sa.Classroom.YearId == CurClassroom.YearId ,
                                                                                                    query => query.Include(sa => sa.Classroom));
 
         var studentWithClassIds = studentAssignments.Select(sa => sa.StudentId).Distinct().ToList();

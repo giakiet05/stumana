@@ -4,6 +4,7 @@
              xmlns:local="clr-namespace:Stumana.WPF">
     <Application.Resources>
         <ResourceDictionary>
+            
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
             <ResourceDictionary.MergedDictionaries>
                 <!-- Material Design 3 chủ đề mặc định -->

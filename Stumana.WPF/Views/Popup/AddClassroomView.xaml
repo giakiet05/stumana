@@ -45,7 +45,7 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
-                <StackPanel Grid.Column="0">
+                <StackPanel Grid.Column="2">
                     <TextBlock Text="Tên lớp học" Style="{StaticResource LabelStyle}" />
                     <TextBox Style="{StaticResource InputFieldStyle}"
                              Text="{Binding ClassroomName, UpdateSourceTrigger=PropertyChanged}" />
@@ -53,6 +53,16 @@
                                Text="⚠ Tên lớp học quá dài hoặc không hợp lệ"
                                Visibility="{Binding IsClassroomNameInvalid, Converter={StaticResource BooleanToVisibilityConverter}}">
                     </TextBlock>
+
+                </StackPanel>
+                <StackPanel Grid.Column="0">
+                    <TextBlock Text="Mã lớp học" Style="{StaticResource LabelStyle}" />
+                    <TextBox Style="{StaticResource InputFieldStyle}"
+                             IsReadOnly="True"
+                             Background="#1A808080"
+                             Foreground="Black"
+                             Text="{Binding ClassId, UpdateSourceTrigger=PropertyChanged}" />
+
                 </StackPanel>
             </Grid>
 
@@ -101,6 +111,7 @@
                                Text="⚠ Khối lớp học không hợp lệ"
                                Visibility="{Binding IsGradeInvalid, Converter={StaticResource BooleanToVisibilityConverter}}" />
                 </StackPanel>
+
             </Grid>
 
             <!-- Action buttons -->

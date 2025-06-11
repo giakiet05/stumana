@@ -9,6 +9,17 @@ namespace Stumana.WPF.ViewModels.PopupModels
 {
     class AddClassroomViewModel : BaseViewModel
     {
+        private string _classId;
+
+        public string ClassId
+        {
+            get => _classId;
+            set
+            {
+                _classId = value;
+                OnPropertyChanged();
+            }
+        }
         private string _classroomName { get; set; }
 
         public string ClassroomName
@@ -115,7 +126,7 @@ namespace Stumana.WPF.ViewModels.PopupModels
         public AddClassroomViewModel(EventHandler? onUpdateData)
         {
             _onAddClassroom = onUpdateData;
-
+            GenerateClassID();
             AddClassCommand = new RelayCommand(AddClass);
             CancelCommand = new RelayCommand(ModalNavigationStore.Instance.Close);
 
@@ -132,7 +143,7 @@ namespace Stumana.WPF.ViewModels.PopupModels
 
                 Classroom newClass = new Classroom
                 {
-                    Id = Guid.NewGuid().ToString(),
+                    Id = ClassId,
                     Name = ClassroomName,
                     YearId = SchoolYearsDic[SelectedSchoolYear].Id,
                     GradeId = GradeDic[SelectedGrade].Id
@@ -147,6 +158,21 @@ namespace Stumana.WPF.ViewModels.PopupModels
             {
                 ToastMessageViewModel.ShowErrorToast("Thêm lớp không thành công");
             }
+        }
+        private async void GenerateClassID()
+        {
+            string idPrefix = "CL";
+
+            Classroom? lastClass = null;
+            lastClass = (await GenericDataService<Classroom>.Instance.GetAllAsync()).OrderByDescending(g => int.Parse(g.Id.Substring(idPrefix.Length))).FirstOrDefault();
+            int idCount = 1;
+            if (lastClass != null)
+            {
+                idCount = int.Parse(lastClass.Id.Substring(idPrefix.Length));
+                idCount++;
+            }
+
+            ClassId = idPrefix + idCount.ToString("D3");
         }
 
         private async void CheckError()

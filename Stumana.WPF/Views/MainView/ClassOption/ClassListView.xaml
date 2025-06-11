@@ -255,12 +255,10 @@ ScrollViewer.CanContentScroll="False"
                             </DataGrid.Columns>
                         </DataGrid>
                     </Border>
-                    <ScrollViewer Grid.Row="1" Grid.Column="1"
-                                  HorizontalScrollBarVisibility="Auto"
-                                  HorizontalAlignment="Stretch"
-                                  VerticalAlignment="Stretch">
-                        <Border HorizontalAlignment="Stretch" >
+                   
                             <DataGrid 
+                                Grid.Row="1" Grid.Column="1"
+                                Margin="10 20 10 0"
                                       ScrollViewer.HorizontalScrollBarVisibility="Visible"
                                     ScrollViewer.VerticalScrollBarVisibility="Auto"
                                     ScrollViewer.CanContentScroll="False"
@@ -283,8 +281,7 @@ ScrollViewer.CanContentScroll="False"
                                     <DataGridTextColumn Header="Địa chỉ" Binding="{Binding Address}" />
                                 </DataGrid.Columns>
                             </DataGrid>
-                        </Border>
-                    </ScrollViewer>
+                     
                 </Grid>
             </GroupBox>
         </Border>

@@ -461,6 +461,9 @@ public class ScoreSubjectViewModel : BaseViewModel
         ScoreDataTable.Clear();
         foreach (var studentAssignment in studentAssignments)
         {
+            if (studentAssignment.Classroom.GradeId != curSubject.GradeId)
+                continue;
+
             DataRow dataRow = ScoreDataTable.NewRow();
             dataRow["Học kì"] = studentAssignment.Semester;
             dataRow["Môn học"] = $"{curSubject.Name} {curSubject.Grade.Name}";

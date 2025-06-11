@@ -115,6 +115,7 @@ namespace Stumana.WPF.ViewModels.MainViewModels.SubjectOption
 
         public ICommand AddSubjectCommand { get; set; }
         public ICommand DeleteSubjectCommand { get; set; }
+        public ICommand EditSubjectCommand { get; set; }
         public ICommand EditScoreTypeCommand { get; set; }
         public ICommand AddSubjectScoreTypeCommand { get; set; }
         public ICommand DeleteSubjectScoreTypeCommand { get; set; }
@@ -130,6 +131,8 @@ namespace Stumana.WPF.ViewModels.MainViewModels.SubjectOption
             AddSubjectCommand = new NavigateModalCommand(() => new AddSubjectViewModel(OnSubjectDataChanged));
             DeleteSubjectCommand = new NavigateModalCommand(() => new DeleteConfirmViewModel(DeleteSubjectRow),
                                                             () => SelectedSubject != null, "Hãy chọn một môn học để xóa");
+            EditSubjectCommand = new NavigateModalCommand(() => new EditSubjectViewModel(SelectedSubject.MySubject, OnSubjectDataChanged),
+                                                          () => SelectedSubject != null, "Hãy chọn một môn học để chỉnh sửa");
             EditScoreTypeCommand = new NavigateModalCommand(() => new EditScoreTypeViewModel());
             AddSubjectScoreTypeCommand = new NavigateModalCommand(() => new AddSubjectScoreTypeViewModel(SelectedSubject.MySubject, OnSubjectScoreTypeDataChanged),
                                                                   () => SelectedSubject != null, "Hãy chọn một môn học");

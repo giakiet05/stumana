@@ -68,14 +68,14 @@
                                                  Width="50" Height="50"
                                                  Foreground="#000842"
                                                  Margin="0,20,10,0" />
-                        <TextBox materialDesign:HintAssist.Hint="Enter your email"
+                        <TextBox materialDesign:HintAssist.Hint="Nhập email của bạn"
                                  Width="361" Foreground="#000842"
                                  FontFamily="pack://application:,,,/Resource/Font/#Poppins Regular"
                                  FontSize="20" Background="{DynamicResource MaterialDesignPaper}" Padding="10"
                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                  materialDesign:TextFieldAssist.UnderlineBrush="Black"
                                  BorderThickness="0"
-                                 Text="{Binding Email}" />
+                                 Text="{Binding Email}"  />
                     </StackPanel>
 
                     <TextBlock
@@ -87,7 +87,7 @@
                         Visibility="{Binding InvalidEmail, Converter={StaticResource BooleanToVisibilityConverter}}"/>
 
                     <!-- Username TextBox -->
-                    <TextBlock Text="Username" FontWeight="Medium"
+                    <TextBlock Text="Tài khoản" FontWeight="Medium"
                                FontSize="25"
                                HorizontalAlignment="Left"
                                Foreground="#999999"
@@ -97,7 +97,7 @@
                                                  Width="50" Height="50"
                                                  Foreground="#000842"
                                                  Margin="0,20,10,0" />
-                        <TextBox x:Name="tbUsername" materialDesign:HintAssist.Hint="Enter your username"
+                        <TextBox x:Name="tbUsername" materialDesign:HintAssist.Hint="Nhập tên người dùng"
                                  Width="361"
                                  Foreground="#000842"
                                  FontFamily="pack://application:,,,/Resource/Font/#Poppins Regular"
@@ -119,7 +119,7 @@
                         Visibility="{Binding InvalidUsername, Converter={StaticResource BooleanToVisibilityConverter}}"/>
 
                     <!-- Password TextBox -->
-                    <TextBlock Text="Password"
+                    <TextBlock Text="Mật khẩu"
                                FontWeight="Medium" FontSize="25"
                                HorizontalAlignment="Left"
                                Foreground="#999999"
@@ -130,7 +130,7 @@
                                                  Foreground="#000842"
                                                  Margin="0,20,10,0" />
                         <PasswordBox x:Name="pbPasswordRegis" 
-                                     materialDesign:HintAssist.Hint="Enter your password"
+                                     materialDesign:HintAssist.Hint="Nhập mật khẩu"
                                      Width="361" Foreground="#000842" FontSize="20"
                                      FontFamily="pack://application:,,,/Resource/Font/#Poppins Regular"
                                      Background="{DynamicResource MaterialDesignPaper}" Padding="10"
@@ -149,7 +149,7 @@
                                Visibility="{Binding InvalidPassword, Converter={StaticResource BooleanToVisibilityConverter}}"/>
 
                     <!-- Confirm Password TextBox -->
-                    <TextBlock Text="Confirm Password"
+                    <TextBlock Text="Mật khẩu"
                                FontWeight="Medium"
                                FontSize="25"
                                HorizontalAlignment="Left"
@@ -198,7 +198,7 @@
                 </Button>
                 <TextBlock
                     Margin="0,10,0,0"
-                    Text="If you already have an account"
+                    Text="hoặc nếu đã có tài khoản"
                     FontSize="16"
                     Width="270"
                     Height="20"
@@ -210,7 +210,7 @@
                 </TextBlock>
 
                 <TextBlock
-                    Text="Login here!"
+                    Text="Đăng nhập ở đây!"
                     TextAlignment="Center"
                     FontWeight="Normal"
                     FontSize="16"

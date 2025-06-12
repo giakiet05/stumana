@@ -33,7 +33,7 @@
 
                     <StackPanel Orientation="Vertical" Width="431" Height="220" Margin="0 50 0 0">
                         
-                        <TextBlock Text="Username"
+                        <TextBlock Text="Tài khoản"
                                    FontWeight="Medium"
                                    FontSize="13"
                                    Width="64"
@@ -51,7 +51,7 @@
                                                 Command="{Binding LoginCommand}" />
                                 </Grid.InputBindings>
                                 <TextBox x:Name="tbUser"
-                                         materialDesign:HintAssist.Hint="Enter username/Email"
+                                         materialDesign:HintAssist.Hint="Nhập tên người dùng"
                                          Width="361"
                                          Foreground="#000842"
                                          FontSize="20"
@@ -65,7 +65,7 @@
                             </Grid>
                         </StackPanel>
 
-                        <TextBlock Text="Password"
+                        <TextBlock Text="Mật khẩu"
                                    FontWeight="Medium"
                                    FontSize="13"
                                    Width="64"
@@ -82,7 +82,7 @@
                                     <KeyBinding Key="Enter"
                                                 Command="{Binding LoginCommand}" />
                                 </Grid.InputBindings>
-                                <PasswordBox materialDesign:HintAssist.Hint="Enter your password"
+                                <PasswordBox materialDesign:HintAssist.Hint="Nhập mật khẩu"
                                              Width="361"
                                              Foreground="#000842"
                                              FontSize="20"
@@ -117,15 +117,7 @@
                                    FontSize="15"
                                    Foreground="Red" />
 
-                        <CheckBox Grid.Row="1" Grid.Column="0"
-                                  HorizontalAlignment="Left"
-                                  VerticalAlignment="Center"
-                                  Style="{StaticResource MaterialDesignCheckBox}">
-                            <TextBlock Foreground="Purple"
-                                       FontFamily="pack://application:,,,/Resource/Font/#Poppins Light"
-                                       TextDecorations="Underline"
-                                       Text="Remember me" />
-                        </CheckBox>
+                        
 
                         <TextBlock Grid.Row="1" Grid.Column="1"
                                    Foreground="DimGray"
@@ -156,7 +148,7 @@
                     </Button>
 
                     <TextBlock Margin="0 30 0 0"
-                               Text="If you dont have an account"
+                               Text="hoặc nếu chưa có tài khoản"
                                TextAlignment="Center"
                                FontSize="16"
                                Width="250"
@@ -167,7 +159,7 @@
                                FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium" />
 
                     <TextBlock Margin="0 0 0 0"
-                               Text="Register here!"
+                               Text="Đăng ký ngay!"
                                TextAlignment="Center"
                                FontSize="16"
                                Width="120"

@@ -19,7 +19,7 @@
                     </Image>
                     <TextBlock Padding="0 30 0 0"
                                HorizontalAlignment="Center"
-                               Text="EliteAcademy.edu"
+                               Text="Stumana.edu"
                                FontFamily="pack://application:,,,/Resource/Font/#Poppins SemiBold"
                                Foreground="White">
 

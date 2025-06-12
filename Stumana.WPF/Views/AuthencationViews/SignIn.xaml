@@ -24,7 +24,7 @@
 
                 <StackPanel Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Width="431"
                             Height="635.12" Orientation="Vertical">
-                    <TextBlock Text="Sign in"
+                    <TextBlock Text="Đăng nhập"
                                FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
                                FontSize="35"
                                Style="{StaticResource MaterialDesignHeadline1TextBlock}"
@@ -119,13 +119,7 @@
 
                         
 
-                        <TextBlock Grid.Row="1" Grid.Column="1"
-                                   Foreground="DimGray"
-                                   FontFamily="pack://application:,,,/Resource/Font/#Poppins Light"
-                                   TextDecorations="Underline"
-                                   Text="Forgot password?"
-                                   HorizontalAlignment="Right"
-                                   VerticalAlignment="Center" />
+                       
                     </Grid>
 
                     <Button Margin="0 50 0 0"
@@ -142,7 +136,7 @@
                                    FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
                                    FontSize="17"
                                    TextAlignment="Center"
-                                   Text="{Binding LoginText}"
+                                   Text="Đăng nhập"
                                    Foreground="Snow"
                                    Cursor="Hand" />
                     </Button>

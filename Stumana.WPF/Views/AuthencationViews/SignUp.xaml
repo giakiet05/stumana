@@ -49,7 +49,7 @@
             <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center"
                         Width="432" Height="Auto"
                         Orientation="Vertical">
-                <TextBlock Text="Sign up"
+                <TextBlock Text="Đăng ký"
                            FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
                            FontSize="40"
                            Style="{StaticResource MaterialDesignHeadline1TextBlock}"
@@ -161,7 +161,7 @@
                                                  Foreground="#000842"
                                                  Margin="0,20,10,0" />
                         <PasswordBox x:Name="pbPasswordRegisConfirm"
-                                     materialDesign:HintAssist.Hint="Confirm your password"
+                                     materialDesign:HintAssist.Hint="Xác nhận lại mật khẩu"
                                      Width="361" Foreground="#000842" FontSize="20"
                                      FontFamily="pack://application:,,,/Resource/Font/#Poppins Regular"
                                      Background="{DynamicResource MaterialDesignPaper}" Padding="10"

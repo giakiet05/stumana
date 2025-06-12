@@ -24,5 +24,6 @@ namespace Stumana.WPF.Views.AuthencationViews
         {
             InitializeComponent();
         }
+
     }
 }

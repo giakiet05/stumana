@@ -498,17 +498,12 @@ public class ScoreSubjectViewModel : BaseViewModel
                     continue;
                 }
 
-                for (int i = 1; i <= subjectScoreType.Amount; i++)
+                foreach (var score in studentScores)
                 {
-                    string columnName = $"{subjectScoreType.ScoreType.Name} lần {i}";
-                    if (i <= studentScores.Count)
-                    {
-                        dataRow[columnName] = studentScores[i - 1].Value;
-                        sumScore += studentScores[i - 1].Value * subjectScoreType.ScoreType.Coefficient;
-                        sumCoefficient += subjectScoreType.ScoreType.Coefficient;
-                    }
-                    else
-                        dataRow[columnName] = DBNull.Value;
+                    string columnName = $"{subjectScoreType.ScoreType.Name} lần {score.Attempt}";
+                    dataRow[columnName] = score.Value;
+                    sumScore += score.Value * subjectScoreType.ScoreType.Coefficient;
+                    sumCoefficient += subjectScoreType.ScoreType.Coefficient;
                 }
             }
 

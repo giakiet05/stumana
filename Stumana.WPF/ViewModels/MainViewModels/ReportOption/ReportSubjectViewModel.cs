@@ -38,6 +38,7 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ReportOption
             {
                 _selectedSchoolYear = value;
                 OnPropertyChanged();
+                LoadSubjectsAsync();
                 OnSelectionReportFilterChange();
             }
         }
@@ -160,6 +161,7 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ReportOption
         {
            
             SubjectCollection.Clear();
+            SubjectDic.Clear();
             var subjects = await GenericDataService<Subject>.Instance.GetManyAsync(
                 s=>s.YearId == SchoolYearDic[SelectedSchoolYear].Id, 
                 qr =>qr.Include(s=> s.Grade));

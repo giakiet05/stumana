@@ -69,7 +69,7 @@ namespace Stumana.WPF.ViewModels.PopupModels
             }
         }
 
-        public List<string> GenderOptions { get; } = new() { "Nam", "Nữ", "Khác" };
+        public List<string> GenderOptions { get; } = new() { "Nam", "Nữ" };
 
         private string _selectedGender;
 

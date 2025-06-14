@@ -6,7 +6,7 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d"
-             d:DesignWidth="1000" d:DesignHeight="700"
+             d:DesignWidth="1200" d:DesignHeight="700"
              VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
 
     <UserControl.Resources>
@@ -214,8 +214,8 @@
                     <Border Grid.Row="1" Grid.Column="0" Margin="0,0,30,0" VerticalAlignment="Stretch">
                         <DataGrid Margin="10 20 0 0"
                                   ScrollViewer.HorizontalScrollBarVisibility="Visible"
-ScrollViewer.VerticalScrollBarVisibility="Auto"
-ScrollViewer.CanContentScroll="False"
+                                  ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                  ScrollViewer.CanContentScroll="False"
                                   AutoGenerateColumns="False"
                                   Width="250"
                                   HorizontalAlignment="Stretch"
@@ -255,33 +255,33 @@ ScrollViewer.CanContentScroll="False"
                             </DataGrid.Columns>
                         </DataGrid>
                     </Border>
-                   
-                            <DataGrid 
-                                Grid.Row="1" Grid.Column="1"
-                                Margin="10 20 10 0"
-                                      ScrollViewer.HorizontalScrollBarVisibility="Visible"
-                                    ScrollViewer.VerticalScrollBarVisibility="Auto"
-                                    ScrollViewer.CanContentScroll="False"
-                                      AutoGenerateColumns="False"
-                                      HorizontalAlignment="Stretch"
-                                        VerticalAlignment="Stretch"
-                                      CanUserAddRows="False"
-                                      IsReadOnly="True"
-                                      FontSize="16"
-                                      CellStyle="{StaticResource DataGridCellStyle}"
-                                      RowStyle="{StaticResource DataGridRowStyle}"
-                                      ItemsSource="{Binding StudentTable}"
-                                      SelectedItem="{Binding SelectedStudent}">
-                                <DataGrid.Columns>
-                                    <DataGridTextColumn Header="Mã học sinh" Binding="{Binding Id}" />
-                                    <DataGridTextColumn Header="Họ và tên" Binding="{Binding Name}" />
-                                    <DataGridTextColumn Header="Giới tính" Binding="{Binding Gender}" />
-                                    <DataGridTextColumn Header="Ngày sinh"
-                                                        Binding="{Binding Birthday, StringFormat='{}{0:dd/MM/yyyy}'}" />
-                                    <DataGridTextColumn Header="Địa chỉ" Binding="{Binding Address}" />
-                                </DataGrid.Columns>
-                            </DataGrid>
-                     
+
+                    <DataGrid
+                        Grid.Row="1" Grid.Column="1"
+                        Margin="10 20 10 0"
+                        ScrollViewer.HorizontalScrollBarVisibility="Visible"
+                        ScrollViewer.VerticalScrollBarVisibility="Auto"
+                        ScrollViewer.CanContentScroll="False"
+                        AutoGenerateColumns="False"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        CanUserAddRows="False"
+                        IsReadOnly="True"
+                        FontSize="16"
+                        CellStyle="{StaticResource DataGridCellStyle}"
+                        RowStyle="{StaticResource DataGridRowStyle}"
+                        ItemsSource="{Binding StudentTable}"
+                        SelectedItem="{Binding SelectedStudent}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Mã học sinh" Binding="{Binding Id}" />
+                            <DataGridTextColumn Header="Họ và tên" Binding="{Binding Name}" />
+                            <DataGridTextColumn Header="Giới tính" Binding="{Binding Gender}" />
+                            <DataGridTextColumn Header="Ngày sinh"
+                                                Binding="{Binding Birthday, StringFormat='{}{0:dd/MM/yyyy}'}" />
+                            <DataGridTextColumn Header="Địa chỉ" Binding="{Binding Address}" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+
                 </Grid>
             </GroupBox>
         </Border>
@@ -289,13 +289,6 @@ ScrollViewer.CanContentScroll="False"
         <StackPanel Grid.Row="2"
                     Orientation="Horizontal"
                     FlowDirection="RightToLeft">
-            <Button Margin="10,15,10,15"
-           Width="200"
-           FontSize="18"
-           Content="Chuyển lớp"
-           Padding="10"
-           Style="{StaticResource PrimaryButtonStyle}"
-           Command="{Binding DeleteStudentCommand}" />
 
             <Button Margin="10,15,10,15"
                     Width="200"

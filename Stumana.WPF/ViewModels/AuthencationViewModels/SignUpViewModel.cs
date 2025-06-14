@@ -153,7 +153,7 @@ public class SignUpViewModel : BaseViewModel
             if (userEm != null)
             {
                 InvalidEmail = true;
-                ErrorUsernameText = "Email đã được sử dụng";
+                ErrorEmailText = "Email đã được sử dụng";
             }
         }
 

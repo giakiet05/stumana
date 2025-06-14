@@ -8,8 +8,6 @@ using Stumana.WPF.ViewModels.MainViewModels.ScoreOption;
 using Stumana.WPF.ViewModels.MainViewModels.StudentOption;
 using Stumana.WPF.ViewModels.MainViewModels.SubjectOption;
 using Stumana.WPF.ViewModels.MainViewModels.YearOption;
-using Stumana.WPF.Views.AuthencationViews;
-using Stumana.WPF.ViewModels.AuthencationViewModels;
 
 namespace Stumana.WPF.ViewModels.MainViewModels
 {
@@ -33,7 +31,7 @@ namespace Stumana.WPF.ViewModels.MainViewModels
         public SidebarViewModel()
         {
             NavigationStore.Instance.CurrentLayoutModelChanged += OnCurrentLayoutModelChanged;
-            NavigationStore.Instance.CurrentLayoutModel = new ClassListViewModel();
+            NavigationStore.Instance.CurrentLayoutModel = new AccountOptionViewModel();
 
             AccountNavigateCommand = new NavigateLayoutCommand(() => new AccountOptionViewModel());
             SubjectNavigateCommand = new NavigateLayoutCommand(() => new SubjectViewModel());

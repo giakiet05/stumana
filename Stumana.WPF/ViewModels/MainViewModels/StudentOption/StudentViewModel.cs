@@ -27,11 +27,6 @@ namespace Stumana.WPF.ViewModels.MainViewModels.StudentOption
         }
 
         private bool IsProcessingFilter { get; set; } = false;
-
-        public Dictionary<string, SchoolYear> SchoolYearDic { get; set; } = new();
-        public Dictionary<string, Grade> GradeDic { get; set; } = new();
-        public Dictionary<string, Classroom> ClassroomDic { get; set; } = new();
-
         private List<Student> OriginalStudentTable { get; set; } = new();
         public ObservableCollection<Student> StudentTable { get; set; } = new();
 
@@ -46,6 +41,11 @@ namespace Stumana.WPF.ViewModels.MainViewModels.StudentOption
                 OnPropertyChanged();
             }
         }
+
+        /*
+        public Dictionary<string, SchoolYear> SchoolYearDic { get; set; } = new();
+        public Dictionary<string, Grade> GradeDic { get; set; } = new();
+        public Dictionary<string, Classroom> ClassroomDic { get; set; } = new();
 
         private ObservableCollection<string> _schoolyearFilter = new();
 
@@ -122,6 +122,7 @@ namespace Stumana.WPF.ViewModels.MainViewModels.StudentOption
                 OnPropertyChanged();
             }
         }
+        */
 
         public ICommand FilterGradeCommand { get; set; }
         public ICommand FilterClassroomCommand { get; set; }
@@ -136,8 +137,9 @@ namespace Stumana.WPF.ViewModels.MainViewModels.StudentOption
         {
             OnStudentDataChanged += UpdateStudentTable;
 
-            FilterGradeCommand = new RelayCommand(FilterGrade);
-            FilterClassroomCommand = new RelayCommand(FilterClassroom);
+            //FilterGradeCommand = new RelayCommand(FilterGrade);
+            //FilterClassroomCommand = new RelayCommand(FilterClassroom);
+
             AddStudentCommand = new NavigateModalCommand(() => new AddStudentViewModel(OnStudentDataChanged));
             DeleteStudentCommand = new NavigateModalCommand(() => new DeleteConfirmViewModel(DeleteStudent),
                                                             () => SelectedStudent != null, "Hãy chọn một học sinh để xóa");
@@ -145,9 +147,12 @@ namespace Stumana.WPF.ViewModels.MainViewModels.StudentOption
                                                           () => SelectedStudent != null, "Hãy chọn một học sinh để chỉnh sửa.");
             StudentDetailCommand = new NavigateModalCommand(() => new StudentInfoViewModel(SelectedStudent));
 
-            LoadInitFilter();
+
+            LoadStudentData();
+            //LoadInitFilter();
         }
 
+        /*
         private async void LoadInitFilter()
         {
             await LoadSchoolYearFilter();
@@ -311,10 +316,10 @@ namespace Stumana.WPF.ViewModels.MainViewModels.StudentOption
             }
         }
 
-        private void UpdateStudentTable(object? sender, EventArgs e)
-        {
-            OnFilterChange();
-        }
+            private void UpdateStudentTable(object? sender, EventArgs e)
+           {
+               OnFilterChange();
+           }
 
         private async void OnFilterChange()
         {
@@ -395,6 +400,21 @@ namespace Stumana.WPF.ViewModels.MainViewModels.StudentOption
                 OriginalStudentTable.Add(student);
             }
         }
+        */
+
+        private async void LoadStudentData()
+        {
+            StudentTable.Clear();
+            OriginalStudentTable.Clear();
+
+            List<Student> students = (await GenericDataService<Student>.Instance.GetAllAsync()).ToList();
+
+            foreach (var student in students)
+            {
+                StudentTable.Add(student);
+                OriginalStudentTable.Add(student);
+            }
+        }
 
         private async void DeleteStudent()
         {
@@ -408,8 +428,13 @@ namespace Stumana.WPF.ViewModels.MainViewModels.StudentOption
             StudentTable.Remove(SelectedStudent);
             OriginalStudentTable.Remove(SelectedStudent);
             ToastMessageViewModel.ShowSuccessToast("Xóa học sinh thành công");
-            
+
             Stumana.WPF.Stores.ModalNavigationStore.Instance.Close();
+        }
+
+        private void UpdateStudentTable(object? sender, EventArgs e)
+        {
+            LoadStudentData();
         }
 
         public void OnSearchTextChange()

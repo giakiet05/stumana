@@ -119,7 +119,7 @@ namespace Stumana.WPF.ViewModels.PopupModels
                     haveError = true;
                 }
 
-                if (!haveError)
+                if (haveError)
                     throw new Exception();
 
                 user.ChangePassword(NewPassword);

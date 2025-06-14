@@ -1,5 +1,6 @@
 ﻿
 using System.Windows.Input;
+using Stumana.DataAccess.Services;
 using Stumana.DataAcess.Models;
 using Stumana.WPF.Commands;
 using Stumana.WPF.Stores;
@@ -35,19 +36,29 @@ namespace Stumana.WPF.ViewModels.MainViewModels.AccountOption
             }
         }
 
+        public EventHandler? OnAccountDataChanged { get; set; }
+
         public AccountOptionViewModel()
         {
+            OnAccountDataChanged += UpdateAccountData;
+
             ChangePasswordCommand = new NavigateModalCommand(() => new EditPasswordViewModel());
-            EditCommand = new NavigateModalCommand(() => new EditUsernameAndEmailViewModel());
+            EditCommand = new NavigateModalCommand(() => new EditUsernameAndEmailViewModel(OnAccountDataChanged));
 
             LoadData();
         }
-
-        private void LoadData()
+        private void UpdateAccountData(object? sender, EventArgs e)
         {
-            User user = AccountStore.Instance.CurrentUser;
+            LoadData();
+        }
+
+        private async void LoadData()
+        {
+            var user = AccountStore.Instance.CurrentUser;
             if (user != null)
             {
+                user = await GenericDataService<User>.Instance.GetOneAsync(u => u.Id == user.Id);
+                AccountStore.Instance.CurrentUser = user;
                 Username = user.Username;
                 Email = user.Email;
             }

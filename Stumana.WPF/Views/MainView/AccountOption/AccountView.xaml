@@ -106,24 +106,6 @@
                     FontSize="20"
                     Command="{Binding EditCommand}">
             </Button>
-            <Button Margin="10"
-                    VerticalAlignment="Center"
-                    Width="180"
-                    Height="50"
-                    Style="{StaticResource PrimaryButtonStyle}"
-                    materialDesign:ButtonAssist.CornerRadius="30"
-                    FontSize="20"
-                    Command="{Binding CreateAccountCommand}">
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                    <materialDesign:PackIcon Kind="AccountPlus" 
-                                             Width="20" Height="20" 
-                                             Margin="0,0,8,0" 
-                                             VerticalAlignment="Center"/>
-                    <TextBlock Text="Tạo tài khoản" 
-                               FontSize="20"
-                               VerticalAlignment="Center"/>
-                </StackPanel>
-            </Button>
         </StackPanel>
     </Grid>
 </UserControl>

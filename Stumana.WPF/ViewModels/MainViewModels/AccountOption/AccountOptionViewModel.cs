@@ -4,12 +4,14 @@ using Stumana.DataAccess.Services;
 using Stumana.DataAcess.Models;
 using Stumana.WPF.Commands;
 using Stumana.WPF.Stores;
+using Stumana.WPF.ViewModels.AuthencationViewModels;
 using Stumana.WPF.ViewModels.PopupModels;
 
 namespace Stumana.WPF.ViewModels.MainViewModels.AccountOption
 {
     public class AccountOptionViewModel : BaseViewModel 
     {
+        public ICommand NavigateSignUpCommand { get; set; }
         public ICommand EditCommand { get; set; }
         public ICommand ChangePasswordCommand { get; set; }
 
@@ -41,7 +43,7 @@ namespace Stumana.WPF.ViewModels.MainViewModels.AccountOption
         public AccountOptionViewModel()
         {
             OnAccountDataChanged += UpdateAccountData;
-
+            NavigateSignUpCommand = new NavigateViewCommand(() => new SignUpViewModel());
             ChangePasswordCommand = new NavigateModalCommand(() => new EditPasswordViewModel());
             EditCommand = new NavigateModalCommand(() => new EditUsernameAndEmailViewModel(OnAccountDataChanged));
 

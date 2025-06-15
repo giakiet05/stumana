@@ -139,6 +139,10 @@
         <popupViews:EditUsernameAndEmailView />
     </DataTemplate>
 
+    <DataTemplate DataType="{x:Type popupViewModels:CreateAccountViewModel}">
+        <popupViews:CreateAccountView />
+    </DataTemplate>
+
     <DataTemplate DataType="{x:Type popupViewModels:AddYearViewModel}">
         <popupViews:AddYearView />
     </DataTemplate>

@@ -141,34 +141,7 @@
                                    Cursor="Hand" />
                     </Button>
 
-                    <TextBlock Margin="0 30 0 0"
-                               Text="hoặc nếu chưa có tài khoản"
-                               TextAlignment="Center"
-                               FontSize="16"
-                               Width="250"
-                               Height="20"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Center"
-                               Foreground="#999999"
-                               FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium" />
 
-                    <TextBlock Margin="0 0 0 0"
-                               Text="Đăng ký ngay!"
-                               TextAlignment="Center"
-                               FontSize="16"
-                               Width="120"
-                               Height="20"
-                               HorizontalAlignment="Center"
-                               Foreground="#0C21C1"
-                               FontFamily="pack://application:,,,/Resource/Font/#Poppins Bold"
-                               TextDecorations="Underline"
-                               Cursor="Hand">
-                        <TextBlock.InputBindings>
-                            <MouseBinding MouseAction="LeftClick"
-                                          Command="{Binding NavigateSignUpCommand}">
-                            </MouseBinding>
-                        </TextBlock.InputBindings>
-                    </TextBlock>
                 </StackPanel>
             </Grid>
         </Border>

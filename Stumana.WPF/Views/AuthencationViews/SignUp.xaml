@@ -186,7 +186,7 @@
                         Style="{StaticResource MaterialDesignRaisedButton}"
                         materialDesign:ButtonAssist.CornerRadius="32"
                         Command="{Binding CreateAccountCommand}">
-                    <TextBlock HorizontalAlignment="Center"
+                    <TextBlock 
                                Width="145" Height="26"
                                FontFamily="Poppins"
                                FontWeight="Medium"

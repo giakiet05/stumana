@@ -11,7 +11,7 @@ public class SignInViewModel : BaseViewModel
 {
     #region Command
     public ICommand LoginCommand { get; set; }
-    public ICommand NavigateSignUpCommand { get; set; }
+ 
     #endregion Command
 
     #region Properties
@@ -67,7 +67,7 @@ public class SignInViewModel : BaseViewModel
 
     public SignInViewModel()
     {
-        NavigateSignUpCommand = new NavigateViewCommand(() => new SignUpViewModel());
+       
         LoginCommand = new RelayCommand(ExecuteLogin);
     }
 

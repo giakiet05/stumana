@@ -86,6 +86,16 @@
             </StackPanel>
         </StackPanel>
         <StackPanel Grid.Row="2" Orientation="Horizontal" FlowDirection="RightToLeft">
+            <Button Margin="10"
+          VerticalAlignment="Center"
+          Width="180"
+          Height="50"
+          Style="{StaticResource PrimaryButtonStyle}"
+          materialDesign:ButtonAssist.CornerRadius="30"
+          Content="Tạo tài khoản"
+          FontSize="20"
+          Command="{Binding NavigateSignUpCommand}">
+            </Button>
             <Button Margin="10,10,10,10"
                     VerticalAlignment="Center"
                     Width="180"
@@ -106,6 +116,8 @@
                     FontSize="20"
                     Command="{Binding EditCommand}">
             </Button>
+            
+          
         </StackPanel>
     </Grid>
 </UserControl>

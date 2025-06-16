@@ -23,7 +23,7 @@
         </Grid.RowDefinitions>
 
         <TextBlock Grid.Row="0"
-                   Text="Information"
+                   Text="Thông tin tài khoản"
                    VerticalAlignment="Top"
                    HorizontalAlignment="Left"
                    FontSize="40"

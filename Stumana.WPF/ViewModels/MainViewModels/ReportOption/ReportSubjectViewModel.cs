@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Data;
 using System.Windows.Input;
 using Microsoft.EntityFrameworkCore;
+using ClosedXML.Excel;
 
 namespace Stumana.WPF.ViewModels.MainViewModels.ReportOption
 {
@@ -251,7 +252,93 @@ namespace Stumana.WPF.ViewModels.MainViewModels.ReportOption
 
         private void ExecuteExport(object parameter)
         {
+            if (string.IsNullOrEmpty(SelectedSchoolYear) || string.IsNullOrEmpty(SelectedSemester) || string.IsNullOrEmpty(SelectedSubject))
+            {
+                ToastMessageViewModel.ShowWarningToast("Vui lòng chọn đầy đủ năm học, học kỳ và môn học");
+                return;
+            }
 
+            if (ReportTable == null || ReportTable.Rows.Count == 0)
+            {
+                ToastMessageViewModel.ShowInfoToast("Không có dữ liệu để xuất");
+                return;
+            }
+
+            var saveFileDialog = new Microsoft.Win32.SaveFileDialog
+            {
+                Filter = "Excel Workbook|*.xlsx",
+                FileName = $"BaoCao_{SelectedSubject.Replace(" ", "")}_HK{SelectedSemester.Replace("Học kỳ ", "")}_{SelectedSchoolYear.Replace(" - ", "")}.xlsx"
+            };
+
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                try
+                {
+                    using (var workbook = new XLWorkbook())
+                    {
+                        var worksheet = workbook.Worksheets.Add("Báo cáo môn học");
+
+                        // Merge A1:D1 và tạo tiêu đề có dấu
+                        string title = $"Báo cáo môn học {SelectedSubject} - {SelectedSemester} Năm học {SelectedSchoolYear}";
+                        var titleRange = worksheet.Range("A1:D1");
+                        titleRange.Merge();
+                        titleRange.Value = title;
+                        titleRange.Style.Font.Bold = true;
+                        titleRange.Style.Font.FontSize = 14;
+                        titleRange.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                        titleRange.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
+                        titleRange.Style.Fill.BackgroundColor = XLColor.LightGreen;
+
+                        // Header tiếng Việt đầy đủ dấu ở dòng 2
+                        Dictionary<string, string> headerMap = new()
+                {
+                    { "STT", "STT" },
+                    { "Lop", "Lớp" },
+                    { "SoLuongDat", "Số lượng đạt" },
+                    { "TiLe", "Tỉ lệ" }
+                };
+
+                        for (int col = 0; col < ReportTable.Columns.Count; col++)
+                        {
+                            string originalColumn = ReportTable.Columns[col].ColumnName;
+                            string header = headerMap.ContainsKey(originalColumn) ? headerMap[originalColumn] : originalColumn;
+
+                            var cell = worksheet.Cell(2, col + 1);
+                            cell.Value = header;
+                            cell.Style.Font.Bold = true;
+                            cell.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                            cell.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
+                            cell.Style.Fill.BackgroundColor = XLColor.LightGray;
+                            cell.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+                        }
+
+                        // Ghi dữ liệu từ dòng 3
+                        for (int row = 0; row < ReportTable.Rows.Count; row++)
+                        {
+                            for (int col = 0; col < ReportTable.Columns.Count; col++)
+                            {
+                                var cell = worksheet.Cell(row + 3, col + 1);
+                                cell.Value = ReportTable.Rows[row][col]?.ToString();
+                                cell.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                                cell.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
+                                cell.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+                            }
+                        }
+
+                        // Auto-fit và chỉnh chiều rộng để không bị cụt dòng tiêu đề
+                        worksheet.Columns().AdjustToContents();
+                        worksheet.Columns("A:D").Width = 30;
+
+                        workbook.SaveAs(saveFileDialog.FileName);
+                        ToastMessageViewModel.ShowSuccessToast("Xuất báo cáo thành công");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ToastMessageViewModel.ShowErrorToast("Có lỗi xảy ra khi xuất báo cáo");
+                }
+            }
         }
+
     }
 }

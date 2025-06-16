@@ -80,7 +80,7 @@
             FontSize="20"
             Style="{StaticResource PrimaryButtonStyle}"
             materialDesign:ButtonAssist.CornerRadius="30"
-            Content="Xuất DS"
+            Content="Xuất Excel"
             Command="{Binding ExportCommand}" />
                 </Grid>
 

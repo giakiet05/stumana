@@ -240,10 +240,10 @@ public class AddYearViewModel : BaseViewModel
         IsMinScoreInvalid = false;
         IsMaxCapacityInvalid = false;
 
-        if (string.IsNullOrEmpty(StartYear) || int.Parse(StartYear) <= 1900 || int.Parse(StartYear) >= int.Parse(EndYear))
+        if (string.IsNullOrEmpty(StartYear) || int.Parse(StartYear) <= 1900 || int.Parse(StartYear) > int.Parse(EndYear))
             IsStartYearInvalid = true;
 
-        if (string.IsNullOrEmpty(EndYear) || int.Parse(EndYear) <= 1900 || int.Parse(StartYear) <= int.Parse(EndYear))
+        if (string.IsNullOrEmpty(EndYear) || int.Parse(EndYear) <= 1900 || int.Parse(EndYear) < int.Parse(StartYear))
             IsEndYearInvalid = true;
 
         if (string.IsNullOrEmpty(MinAge) || int.Parse(MinAge) <= 0)

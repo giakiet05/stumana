@@ -345,6 +345,7 @@
                                  FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
                                  Style="{StaticResource MaterialDesignOutlinedTextBox}"
                                  materialDesign:HintAssist.Hint="Tìm kiếm"
+                                 Text="{Binding SearchText}"
                                  materialDesign:TextFieldAssist.HasClearButton="True"
                                  Padding="20,5,5,5">
                         </TextBox>

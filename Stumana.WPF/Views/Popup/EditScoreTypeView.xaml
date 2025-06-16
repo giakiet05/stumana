@@ -64,6 +64,7 @@
                           VerticalAlignment="Stretch"
                           CanUserAddRows="False"
                           FontSize="20"
+                          IsReadOnly="True"
                           CellStyle="{StaticResource DataGridCellStyle}"
                           RowStyle="{StaticResource DataGridRowStyle}"
                           ItemsSource="{Binding ScoreTypeTable}"

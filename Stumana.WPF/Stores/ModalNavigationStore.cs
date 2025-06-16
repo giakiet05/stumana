@@ -20,7 +20,6 @@ namespace Stumana.WPF.Stores
             }
         }
 
-        private List<BaseViewModel> ViewModels { get; set; } = new List<BaseViewModel>();
 
         public event Action CurrentModalViewModelChanged;
         private BaseViewModel? _currentModalViewModel;
@@ -31,8 +30,6 @@ namespace Stumana.WPF.Stores
             set
             {
                 _currentModalViewModel = value;
-                if (value != null && !ViewModels.Contains(value))
-{                    ViewModels.Add(value);}
                 OnCurrentViewModelChanged();
             }
         }
@@ -51,14 +48,7 @@ namespace Stumana.WPF.Stores
 
         public void Close()
         {
-
-            if (ViewModels.Count > 0)
-            {
-                ViewModels.RemoveAt(ViewModels.Count - 1);
-               if (ViewModels.Count > 0) CurrentModalViewModel = ViewModels.Last();
-                else CurrentModalViewModel = null;
-            }
-            else CurrentModalViewModel = null;
+            CurrentModalViewModel = null;
 
         }
     }

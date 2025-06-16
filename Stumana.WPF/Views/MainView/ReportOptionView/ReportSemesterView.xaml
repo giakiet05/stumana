@@ -30,36 +30,60 @@
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
-                <StackPanel Grid.Row="0" Orientation="Horizontal">
-                    <ComboBox Background="#FFFFFF"
-                              Padding="10 0 10 0"
-                              Width="150"
-                              Height="30"
-                              IsReadOnly="True"
-                              ItemsSource="{Binding SchoolYearCollection}"
-                              SelectedItem="{Binding SelectedSchoolYear}"
-                              materialDesign:HintAssist.Hint="Năm học"
-                              materialDesign:HintAssist.HintOpacity="1"
-                              Foreground="Black"
-                              FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
-                              Margin="20"
-                              HorizontalAlignment="Left"
-                              BorderBrush="#64748B" BorderThickness="1" />
-                    <ComboBox Background="#FFFFFF"
-                              Padding="10 0 10 0"
-                              Width="150"
-                              Height="30"
-                              IsReadOnly="True"
-                              ItemsSource="{Binding SemesterCollection}"
-                              SelectedItem="{Binding SelectedSemester}"
-                              materialDesign:HintAssist.Hint="Học kỳ"
-                              materialDesign:HintAssist.HintOpacity="1"
-                              Foreground="Black"
-                              FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
-                              Margin="20"
-                              HorizontalAlignment="Left"
-                              BorderBrush="#64748B" BorderThickness="1" />
-                </StackPanel>
+                <Grid Grid.Row="0" Margin="20 10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                       
+                        <ColumnDefinition Width="Auto" />
+                       
+                        <ColumnDefinition Width="*" />
+                        
+                        <ColumnDefinition Width="Auto" />
+                        
+                    </Grid.ColumnDefinitions>
+
+                    <ComboBox Grid.Column="0"
+              Background="#FFFFFF"
+              Padding="10 0 10 0"
+              Width="150"
+              Height="30"
+              IsReadOnly="True"
+              ItemsSource="{Binding SchoolYearCollection}"
+              SelectedItem="{Binding SelectedSchoolYear}"
+              materialDesign:HintAssist.Hint="Năm học"
+              materialDesign:HintAssist.HintOpacity="1"
+              Foreground="Black"
+              FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
+              Margin="0,0,20,0"
+              BorderBrush="#64748B" BorderThickness="1" />
+
+                    <ComboBox Grid.Column="1"
+              Background="#FFFFFF"
+              Padding="10 0 10 0"
+              Width="150"
+              Height="30"
+              IsReadOnly="True"
+              ItemsSource="{Binding SemesterCollection}"
+              SelectedItem="{Binding SelectedSemester}"
+              materialDesign:HintAssist.Hint="Học kỳ"
+              materialDesign:HintAssist.HintOpacity="1"
+              Foreground="Black"
+              FontFamily="pack://application:,,,/Resource/Font/#Poppins Medium"
+              Margin="0,0,20,0"
+              BorderBrush="#64748B" BorderThickness="1" />
+
+              
+                    <Button Grid.Column="3"
+            VerticalAlignment="Center"
+            Width="180"
+            Height="50"
+            FontSize="20"
+            Style="{StaticResource PrimaryButtonStyle}"
+            materialDesign:ButtonAssist.CornerRadius="30"
+            Content="Xuất DS"
+            Command="{Binding ExportCommand}" />
+                </Grid>
+
 
                 <DataGrid Grid.Row="1"
                           ScrollViewer.HorizontalScrollBarVisibility="Visible"
@@ -72,7 +96,7 @@
                           FontSize="20"
                           CellStyle="{StaticResource DataGridCellStyle}"
                           RowStyle="{StaticResource DataGridRowStyle}"
-                          ItemsSource="{Binding ReportTableView}">
+                          ItemsSource="{Binding ReportTableView}" >
 
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="STT" Width="250" Binding="{Binding STT}" />
